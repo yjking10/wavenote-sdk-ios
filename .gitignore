@@ -1,4 +1,4 @@
-# Local SDKs, documentation and generated output are never published.
+# Documentation, local configuration and generated output are never published.
 /docs/
 /Documentation/
 /Validation.md
@@ -8,7 +8,6 @@
 /.swiftpm/
 /.gradle/
 /.idea/
-/Frameworks/
 /Dependencies/
 /app/libs/
 /local.properties
@@ -17,8 +16,6 @@ xcuserdata/
 *.xcuserstate
 *.xcresult/
 *.xcarchive/
-*.xcframework/
-*.framework/
 *.aar
 *.apk
 *.aab

@@ -1,0 +1,589 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.3.3 effective-5.10 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
+// swift-module-flags: -target arm64-apple-ios15.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name WaveNoteSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
+import CoreBluetooth
+import CoreFoundation
+import CryptoKit
+import Foundation
+import Network
+import NetworkExtension
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc public enum WaveNoteRecordingState : Swift::Int {
+  case unknown
+  case stopped
+  case recording
+  case paused
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteRecordMode : Swift::Int {
+  case note = 1
+  case call = 2
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteTransferTransport : Swift::Int {
+  case bluetooth
+  case wifi
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteOperationState : Swift::Int {
+  case preparing
+  case running
+  case finishing
+  case completed
+  case cancelled
+  case failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteWiFiState : Swift::Int {
+  case off
+  case enabling
+  case joining
+  case connecting
+  case ready
+  case closing
+  case restoringBluetooth
+  case failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteFirmwareStage : Swift::Int {
+  case preparing
+  case transferring
+  case upgrading
+  case completed
+  case cancelled
+  case failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteFirmwareTransferMode : Swift::Int {
+  case deviceRequested
+  case legacyPaced
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteSetting : Swift::Int, Swift::CaseIterable {
+  case recording
+  case callMicrophone
+  case hardware
+  case battery
+  case charging
+  case microphoneGain
+  case vibrationGain
+  case bitrate
+  case quality
+  case liveStreaming
+  case deviceLog
+  case activation = 12
+  case storage
+  case autoPowerOff
+  case wifiVersion
+  case usbConnected
+  public init?(rawValue: Swift::Int)
+  public typealias AllCases = [WaveNoteSDK::WaveNoteSetting]
+  public typealias RawValue = Swift::Int
+  nonisolated public static var allCases: [WaveNoteSDK::WaveNoteSetting] {
+    get
+  }
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteSettingsSnapshot : ObjectiveC::NSObject {
+  @objc final public let batteryLevel: Foundation::NSNumber?
+  @objc final public let charging: Foundation::NSNumber?
+  @objc final public let microphoneGain: Foundation::NSNumber?
+  @objc final public let vibrationGain: Foundation::NSNumber?
+  @objc final public let bitrate: Foundation::NSNumber?
+  @objc final public let quality: Foundation::NSNumber?
+  @objc final public let autoPowerOffMinutes: Foundation::NSNumber?
+  @objc final public let usbConnected: Foundation::NSNumber?
+  @objc final public let liveStreaming: Foundation::NSNumber?
+  @objc final public let deviceLog: Foundation::NSNumber?
+  @objc final public let activated: Foundation::NSNumber?
+  @objc final public let callMicrophone: Foundation::NSNumber?
+  @objc final public let storageTotal: Foundation::NSNumber?
+  @objc final public let storageUsed: Foundation::NSNumber?
+  @objc final public let deviceName: Swift::String?
+  @objc final public let firmwareVersion: Swift::String?
+  @objc final public let wifiVersion: Swift::String?
+  @objc final public let usbEnabled: Foundation::NSNumber?
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteRecordingSnapshot : ObjectiveC::NSObject {
+  @objc final public let state: WaveNoteSDK::WaveNoteRecordingState
+  @objc final public let mode: Foundation::NSNumber?
+  @objc final public let fileName: Swift::String?
+  @objc deinit
+}
+@objc @objcMembers final public class WaveNoteFile : ObjectiveC::NSObject {
+  @objc final public let name: Swift::String
+  @objc final public let size: Swift::Int64
+  @objc final public let mode: WaveNoteSDK::WaveNoteRecordMode
+  @objc public init(name: Swift::String, size: Swift::Int64, mode: WaveNoteSDK::WaveNoteRecordMode)
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteTransferProgress : ObjectiveC::NSObject {
+  @objc final public let operationID: Foundation::UUID
+  @objc final public let state: WaveNoteSDK::WaveNoteOperationState
+  @objc final public let receivedBytes: Swift::Int64
+  @objc final public let totalBytes: Swift::Int64
+  @objc final public let fileURL: Foundation::URL?
+  @objc final public let error: WaveNoteSDK::WaveNoteError?
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteAudioChunk : ObjectiveC::NSObject {
+  @objc final public let operationID: Foundation::UUID
+  @objc final public let position: Swift::Int64
+  @objc final public let data: Foundation::Data
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteWiFiSnapshot : ObjectiveC::NSObject {
+  @objc final public let state: WaveNoteSDK::WaveNoteWiFiState
+  @objc final public let ssid: Swift::String?
+  @objc final public let address: Swift::String?
+  @objc final public let error: WaveNoteSDK::WaveNoteError?
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteFirmwareProgress : ObjectiveC::NSObject {
+  @objc final public let operationID: Foundation::UUID
+  @objc final public let stage: WaveNoteSDK::WaveNoteFirmwareStage
+  @objc final public let sentBytes: Swift::Int64
+  @objc final public let totalBytes: Swift::Int64
+  @objc final public let error: WaveNoteSDK::WaveNoteError?
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteOperation : ObjectiveC::NSObject {
+  @objc @_Concurrency::MainActor final public let identifier: Foundation::UUID
+  @objc @_Concurrency::MainActor final public func cancel()
+  @objc deinit
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteDeviceSettingsDelegate {
+  @objc @_Concurrency::MainActor func deviceSettings(_ settings: WaveNoteSDK::WaveNoteDeviceSettings, didUpdate snapshot: WaveNoteSDK::WaveNoteSettingsSnapshot)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteRecordingDelegate {
+  @objc @_Concurrency::MainActor func recording(_ recording: WaveNoteSDK::WaveNoteRecording, didUpdate snapshot: WaveNoteSDK::WaveNoteRecordingSnapshot)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteFilesDelegate {
+  @objc @_Concurrency::MainActor func files(_ files: WaveNoteSDK::WaveNoteFiles, didUpdate progress: WaveNoteSDK::WaveNoteTransferProgress)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteLiveAudioDelegate {
+  @objc @_Concurrency::MainActor func liveAudio(_ audio: WaveNoteSDK::WaveNoteLiveAudio, didUpdate progress: WaveNoteSDK::WaveNoteTransferProgress)
+  @objc @_Concurrency::MainActor func liveAudio(_ audio: WaveNoteSDK::WaveNoteLiveAudio, didReceive chunk: WaveNoteSDK::WaveNoteAudioChunk)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteWiFiDelegate {
+  @objc @_Concurrency::MainActor func wifi(_ wifi: WaveNoteSDK::WaveNoteWiFi, didUpdate snapshot: WaveNoteSDK::WaveNoteWiFiSnapshot)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteFirmwareUpdateDelegate {
+  @objc @_Concurrency::MainActor func firmwareUpdate(_ updater: WaveNoteSDK::WaveNoteFirmwareUpdate, didUpdate progress: WaveNoteSDK::WaveNoteFirmwareProgress)
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteMaintenanceDelegate {
+  @objc @_Concurrency::MainActor func maintenance(_ maintenance: WaveNoteSDK::WaveNoteMaintenance, didFinish operationID: Foundation::UUID, error: WaveNoteSDK::WaveNoteError?)
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor public class WaveNoteFeature : ObjectiveC::NSObject {
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteDeviceSettings : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteDeviceSettingsDelegate)?
+  @objc @_Concurrency::MainActor final public var snapshot: WaveNoteSDK::WaveNoteSettingsSnapshot {
+    get
+  }
+  @objc @_Concurrency::MainActor final public func query(_ setting: WaveNoteSDK::WaveNoteSetting, completion: @escaping (WaveNoteSDK::WaveNoteSettingsSnapshot?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setMicrophoneGain(_ value: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setVibrationGain(_ value: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setAutoPowerOff(minutes: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setUSBEnabled(_ enabled: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setBitrate(_ kbps: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setQuality(_ quality: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func synchronizeTime(_ date: Foundation::Date, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteRecording : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteRecordingDelegate)?
+  @objc @_Concurrency::MainActor final public var snapshot: WaveNoteSDK::WaveNoteRecordingSnapshot {
+    get
+  }
+  @objc @_Concurrency::MainActor final public func refresh(completion: @escaping (WaveNoteSDK::WaveNoteRecordingSnapshot?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func start(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func stop(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func pause(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func resume(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteFiles : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteFilesDelegate)?
+  @objc @_Concurrency::MainActor final public func count(mode: WaveNoteSDK::WaveNoteRecordMode, completion: @escaping (Foundation::NSNumber?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func page(mode: WaveNoteSDK::WaveNoteRecordMode, index: Swift::Int, completion: @escaping ([WaveNoteSDK::WaveNoteFile]?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func list(mode: WaveNoteSDK::WaveNoteRecordMode, completion: @escaping ([WaveNoteSDK::WaveNoteFile]?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func delete(_ file: WaveNoteSDK::WaveNoteFile, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func download(_ file: WaveNoteSDK::WaveNoteFile, to destination: Foundation::URL, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, completion: @escaping (Foundation::URL?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteLiveAudio : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteLiveAudioDelegate)?
+  @objc @_Concurrency::MainActor final public func setEnabled(_ enabled: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func start(fileURL: Foundation::URL? = nil, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func stop(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteWiFi : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteWiFiDelegate)?
+  @objc @_Concurrency::MainActor final public var snapshot: WaveNoteSDK::WaveNoteWiFiSnapshot {
+    get
+  }
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func open(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func close(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteFirmwareUpdate : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteFirmwareUpdateDelegate)?
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func start(fileURL: Foundation::URL, mode: WaveNoteSDK::WaveNoteFirmwareTransferMode = .deviceRequested, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteMaintenance : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteMaintenanceDelegate)?
+  @objc @_Concurrency::MainActor final public func restoreSettings(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func restoreAndErase(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func activate(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func deactivate(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func shutdown(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func setDeviceLogEnabled(_ enabled: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
+}
+@objc public enum WaveNoteBluetoothState : Swift::Int {
+  case unknown, unauthorized, unsupported, poweredOff, poweredOn, resetting
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteConnectionState : Swift::Int {
+  case disconnected, scanning, binding, connecting, discoveringServices, ready, reconnecting, failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteConnectionStage : Swift::Int {
+  case stoppingScan, connectingGATT, discoveringServices, subscribingNotifications, authenticating, synchronizingState, ready
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteBindingState : Swift::Int {
+  case idle, checking, binding, bound, failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteUnbindingState : Swift::Int {
+  case idle, unbindingCloud, completed, failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteDeviceType : Swift::Int {
+  case waveNote
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteAudioCodec : Swift::Int {
+  case opus
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteChargingState : Swift::Int {
+  case unknown, notCharging, charging, full
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteRuntimeStatus : Swift::Int {
+  case unknown, idle, recording, usbMounted
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteReconnectPolicy : Swift::Int {
+  case none, conservative, `default`, aggressive
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteErrorCode : Swift::Int {
+  case bluetoothUnavailable = 1001
+  case scanTimedOut = 1002
+  case connectionFailed = 1003
+  case deviceBoundToAnotherUser = 1004
+  case connectionBusy = 1005
+  case bindingRejected = 1007
+  case unbindingRequiresReadyConnection = 1008
+  case cloudUnbindFailed = 1009
+  case unbindingOperationConflict = 1011
+  case apiKeyInvalidOrExpired = 1012
+  case identityProviderUnavailable = 1013
+  case deviceNotBound = 1014
+  case invalidConfiguration = 1015
+  case staleDiscovery = 1016
+  case operationCancelled = 1017
+  case identityTimedOut = 1018
+  case notConnected = 1101
+  case commandTimedOut = 1102
+  case invalidDeviceResponse = 1103
+  case unsupportedFeature = 1104
+  case operationBlocked = 1106
+  case invalidParameter = 1201
+  case deviceRejected = 1202
+  case operationOutcomeUnknown = 1203
+  case fileIOFailed = 1204
+  case incompleteTransfer = 1205
+  case networkUnavailable = 1206
+  case bufferOverflow = 1207
+  case firmwareUpgradeFailed = 1208
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc @objcMembers final public class WaveNoteError : Foundation::NSError, @unchecked Swift::Sendable {
+  @objc override final public class var supportsSecureCoding: Swift::Bool {
+    @objc get
+  }
+  @objc final public var errorCode: WaveNoteSDK::WaveNoteErrorCode {
+    @objc get
+  }
+  @objc final public let operation: Swift::String
+  @objc public init(_ errorCode: WaveNoteSDK::WaveNoteErrorCode, operation: Swift::String, message: Swift::String)
+  @objc required dynamic public init?(coder: Foundation::NSCoder)
+  @objc override final public func encode(with coder: Foundation::NSCoder)
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteDiscoveredDevice : ObjectiveC::NSObject {
+  @objc final public let serialNumber: Swift::String
+  @objc final public let bluetoothIdentifier: Foundation::UUID
+  @objc final public let name: Swift::String?
+  @objc final public let rssi: Swift::Int
+  @objc final public let lastSeen: Foundation::Date
+  @objc final public let deviceType: WaveNoteSDK::WaveNoteDeviceType
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteDevice : ObjectiveC::NSObject {
+  @objc final public let serialNumber: Swift::String
+  @objc final public let bluetoothIdentifier: Foundation::UUID
+  @objc final public let name: Swift::String?
+  @objc final public let model: Swift::String
+  @objc final public let deviceType: WaveNoteSDK::WaveNoteDeviceType
+  @objc final public let audioCodec: WaveNoteSDK::WaveNoteAudioCodec
+  @objc final public let firmwareVersion: Swift::String?
+  @objc final public let batteryLevel: Swift::Int
+  @objc final public let chargingState: WaveNoteSDK::WaveNoteChargingState
+  @objc final public let runtimeStatus: WaveNoteSDK::WaveNoteRuntimeStatus
+  @objc deinit
+}
+@objc public enum WaveNoteOwnership : Swift::Int {
+  case unbound, currentUser, anotherUser
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public protocol WaveNoteIdentityProvider {
+  @objc func checkOwnership(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteOwnership, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func bind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func unbind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+}
+@objc @objcMembers final public class WaveNoteSDKConfiguration : ObjectiveC::NSObject {
+  @objc final public let apiKey: Swift::String
+  @objc final public let userIdentifier: Swift::String
+  @objc final public let enableAutoReconnect: Swift::Bool
+  @objc final public let reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy
+  @objc final public let identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)?
+  @objc(initWithAPIKey:userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) public init(apiKey: Swift::String, userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteScanToken : ObjectiveC::NSObject {
+  @objc @_Concurrency::MainActor final public func cancel()
+  @objc deinit
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteSDKDelegate {
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateBluetoothState state: WaveNoteSDK::WaveNoteBluetoothState)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateDiscoveredDevices devices: [WaveNoteSDK::WaveNoteDiscoveredDevice])
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didChangeConnectionState state: WaveNoteSDK::WaveNoteConnectionState, device: WaveNoteSDK::WaveNoteDevice?)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateConnectionStage stage: WaveNoteSDK::WaveNoteConnectionStage)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didChangeBindingState state: WaveNoteSDK::WaveNoteBindingState, device: WaveNoteSDK::WaveNoteDiscoveredDevice?)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didChangeUnbindingState state: WaveNoteSDK::WaveNoteUnbindingState, device: WaveNoteSDK::WaveNoteDevice?)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateDevice device: WaveNoteSDK::WaveNoteDevice)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didReceive error: WaveNoteSDK::WaveNoteError)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteSDK : ObjectiveC::NSObject {
+  @objc(sharedSDK) @_Concurrency::MainActor public static let shared: WaveNoteSDK::WaveNoteSDK
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteSDKDelegate)?
+  @objc @_Concurrency::MainActor final public var bluetoothState: WaveNoteSDK::WaveNoteBluetoothState {
+    get
+  }
+  @objc @_Concurrency::MainActor final public var connectionState: WaveNoteSDK::WaveNoteConnectionState {
+    get
+  }
+  @objc @_Concurrency::MainActor final public var discoveredDevices: [WaveNoteSDK::WaveNoteDiscoveredDevice] {
+    get
+  }
+  @objc @_Concurrency::MainActor final public var connectedDevice: WaveNoteSDK::WaveNoteDevice? {
+    get
+  }
+  @objc @_Concurrency::MainActor final public var deviceSettings: WaveNoteSDK::WaveNoteDeviceSettings {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var recording: WaveNoteSDK::WaveNoteRecording {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var files: WaveNoteSDK::WaveNoteFiles {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var liveAudio: WaveNoteSDK::WaveNoteLiveAudio {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var wifi: WaveNoteSDK::WaveNoteWiFi {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var firmwareUpdate: WaveNoteSDK::WaveNoteFirmwareUpdate {
+    @objc get
+  }
+  @objc @_Concurrency::MainActor final public var maintenance: WaveNoteSDK::WaveNoteMaintenance {
+    @objc get
+  }
+  @objc deinit
+  @objc(openLog:logBlock:) @_Concurrency::MainActor final public func openLog(_ opened: Swift::Bool, logBlock: ((Swift::String) -> Swift::Void)? = nil)
+  @objc(configureWithConfiguration:) @_Concurrency::MainActor final public func configure(with configuration: WaveNoteSDK::WaveNoteSDKConfiguration)
+  @discardableResult
+  @objc(startScanningWithTimeout:) @_Concurrency::MainActor final public func startScanning(timeout: Foundation::TimeInterval = 8) -> WaveNoteSDK::WaveNoteScanToken
+  @objc @_Concurrency::MainActor final public func stopScanning()
+  @objc(bindDevice:completion:) @_Concurrency::MainActor final public func bind(_ device: WaveNoteSDK::WaveNoteDiscoveredDevice, completion: @escaping (WaveNoteSDK::WaveNoteDevice?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @nonobjc @_Concurrency::MainActor final public func bind(_ device: WaveNoteSDK::WaveNoteDiscoveredDevice, completion: @escaping (Swift::Result<WaveNoteSDK::WaveNoteDevice, WaveNoteSDK::WaveNoteError>) -> Swift::Void)
+  @objc(connectToDevice:) @_Concurrency::MainActor final public func connect(to device: WaveNoteSDK::WaveNoteDiscoveredDevice)
+  @objc @_Concurrency::MainActor final public func disconnectDevice()
+  @objc @_Concurrency::MainActor final public func unbindCurrentDevice()
+  @objc(unbindCurrentDeviceWithCompletion:) @_Concurrency::MainActor final public func unbindCurrentDevice(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func reconnectLastDevice()
+  @objc @_Concurrency::MainActor final public func refreshDeviceInformation()
+}
+extension WaveNoteSDK::WaveNoteRecordingState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteRecordingState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteRecordingState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteRecordMode : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteRecordMode : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteRecordMode : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteTransferTransport : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteTransferTransport : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteTransferTransport : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteOperationState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteOperationState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteOperationState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteWiFiState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteWiFiState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteWiFiState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteSetting : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteSetting : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteSetting : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteOperation : Swift::Sendable {}
+extension WaveNoteSDK::WaveNoteFeature : Swift::Sendable {}
+extension WaveNoteSDK::WaveNoteBluetoothState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteBluetoothState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteBluetoothState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteConnectionState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteConnectionState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteConnectionState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteConnectionStage : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteConnectionStage : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteConnectionStage : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteBindingState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteBindingState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteBindingState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteUnbindingState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteUnbindingState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteUnbindingState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteDeviceType : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteDeviceType : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteDeviceType : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteAudioCodec : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteAudioCodec : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteAudioCodec : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteChargingState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteChargingState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteChargingState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteRuntimeStatus : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteRuntimeStatus : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteRuntimeStatus : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteReconnectPolicy : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteReconnectPolicy : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteReconnectPolicy : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteErrorCode : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteErrorCode : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteErrorCode : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteOwnership : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteOwnership : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteOwnership : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteScanToken : Swift::Sendable {}
+extension WaveNoteSDK::WaveNoteSDK : Swift::Sendable {}
