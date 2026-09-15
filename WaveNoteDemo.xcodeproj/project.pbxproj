@@ -1,0 +1,528 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05305DF5C8B1B8843EFCB6DE /* ObjCIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F43D359DC6A7839ADA2F6 /* ObjCIntegration.m */; };
+		16742C1EE7D41E7875139B13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B241E8F41B2EE541C981B00D /* AppDelegate.swift */; };
+		2010861D459F1BA8E38CE27E /* WaveNoteSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */; };
+		3EE7C7FA231B37FEE0E9CE8D /* DemoAudioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E77F5B987CA7F0572794CFE /* DemoAudioTests.swift */; };
+		4439E55BEF98FDFBA5A1B10E /* WaveNoteSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */; };
+		9CC0736F739E171985FBA31A /* DemoFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */; };
+		A43633CD5433EC22A1BE95D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94584F2C7AFBA395629D6554 /* Foundation.framework */; };
+		AABC00000000000000000000 /* DemoAudioLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000000 /* DemoAudioLibrary.swift */; };
+		AABC00000000000000000001 /* DemoAudioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000001 /* DemoAudioStore.swift */; };
+		AABC00000000000000000002 /* DemoOggPlayback.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000002 /* DemoOggPlayback.swift */; };
+		AABC00000000000000000003 /* DemoNativePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000003 /* DemoNativePlayer.swift */; };
+		AB9C3FA66D56309F1D78FE93 /* DemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBFD0EB91403DE0191D674 /* DemoController.swift */; };
+		B5D9ED0266EDB4464050D815 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94584F2C7AFBA395629D6554 /* Foundation.framework */; };
+		C902EFE6915E9C97907E26F3 /* HTTPIdentityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2734274CBE13C61F234325 /* HTTPIdentityProvider.swift */; };
+		D67612DDBB7238F4CECD3034 /* DemoFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793584D36346748C49273A6 /* DemoFlow.swift */; };
+		DFDB59D92ED9B01B69812E6C /* IdentityHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9D0A77F7EAE72E5BA79EEF /* IdentityHTTP.swift */; };
+		F05CB745EC5213BDD91E32DA /* IdentityHTTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		99B9DC325BD641F60EA40600 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1EE128093772DBC9A453F080 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5EF548D39677C1BE3A278B9F;
+			remoteInfo = WaveNoteDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BDCB8B42D7AE07EA4F4E5D8A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2010861D459F1BA8E38CE27E /* WaveNoteSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A6F43D359DC6A7839ADA2F6 /* ObjCIntegration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ObjCIntegration.m; sourceTree = "<group>"; };
+		0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoFlowTests.swift; sourceTree = "<group>"; };
+		2BCBFD0EB91403DE0191D674 /* DemoController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoController.swift; sourceTree = "<group>"; };
+		3D2734274CBE13C61F234325 /* HTTPIdentityProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HTTPIdentityProvider.swift; sourceTree = "<group>"; };
+		5793584D36346748C49273A6 /* DemoFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoFlow.swift; sourceTree = "<group>"; };
+		661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SwiftIntegration.swift; sourceTree = "<group>"; };
+		6F9D0A77F7EAE72E5BA79EEF /* IdentityHTTP.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IdentityHTTP.swift; sourceTree = "<group>"; };
+		80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = WaveNoteSDK.xcframework; sourceTree = "<group>"; };
+		8E77F5B987CA7F0572794CFE /* DemoAudioTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoAudioTests.swift; sourceTree = "<group>"; };
+		94584F2C7AFBA395629D6554 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IdentityHTTPTests.swift; sourceTree = "<group>"; };
+		AABB00000000000000000000 /* DemoAudioLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAudioLibrary.swift; sourceTree = "<group>"; };
+		AABB00000000000000000001 /* DemoAudioStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAudioStore.swift; sourceTree = "<group>"; };
+		AABB00000000000000000002 /* DemoOggPlayback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoOggPlayback.swift; sourceTree = "<group>"; };
+		AABB00000000000000000003 /* DemoNativePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNativePlayer.swift; sourceTree = "<group>"; };
+		B241E8F41B2EE541C981B00D /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E1C03971DC218EA2359DDA3C /* WaveNoteDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveNoteDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4167806BC7B2492D3A1BD43 /* DemoAudioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAudioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0BD34425EC7DC10D1DCBC32B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A43633CD5433EC22A1BE95D9 /* Foundation.framework in Frameworks */,
+				4439E55BEF98FDFBA5A1B10E /* WaveNoteSDK.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AE7F8314FBB7F3D1A2C06F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5D9ED0266EDB4464050D815 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		280ACF822F97E6C7A2AC4089 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5793584D36346748C49273A6 /* DemoFlow.swift */,
+				AABB00000000000000000002 /* DemoOggPlayback.swift */,
+				AABB00000000000000000001 /* DemoAudioStore.swift */,
+				AABB00000000000000000000 /* DemoAudioLibrary.swift */,
+				6F9D0A77F7EAE72E5BA79EEF /* IdentityHTTP.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		29E994D8DE19E197094B504E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				94584F2C7AFBA395629D6554 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		49BE4B1873FC422CF7594AA3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1C03971DC218EA2359DDA3C /* WaveNoteDemo.app */,
+				F4167806BC7B2492D3A1BD43 /* DemoAudioTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4FD43040EB4F74B098264911 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8E77F5B987CA7F0572794CFE /* DemoAudioTests.swift */,
+				0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */,
+				A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */,
+			);
+			name = Tests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A3C30CF32ABAF6B930DD9BF0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29E994D8DE19E197094B504E /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA19B62F5A3BD6942051D593 = {
+			isa = PBXGroup;
+			children = (
+				49BE4B1873FC422CF7594AA3 /* Products */,
+				A3C30CF32ABAF6B930DD9BF0 /* Frameworks */,
+				EC65A138972AAB825399A21F /* App */,
+				280ACF822F97E6C7A2AC4089 /* Core */,
+				B6962A49CA8D659111516049 /* Frameworks */,
+				4FD43040EB4F74B098264911 /* Tests */,
+			);
+			sourceTree = "<group>";
+		};
+		B6962A49CA8D659111516049 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		EC65A138972AAB825399A21F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B241E8F41B2EE541C981B00D /* AppDelegate.swift */,
+				2BCBFD0EB91403DE0191D674 /* DemoController.swift */,
+				AABB00000000000000000003 /* DemoNativePlayer.swift */,
+				3D2734274CBE13C61F234325 /* HTTPIdentityProvider.swift */,
+				661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */,
+				0A6F43D359DC6A7839ADA2F6 /* ObjCIntegration.m */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5EF548D39677C1BE3A278B9F /* WaveNoteDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E796360E124D0A915BBEDC3B /* Build configuration list for PBXNativeTarget "WaveNoteDemo" */;
+			buildPhases = (
+				57015A09E6621ED10FF7FAB8 /* Sources */,
+				0BD34425EC7DC10D1DCBC32B /* Frameworks */,
+				407476344ACFA342413F0BB5 /* Resources */,
+				BDCB8B42D7AE07EA4F4E5D8A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WaveNoteDemo;
+			productName = WaveNoteDemo;
+			productReference = E1C03971DC218EA2359DDA3C /* WaveNoteDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E8D2CDB75293AB7AECDE7F7D /* DemoAudioTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1D08F2B1D185BD64527D977 /* Build configuration list for PBXNativeTarget "DemoAudioTests" */;
+			buildPhases = (
+				896D8D5354C137A9B5BC82DA /* Sources */,
+				6AE7F8314FBB7F3D1A2C06F4 /* Frameworks */,
+				A02929E3F4CF2E7FEDBF0189 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0731C2764E29D8C1809938D3 /* PBXTargetDependency */,
+			);
+			name = DemoAudioTests;
+			productName = DemoAudioTests;
+			productReference = F4167806BC7B2492D3A1BD43 /* DemoAudioTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1EE128093772DBC9A453F080 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 201839248F3837AF774CA92E /* Build configuration list for PBXProject "WaveNoteDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA19B62F5A3BD6942051D593;
+			productRefGroup = 49BE4B1873FC422CF7594AA3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5EF548D39677C1BE3A278B9F /* WaveNoteDemo */,
+				E8D2CDB75293AB7AECDE7F7D /* DemoAudioTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		407476344ACFA342413F0BB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A02929E3F4CF2E7FEDBF0189 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		57015A09E6621ED10FF7FAB8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16742C1EE7D41E7875139B13 /* AppDelegate.swift in Sources */,
+				AB9C3FA66D56309F1D78FE93 /* DemoController.swift in Sources */,
+				D67612DDBB7238F4CECD3034 /* DemoFlow.swift in Sources */,
+				AABC00000000000000000003 /* DemoNativePlayer.swift in Sources */,
+				AABC00000000000000000002 /* DemoOggPlayback.swift in Sources */,
+				AABC00000000000000000001 /* DemoAudioStore.swift in Sources */,
+				AABC00000000000000000000 /* DemoAudioLibrary.swift in Sources */,
+				C902EFE6915E9C97907E26F3 /* HTTPIdentityProvider.swift in Sources */,
+				2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */,
+				05305DF5C8B1B8843EFCB6DE /* ObjCIntegration.m in Sources */,
+				DFDB59D92ED9B01B69812E6C /* IdentityHTTP.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		896D8D5354C137A9B5BC82DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3EE7C7FA231B37FEE0E9CE8D /* DemoAudioTests.swift in Sources */,
+				9CC0736F739E171985FBA31A /* DemoFlowTests.swift in Sources */,
+				F05CB745EC5213BDD91E32DA /* IdentityHTTPTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0731C2764E29D8C1809938D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WaveNoteDemo;
+			target = 5EF548D39677C1BE3A278B9F /* WaveNoteDemo */;
+			targetProxy = 99B9DC325BD641F60EA40600 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0C005EB06E0BC3480C049D89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		0D07287B8D7E09BBA270C05E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaveNoteDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WaveNoteDemo";
+			};
+			name = Debug;
+		};
+		34F22E89519800BD374A8A89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		37C05BBCAF3B6D3426EAED21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaveNoteDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WaveNoteDemo";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5155244F3EDCA4C1E2F4FE3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		57DBD04F2628AC11C49DB130 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		201839248F3837AF774CA92E /* Build configuration list for PBXProject "WaveNoteDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C005EB06E0BC3480C049D89 /* Debug */,
+				5155244F3EDCA4C1E2F4FE3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1D08F2B1D185BD64527D977 /* Build configuration list for PBXNativeTarget "DemoAudioTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37C05BBCAF3B6D3426EAED21 /* Release */,
+				0D07287B8D7E09BBA270C05E /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E796360E124D0A915BBEDC3B /* Build configuration list for PBXNativeTarget "WaveNoteDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34F22E89519800BD374A8A89 /* Release */,
+				57DBD04F2628AC11C49DB130 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1EE128093772DBC9A453F080 /* Project object */;
+}

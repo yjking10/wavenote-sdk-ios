@@ -1,0 +1,244 @@
+import UIKit
+import CryptoKit
+import WaveNoteSDK
+
+/// 模拟身份在 Debug / Release 均明确启用，仅用于独立演示。
+final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
+    private let store: DemoOwnershipStore
+    override init() {
+        let defaults = UserDefaults.standard
+        store = DemoOwnershipStore(read: { defaults.dictionary(forKey: "demo.ownership") as? [String: String] ?? [:] },
+                                   write: { defaults.set($0, forKey: "demo.ownership") })
+        super.init()
+    }
+    private func hash(_ value: String) -> String { SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined() }
+    func isBound(_ sn: String) -> Bool { store.owner(hash(sn)) == hash("demo-user") }
+    func checkOwnership(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteOwnership, WaveNoteError?) -> Void) {
+        let owner = store.owner(hash(serialNumber))
+        completion(owner == nil ? .unbound : owner == hash(userIdentifier) ? .currentUser : .anotherUser, nil)
+    }
+    func bind(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
+        completion(store.bind(hash(serialNumber), user: hash(userIdentifier)) ? nil : WaveNoteError(.deviceBoundToAnotherUser, operation: "bind", message: "设备已属于其他演示账户"))
+    }
+    func unbind(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
+        completion(store.unbind(hash(serialNumber), user: hash(userIdentifier)) ? nil : WaveNoteError(.cloudUnbindFailed, operation: "unbind", message: "模拟归属不匹配"))
+    }
+}
+
+@MainActor final class DemoController: NSObject, WaveNoteSDKDelegate, WaveNoteDeviceSettingsDelegate, WaveNoteRecordingDelegate, WaveNoteFilesDelegate {
+    let sdk = WaveNoteSDK.shared
+    let identity = DemoIdentityProvider()
+    let flow = DemoFlow()
+    let library = DemoAudioLibrary()
+    let recordingClock = DemoRecordingClock()
+    let player = DemoNativePlayer()
+    private let fileQueue = DispatchQueue(label: "demo.files", qos: .utility)
+    private let store = DemoAudioStore(root: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Recordings"))
+    private var libraryToken: Int?
+    private var audioSession = 0
+    private var scheduledSync = 0
+    private var progressID: UUID?
+    private var progressCallback: ((Int64) -> Void)?
+    var changed: (() -> Void)?
+    var devices: [WaveNoteDiscoveredDevice] = []
+    var snapshot: WaveNoteSettingsSnapshot?
+    var mode: Int?
+    var status = "点击开始扫描，选择身边的 Note 设备。"
+    var bluetooth = "正在检查蓝牙状态"
+    private var scanning = false
+    private var scanGeneration = 0
+    private var unbinding = false
+    private var unbindCompleted = false
+    override init() {
+        super.init()
+        sdk.delegate = self; sdk.deviceSettings.delegate = self; sdk.recording.delegate = self; sdk.files.delegate = self
+        configureLibrary()
+        // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
+        sdk.openLog(true)
+        sdk.configure(with: WaveNoteSDKConfiguration(apiKey: "demo-simulation-not-a-credential", userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity))
+    }
+    func scan() {
+        guard !flow.busy, !flow.ready else { return }
+        if sdk.bluetoothState == .unauthorized {
+            status = "蓝牙权限未授予，请在系统设置中允许访问后重试。"; changed?(); return
+        }
+        guard sdk.bluetoothState == .poweredOn else { status = "请开启蓝牙，待蓝牙可用后重新扫描。"; changed?(); return }
+        flow.invalidate(); scanGeneration += 1; let token = scanGeneration
+        devices = []; scanning = true; status = "正在扫描…"; changed?(); sdk.startScanning()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8.2) { [weak self] in
+            guard let self, self.scanGeneration == token, self.scanning else { return }
+            self.scanning = false
+            self.status = self.devices.isEmpty ? "未发现设备，请靠近设备后重新扫描。" : "扫描完成，请选择设备。"
+            self.changed?()
+        }
+    }
+    func select(_ device: WaveNoteDiscoveredDevice) {
+        guard Date().timeIntervalSince(device.lastSeen) <= 30 else { status = "扫描结果已过期，请重新扫描后选择设备。"; changed?(); return }
+        guard let (token, route) = flow.select(bound: identity.isBound(device.serialNumber), fresh: true) else { return }
+        // SDK 检查扫描批次及 30 秒有效期，Demo 不伪造发现对象。
+        scanning = false; scanGeneration += 1
+        status = route == .bind ? "正在绑定…" : "正在连接…"; changed?()
+        if route == .connect { sdk.connect(to: device); return }
+        sdk.bind(device) { [weak self] (result: Result<WaveNoteDevice, WaveNoteError>) in
+            guard let self, self.flow.accepts(token) else { return }
+            switch result {
+            case .success:
+                if self.flow.bound(token, success: true) { self.status = "绑定完成，正在连接…"; self.changed?(); self.sdk.connect(to: device) }
+            case .failure(let error):
+                _ = self.flow.bound(token, success: false); self.status = Self.errorText(error); self.changed?()
+            }
+        }
+    }
+    func refresh() {
+        guard let token = flow.beginSetting() else { return }
+        status = "正在读取设备设置…"; changed?()
+        let items: [WaveNoteSetting] = [.hardware, .battery, .charging, .storage, .recording, .microphoneGain, .vibrationGain, .autoPowerOff]
+        DemoReadSequence.run(items, active: { self.flow.accepts(token) && self.flow.ready }, query: { item, done in
+            self.sdk.deviceSettings.query(item) { [weak self] value, error in
+                guard let self, self.flow.accepts(token), self.flow.ready else { return }
+                if let error { done(error); return }
+                guard let value else { done(WaveNoteError(.invalidDeviceResponse, operation: "query", message: "缺少查询快照")); return }
+                self.snapshot = value; self.mode = self.sdk.recording.snapshot.mode?.intValue; self.changed?(); done(nil)
+            }
+        }, finished: { (error: WaveNoteError?) in
+            guard self.flow.finish(token) else { return }
+            self.status = error.map(Self.errorText) ?? "设备设置已更新"; self.changed?()
+        })
+    }
+
+    func control(shutdown: Bool = false, _ action: (@escaping (WaveNoteError?) -> Void) -> Void) {
+        guard let token = flow.beginSetting() else { status = "设备忙碌，请等待当前操作完成。"; changed?(); return }
+        status = shutdown ? "正在请求关机，等待设备确认…" : "正在保存，等待设备回读…"; changed?()
+        action { [weak self] error in
+            guard let self else { return }
+            // 关机可能先断连，再返回结果未确认；保留该操作结果，但不得覆盖新会话。
+            guard self.flow.accepts(token) || (shutdown && !self.flow.ready && self.flow.generation == token + 1) else { return }
+            _ = self.flow.finish(token)
+            self.status = error.map(Self.errorText) ?? (shutdown ? "设备已确认关机请求" : "已保存并确认设备状态")
+            self.changed?()
+        }
+    }
+    func disconnect() { guard !flow.busy else { return }; sdk.disconnectDevice() }
+    func unbind() {
+        guard flow.beginSetting() != nil else { return }
+        unbinding = true; status = "正在解绑…"; changed?(); sdk.unbindCurrentDevice()
+    }
+    static func errorText(_ error: WaveNoteError) -> String {
+        DemoValues.error(error.code)
+    }
+
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateBluetoothState state: WaveNoteBluetoothState) {
+        bluetooth = ["蓝牙状态未知", "蓝牙未授权 · 可前往系统设置", "此设备不支持蓝牙", "蓝牙已关闭", "蓝牙已开启", "蓝牙正在重置"][state.rawValue]; changed?()
+    }
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateDiscoveredDevices values: [WaveNoteDiscoveredDevice]) { devices = values; changed?() }
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeConnectionState state: WaveNoteConnectionState, device: WaveNoteDevice?) {
+        if state == .disconnected && flow.selecting { return }
+        if state == .ready {
+            if !flow.ready { flow.connected(); snapshot = nil; mode = nil; audioSession += 1; library.invalidate(); observeRecording(sdk.recording.snapshot); scheduleSync() }
+            status = "已连接，点击顶部 SN 查看设备设置。"
+        } else if state == .disconnected || state == .failed {
+            resetAudio()
+            if state == .failed { flow.invalidate() } else { flow.disconnected() }; snapshot = nil; mode = nil; status = unbindCompleted ? "已解绑，设备内容保留。" : state == .failed ? "连接失败，请重新扫描。" : "已断开，请重新扫描连接。"
+            unbindCompleted = false
+        } else if flow.ready { resetAudio(); flow.invalidate(); snapshot = nil; mode = nil }
+        if state == .connecting || state == .discoveringServices { status = "正在连接并同步设备状态…" }
+        changed?()
+    }
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeUnbindingState state: WaveNoteUnbindingState, device: WaveNoteDevice?) {
+        guard unbinding else { return }
+        if state == .completed { unbinding = false; unbindCompleted = true; status = "已解绑，设备内容保留。" }
+        if state == .failed { unbinding = false; _ = flow.finish(flow.generation); status = "解绑失败，保留当前归属与连接。" }
+        changed?()
+    }
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didReceive error: WaveNoteError) {
+        if !flow.ready && flow.busy { flow.invalidate() }
+        scanning = false; scanGeneration += 1
+        if unbinding { unbinding = false; _ = flow.finish(flow.generation) }
+        status = Self.errorText(error); changed?()
+    }
+    func deviceSettings(_ settings: WaveNoteDeviceSettings, didUpdate value: WaveNoteSettingsSnapshot) { guard flow.ready else { return }; snapshot = value; changed?() }
+    func recording(_ recording: WaveNoteRecording, didUpdate value: WaveNoteRecordingSnapshot) { guard flow.ready else { return }; mode = value.mode?.intValue; observeRecording(value); changed?() }
+}
+
+@MainActor extension DemoController {
+    private func configureLibrary() {
+        library.changed = { [weak self] in self?.changed?() }
+        player.changed = { [weak self] in self?.changed?() }
+        library.finished = { [weak self] in
+            guard let self else { return }
+            if let token = self.libraryToken { _ = self.flow.finish(token) }; self.libraryToken = nil; self.changed?()
+        }
+        library.readRecording = { [weak self] done in
+            self?.sdk.recording.refresh { value, error in
+                done(value.map { DemoRecordingValue(state: $0.state.rawValue, name: $0.fileName, mode: $0.mode?.intValue) }, error.map(Self.errorText))
+            }
+        }
+        library.count = { [weak self] mode, done in self?.sdk.files.count(mode: mode == 1 ? .note : .call) { value, error in done(value?.intValue, error.map(Self.errorText)) } }
+        library.page = { [weak self] mode, index, done in
+            self?.sdk.files.page(mode: mode == 1 ? .note : .call, index: index) { values, error in
+                done(values?.map { DemoAudioFile(name: $0.name, size: $0.size, mode: $0.mode.rawValue) }, error.map(Self.errorText))
+            }
+        }
+        library.download = { [weak self] file, progress, done in
+            guard let self, let sn = self.sdk.connectedDevice?.serialNumber else { done(nil, "连接已失效"); return {} }
+            let session = self.audioSession
+            let store = self.store
+            var cancelled = false
+            var operation: WaveNoteOperation?
+            self.fileQueue.async {
+                let result = Result { try store.prepare(sn: sn, file: file) }
+                DispatchQueue.main.async {
+                    guard self.audioSession == session, self.flow.ready else { return }
+                    if cancelled { done(nil, "同步已取消"); return }
+                    switch result {
+                    case .failure: done(nil, "本地目录不可写或空间不足")
+                    case .success(let prepared):
+                        if prepared.cached { done(prepared.destination.path, nil); return }
+                        operation = self.sdk.files.download(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), to: prepared.destination) { url, error in
+                            guard self.audioSession == session else { return }
+                            self.progressID = nil; self.progressCallback = nil
+                            if let error { done(nil, Self.errorText(error)); return }
+                            guard let url else { done(nil, "下载未交付文件"); return }
+                            self.fileQueue.async {
+                                let saved = Result { try store.commit(url, sn: sn, file: file) }
+                                DispatchQueue.main.async {
+                                    guard self.audioSession == session else { return }
+                                    switch saved { case .success: done(url.path, nil); case .failure: done(nil, "保存本地索引失败，请检查剩余空间") }
+                                }
+                            }
+                        }
+                        self.progressID = operation?.identifier; self.progressCallback = progress
+                    }
+                }
+            }
+            return { cancelled = true; operation?.cancel() }
+        }
+    }
+    func syncFiles() {
+        guard flow.ready, !library.isRecording, !library.busy, let token = flow.beginSetting() else { return }
+        scheduledSync += 1; libraryToken = token
+        if !library.start() { _ = flow.finish(token); libraryToken = nil }
+    }
+    private func scheduleSync() {
+        scheduledSync += 1; let ticket = scheduledSync; let session = audioSession
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard let self, self.flow.ready, self.audioSession == session, self.scheduledSync == ticket, !self.library.isRecording else { return }
+            if self.flow.busy { self.scheduleSync() } else { self.syncFiles() }
+        }
+    }
+    private func observeRecording(_ value: WaveNoteRecordingSnapshot) {
+        let wasRecording = library.isRecording
+        let state = DemoRecordingValue(state: value.state.rawValue, name: value.fileName, mode: value.mode?.intValue)
+        recordingClock.update(state); library.observe(state)
+        if library.isRecording { scheduledSync += 1; player.stop() }
+        if wasRecording && value.state == .stopped { scheduleSync() }
+    }
+    private func resetAudio() {
+        audioSession += 1; scheduledSync += 1; libraryToken = nil; progressID = nil; progressCallback = nil
+        library.invalidate(); recordingClock.update(DemoRecordingValue(state: 0, name: nil, mode: nil)); player.stop()
+    }
+    func files(_ files: WaveNoteFiles, didUpdate progress: WaveNoteTransferProgress) {
+        guard flow.ready, progress.operationID == progressID else { return }
+        progressCallback?(progress.receivedBytes)
+    }
+}
