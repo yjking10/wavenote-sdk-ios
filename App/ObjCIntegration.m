@@ -12,3 +12,10 @@ void QueryWaveNoteBattery(void (^completion)(WaveNoteSettingsSnapshot *, WaveNot
 void UnbindWaveNote(void (^completion)(WaveNoteError *)) {
     [WaveNoteSDK.sharedSDK unbindCurrentDeviceWithCompletion:completion];
 }
+
+void FindWaveNoteAudio(NSString *sn, WaveNoteRecordMode mode, NSString *name, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
+    [WaveNoteSDK.sharedSDK.files findLocalAudioWithSerialNumber:sn mode:mode fileName:name completion:completion];
+}
+WaveNoteOperation *DownloadWaveNoteAudio(WaveNoteFile *file, BOOL resume, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
+    return [WaveNoteSDK.sharedSDK.files downloadToStorage:file transport:WaveNoteTransferTransportBluetooth resume:resume completion:completion];
+}

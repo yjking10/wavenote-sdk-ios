@@ -7,9 +7,31 @@ import AVFoundation
 #endif
 
 final class DemoAudioTests: XCTestCase {
+    func testTransferRateExcludesResumeOffsetAndThrottlesSamples() {
+        let rate = DemoTransferRate()
+        XCTAssertNil(rate.sample(bytes: 100_000, now: 10))
+        XCTAssertNil(rate.sample(bytes: 100_512, now: 10.25))
+        XCTAssertEqual(rate.sample(bytes: 101_024, now: 10.5)!, 2, accuracy: 0.001)
+        XCTAssertEqual(rate.sample(bytes: 101_024, now: 11)!, 0)
+        XCTAssertNil(rate.sample(bytes: 0, now: 12))
+        var row = DemoAudioRow(file: file)
+        row.status = "继续下载"; row.kilobytesPerSecond = 2
+        XCTAssertTrue(row.speedText.contains("KB/s"))
+        row.status = "正在生成音频文件 10%"
+        XCTAssertEqual(row.speedText, "")
+        row.status = "同步完成"
+        XCTAssertEqual(row.speedText, "")
+    }
     let stopped = DemoRecordingValue(state: 1, name: nil, mode: nil)
     let active = DemoRecordingValue(state: 2, name: "1800000000.opus", mode: 1)
     let file = DemoAudioFile(name: "one.opus", size: 7, mode: 1)
+    func testManagedPathRedactsUserInCompletionLog() {
+        var row = DemoAudioRow(file: DemoAudioFile(name: "test.opus", size: 7, mode: 1))
+        row.localPath = "/private/wavenote/sensitive-user/device/file/id.ogg"
+        XCTAssertFalse(row.logJSON.contains("sensitive-user"))
+        XCTAssertTrue(row.logJSON.contains("[redacted]"))
+        XCTAssertTrue(row.localPath!.contains("sensitive-user"))
+    }
     func configured() -> DemoAudioLibrary {
         let lib = DemoAudioLibrary()
         lib.readRecording = { $0(self.stopped, nil) }
@@ -22,12 +44,41 @@ final class DemoAudioTests: XCTestCase {
         lib.count = { mode, done in calls.append("count\(mode)"); done(1, nil) }
         lib.page = { mode, _, done in calls.append("page\(mode)"); done([DemoAudioFile(name: "one.opus", size: 7, mode: mode)], nil) }
         lib.download = { file, update, done in calls.append("download\(file.mode)"); progress = update; complete = done; return {} }
+        var logs: [DemoAudioRow] = []; lib.completedRow = { logs.append($0) }
         XCTAssertTrue(lib.start()); XCTAssertFalse(lib.start())
         XCTAssertEqual(calls, ["count1", "page1", "count2", "page2", "download1"])
+        XCTAssertEqual(lib.syncCountText, "已完成同步 0/2 个文件")
         progress?(3); XCTAssertEqual(lib.rows[0].received, 3); XCTAssertNil(lib.rows[0].localPath)
+        lib.converting(bytes: 3, total: 7)
+        XCTAssertEqual(lib.rows[0].status, "正在生成音频文件 42%")
+        XCTAssertEqual(lib.completedCount, 0); XCTAssertNil(lib.rows[0].localPath)
         let first = complete; first?("/one.ogg", nil); first?("/wrong.ogg", nil)
-        XCTAssertEqual(calls.last, "download2"); XCTAssertEqual(lib.rows[0].localPath, "/one.ogg")
+        XCTAssertEqual(calls.last, "download2"); XCTAssertEqual(lib.rows[0].localPath, "/one.ogg"); XCTAssertEqual(lib.completedCount, 1)
         complete?("/two.ogg", nil); XCTAssertFalse(lib.busy); XCTAssertEqual(lib.rows[1].localPath, "/two.ogg")
+        XCTAssertEqual(lib.syncCountText, "已完成同步 2/2 个文件")
+        XCTAssertEqual(logs.count, 2)
+        let json = try! JSONSerialization.jsonObject(with: Data(logs[0].logJSON.utf8)) as! [String: Any]
+        XCTAssertEqual(json["received"] as? Int, 7); XCTAssertEqual(json["status"] as? String, "同步完成")
+        XCTAssertEqual(json["localPath"] as? String, "/one.ogg")
+        XCTAssertEqual((json["file"] as? [String: Any])?["name"] as? String, "one.opus")
+    }
+    func testPositionFailureSkipsFileUntilReconnect() {
+        let lib = configured()
+        var downloads: [String] = []
+        lib.count = { mode, done in done(mode == 1 ? 2 : 0, nil) }
+        lib.page = { mode, _, done in done(mode == 1 ? [self.file, DemoAudioFile(name: "two.opus", size: 7, mode: 1)] : [], nil) }
+        lib.download = { file, _, done in
+            downloads.append(file.name)
+            done(file.name == "one.opus" ? nil : "/two.ogg", file.name == "one.opus" ? "downloadPositionMismatch" : nil)
+            return {}
+        }
+        XCTAssertTrue(lib.start())
+        XCTAssertEqual(downloads, ["one.opus", "two.opus"])
+        XCTAssertEqual(lib.failedCount, 1)
+        XCTAssertEqual(lib.completedCount, 1)
+        XCTAssertTrue(lib.message.contains("失败 1"))
+        XCTAssertTrue(lib.start())
+        XCTAssertEqual(downloads, ["one.opus", "two.opus", "two.opus"])
     }
     func testRecordingAndUnknownNeverList() {
         for value in [active, DemoRecordingValue(state: 3, name: nil, mode: nil), DemoRecordingValue(state: 0, name: nil, mode: nil)] {
@@ -88,17 +139,17 @@ final class DemoAudioTests: XCTestCase {
         XCTAssertFalse(clock.estimated); XCTAssertEqual(clock.seconds(uptime: 118), 3)
         clock.update(stopped); XCTAssertEqual(clock.seconds(), 0)
     }
-    func testStoreRequiresCommitAndSeparatesDeviceModeAndSize() throws {
-        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString); defer { try? FileManager.default.removeItem(at: dir) }
-        let store = DemoAudioStore(root: dir)
-        let first = try store.prepare(sn: "fake-device-a", file: file); try Data([1,2,3]).write(to: first.destination)
-        XCTAssertFalse(try store.prepare(sn: "fake-device-a", file: file).cached)
-        try store.commit(first.destination, sn: "fake-device-a", file: file)
-        XCTAssertTrue(try store.prepare(sn: "fake-device-a", file: file).cached)
-        XCTAssertFalse(try store.prepare(sn: "fake-device-b", file: file).cached)
-        XCTAssertFalse(try store.prepare(sn: "fake-device-a", file: DemoAudioFile(name: file.name, size: 8, mode: 1)).cached)
-        XCTAssertFalse(try store.prepare(sn: "fake-device-a", file: DemoAudioFile(name: file.name, size: 7, mode: 2)).cached)
-        try FileManager.default.removeItem(at: first.destination); XCTAssertFalse(try store.prepare(sn: "fake-device-a", file: file).cached)
+
+
+
+
+    func testResumePhasesNeverMarkCompleteAndIgnoreDisconnectedState() {
+        let lib = configured(); lib.download = { _,_,_ in {} }; _ = lib.start()
+        lib.phase(file: file, text: "检查断点"); XCTAssertEqual(lib.rows[0].status, "检查断点")
+        lib.phase(file: file, text: "继续下载"); XCTAssertEqual(lib.rows[0].status, "继续下载")
+        lib.phase(file: file, text: "重新封装"); lib.converting(bytes: 7, total: 7)
+        XCTAssertEqual(lib.rows[0].status, "重新封装 100%"); XCTAssertEqual(lib.completedCount, 0)
+        lib.invalidate(); lib.phase(file: file, text: "继续下载"); XCTAssertTrue(lib.rows.isEmpty)
     }
     func testSystemOpusDecoderProducesNativePlayableCAFAndRejectsPartialCRC() throws {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -114,16 +165,28 @@ final class DemoAudioTests: XCTestCase {
             try invalid.write(to: source); XCTAssertThrowsError(try DemoOggPlayback.prepare(source, destination: dir.appendingPathComponent(UUID().uuidString + ".caf")))
         }
     }
-    private func ogg() -> Data {
+    func testSDKBatchOggWithNativeDecoderWhenProvided() throws {
+        guard let path = ProcessInfo.processInfo.environment["WAVENOTE_BATCH_OGG_OUTPUT"] else { throw XCTSkip("SDK batch fixture optional") }
+        let output = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".caf")
+        defer { try? FileManager.default.removeItem(at: output) }
+        _ = try DemoOggPlayback.prepare(URL(fileURLWithPath: path), destination: output)
+        XCTAssertEqual(try AVAudioFile(forReading: output).length, 103 * 960)
+    }
+
+
+
+    private func ogg(batched: Bool = false) -> Data {
         func le(_ n: UInt64, _ length: Int) -> Data { Data((0..<length).map { UInt8(truncatingIfNeeded: n >> ($0 * 8)) }) }
-        func page(_ payload: Data, _ sequence: UInt64, _ flags: UInt8, _ granule: UInt64) -> Data {
-            var data = Data("OggS".utf8) + Data([0, flags]) + le(granule, 8) + le(1, 4) + le(sequence, 4) + Data([0,0,0,0,1,UInt8(payload.count)]) + payload
+        func page(_ payload: Data, _ sequence: UInt64, _ flags: UInt8, _ granule: UInt64, laces: Data? = nil) -> Data {
+            let table = laces ?? Data([UInt8(payload.count)])
+            var data = Data("OggS".utf8) + Data([0, flags]) + le(granule, 8) + le(1, 4) + le(sequence, 4) + Data([0,0,0,0,UInt8(table.count)]) + table + payload
             var crc: UInt32 = 0
             for b in data { crc ^= UInt32(b) << 24; for _ in 0..<8 { crc = crc & 0x80000000 == 0 ? crc << 1 : (crc << 1) ^ 0x04c11db7 } }
             data.replaceSubrange(22..<26, with: le(UInt64(crc), 4)); return data
         }
         var data = page(Data("OpusHead".utf8) + Data([1,1,0,0,0,0,0,0,0,0,0]), 0, 2, 0)
         data += page(Data("OpusTags".utf8) + Data(repeating: 0, count: 8), 1, 0, 0)
+        if batched { return data + page(Data((0..<150).map { [UInt8(0xf8),0xff,0xfe][$0 % 3] }), 2, 4, 48000, laces: Data(repeating: 3, count: 50)) }
         for i in 0..<50 { data += page(Data([0xf8,0xff,0xfe]), UInt64(i+2), i == 49 ? 4 : 0, UInt64((i+1)*960)) }
         return data
     }

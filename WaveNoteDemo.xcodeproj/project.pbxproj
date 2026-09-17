@@ -16,7 +16,6 @@
 		9CC0736F739E171985FBA31A /* DemoFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */; };
 		A43633CD5433EC22A1BE95D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94584F2C7AFBA395629D6554 /* Foundation.framework */; };
 		AABC00000000000000000000 /* DemoAudioLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000000 /* DemoAudioLibrary.swift */; };
-		AABC00000000000000000001 /* DemoAudioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000001 /* DemoAudioStore.swift */; };
 		AABC00000000000000000002 /* DemoOggPlayback.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000002 /* DemoOggPlayback.swift */; };
 		AABC00000000000000000003 /* DemoNativePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00000000000000000003 /* DemoNativePlayer.swift */; };
 		AB9C3FA66D56309F1D78FE93 /* DemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBFD0EB91403DE0191D674 /* DemoController.swift */; };
@@ -64,7 +63,6 @@
 		94584F2C7AFBA395629D6554 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IdentityHTTPTests.swift; sourceTree = "<group>"; };
 		AABB00000000000000000000 /* DemoAudioLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAudioLibrary.swift; sourceTree = "<group>"; };
-		AABB00000000000000000001 /* DemoAudioStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAudioStore.swift; sourceTree = "<group>"; };
 		AABB00000000000000000002 /* DemoOggPlayback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoOggPlayback.swift; sourceTree = "<group>"; };
 		AABB00000000000000000003 /* DemoNativePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNativePlayer.swift; sourceTree = "<group>"; };
 		B241E8F41B2EE541C981B00D /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 			children = (
 				5793584D36346748C49273A6 /* DemoFlow.swift */,
 				AABB00000000000000000002 /* DemoOggPlayback.swift */,
-				AABB00000000000000000001 /* DemoAudioStore.swift */,
 				AABB00000000000000000000 /* DemoAudioLibrary.swift */,
 				6F9D0A77F7EAE72E5BA79EEF /* IdentityHTTP.swift */,
 			);
@@ -129,7 +126,6 @@
 				0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */,
 				A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */,
 			);
-			name = Tests;
 			path = Tests;
 			sourceTree = "<group>";
 		};
@@ -268,7 +264,6 @@
 				D67612DDBB7238F4CECD3034 /* DemoFlow.swift in Sources */,
 				AABC00000000000000000003 /* DemoNativePlayer.swift in Sources */,
 				AABC00000000000000000002 /* DemoOggPlayback.swift in Sources */,
-				AABC00000000000000000001 /* DemoAudioStore.swift in Sources */,
 				AABC00000000000000000000 /* DemoAudioLibrary.swift in Sources */,
 				C902EFE6915E9C97907E26F3 /* HTTPIdentityProvider.swift in Sources */,
 				2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */,
@@ -382,7 +377,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 63B6HX65S6;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -476,7 +471,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 63B6HX65S6;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

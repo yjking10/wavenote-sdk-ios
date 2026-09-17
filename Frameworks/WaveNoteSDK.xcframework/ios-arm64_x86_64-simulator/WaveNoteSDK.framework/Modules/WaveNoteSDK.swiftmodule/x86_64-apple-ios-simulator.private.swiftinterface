@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.3 effective-5.10 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
-// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name WaveNoteSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name WaveNoteSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
 import CoreBluetooth
 import CoreFoundation
 import CryptoKit
@@ -49,6 +49,9 @@ import _SwiftConcurrencyShims
   case completed
   case cancelled
   case failed
+  case checkingStorage
+  case resuming
+  case repackaging
   public init?(rawValue: Swift::Int)
   public typealias RawValue = Swift::Int
   public var rawValue: Swift::Int {
@@ -158,6 +161,7 @@ import _SwiftConcurrencyShims
   @objc final public let state: WaveNoteSDK::WaveNoteOperationState
   @objc final public let receivedBytes: Swift::Int64
   @objc final public let totalBytes: Swift::Int64
+  @objc final public let convertedBytes: Swift::Int64
   @objc final public let fileURL: Foundation::URL?
   @objc final public let error: WaveNoteSDK::WaveNoteError?
   @objc deinit
@@ -186,6 +190,16 @@ import _SwiftConcurrencyShims
 @objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteOperation : ObjectiveC::NSObject {
   @objc @_Concurrency::MainActor final public let identifier: Foundation::UUID
   @objc @_Concurrency::MainActor final public func cancel()
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteLocalAudio : ObjectiveC::NSObject {
+  @objc final public let serialNumber: Swift::String
+  @objc final public let mode: WaveNoteSDK::WaveNoteRecordMode
+  @objc final public let fileName: Swift::String
+  @objc final public let rawBytes: Swift::Int64
+  @objc final public let oggBytes: Swift::Int64
+  @objc final public let url: Foundation::URL
+  @objc final public let completedAt: Foundation::Date
   @objc deinit
 }
 @_Concurrency::MainActor @objc public protocol WaveNoteDeviceSettingsDelegate {
@@ -225,7 +239,6 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor final public func setUSBEnabled(_ enabled: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func setBitrate(_ kbps: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func setQuality(_ quality: Swift::Int, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
-  @objc @_Concurrency::MainActor final public func synchronizeTime(_ date: Foundation::Date, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc deinit
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteRecording : WaveNoteSDK::WaveNoteFeature {
@@ -242,6 +255,9 @@ import _SwiftConcurrencyShims
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteFiles : WaveNoteSDK::WaveNoteFeature {
   @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteFilesDelegate)?
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func downloadToStorage(_ file: WaveNoteSDK::WaveNoteFile, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func findLocalAudio(serialNumber: Swift::String, mode: WaveNoteSDK::WaveNoteRecordMode, fileName: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func count(mode: WaveNoteSDK::WaveNoteRecordMode, completion: @escaping (Foundation::NSNumber?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func page(mode: WaveNoteSDK::WaveNoteRecordMode, index: Swift::Int, completion: @escaping ([WaveNoteSDK::WaveNoteFile]?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @discardableResult

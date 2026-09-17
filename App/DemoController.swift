@@ -32,11 +32,12 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     let library = DemoAudioLibrary()
     let recordingClock = DemoRecordingClock()
     let player = DemoNativePlayer()
-    private let fileQueue = DispatchQueue(label: "demo.files", qos: .utility)
-    private let store = DemoAudioStore(root: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Recordings"))
     private var libraryToken: Int?
     private var audioSession = 0
     private var scheduledSync = 0
+    private var progressFile: DemoAudioFile?
+    // 单调时钟：仅统计 finishing 到 completion，包含收尾和索引提交，不含传输。
+    private var oggStartedAt: TimeInterval?
     private var progressID: UUID?
     private var progressCallback: ((Int64) -> Void)?
     var changed: (() -> Void)?
@@ -162,6 +163,7 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
 
 @MainActor extension DemoController {
     private func configureLibrary() {
+        library.completedRow = { row in print("[WaveNoteDemo][FileCompleted] \(row.logJSON)") }
         library.changed = { [weak self] in self?.changed?() }
         player.changed = { [weak self] in self?.changed?() }
         library.finished = { [weak self] in
@@ -182,38 +184,33 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
         library.download = { [weak self] file, progress, done in
             guard let self, let sn = self.sdk.connectedDevice?.serialNumber else { done(nil, "连接已失效"); return {} }
             let session = self.audioSession
-            let store = self.store
+            self.library.phase(file: file, text: "检查断点")
             var cancelled = false
             var operation: WaveNoteOperation?
-            self.fileQueue.async {
-                let result = Result { try store.prepare(sn: sn, file: file) }
-                DispatchQueue.main.async {
-                    guard self.audioSession == session, self.flow.ready else { return }
-                    if cancelled { done(nil, "同步已取消"); return }
-                    switch result {
-                    case .failure: done(nil, "本地目录不可写或空间不足")
-                    case .success(let prepared):
-                        if prepared.cached { done(prepared.destination.path, nil); return }
-                        operation = self.sdk.files.download(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), to: prepared.destination) { url, error in
-                            guard self.audioSession == session else { return }
-                            self.progressID = nil; self.progressCallback = nil
-                            if let error { done(nil, Self.errorText(error)); return }
-                            guard let url else { done(nil, "下载未交付文件"); return }
-                            self.fileQueue.async {
-                                let saved = Result { try store.commit(url, sn: sn, file: file) }
-                                DispatchQueue.main.async {
-                                    guard self.audioSession == session else { return }
-                                    switch saved { case .success: done(url.path, nil); case .failure: done(nil, "保存本地索引失败，请检查剩余空间") }
-                                }
-                            }
-                        }
-                        self.progressID = operation?.identifier; self.progressCallback = progress
+            self.sdk.files.findLocalAudio(serialNumber: sn, mode: file.mode == 1 ? .note : .call, fileName: file.name) { [weak self] cached, error in
+                guard let self, self.audioSession == session else { return }
+                guard !cancelled else { done(nil, "同步已取消"); return }
+                // 查询接口必须如实报告损坏的索引/Ogg；同步入口则让
+                // SDK 删除该缓存并重新从设备获取，不能因此卡住整轮队列。
+                if let error, error.errorCode != .fileIOFailed { done(nil, Self.errorText(error)); return }
+                if let error { print("[WaveNoteDemo][AudioCache] cache unavailable; redownload operation=\(error.operation) code=\(error.code)") }
+                if let cached, cached.rawBytes == file.size { done(cached.url.path, nil); return }
+                operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), resume: true) { [weak self] audio, error in
+                    guard let self, self.audioSession == session else { return }
+                    self.logOggDuration(result: error == nil && audio != nil ? "completed" : error?.code == WaveNoteErrorCode.operationCancelled.rawValue ? "cancelled" : "failed")
+                    self.progressID = nil; self.progressCallback = nil; self.progressFile = nil
+                    if let error {
+                        done(nil, error.operation == "downloadPositionMismatch" ? "downloadPositionMismatch" : Self.errorText(error))
                     }
+                    else if let audio { done(audio.url.path, nil) }
+                    else { done(nil, "下载未交付文件") }
                 }
+                self.progressID = operation?.identifier; self.progressCallback = progress; self.progressFile = file
             }
             return { cancelled = true; operation?.cancel() }
         }
     }
+
     func syncFiles() {
         guard flow.ready, !library.isRecording, !library.busy, let token = flow.beginSetting() else { return }
         scheduledSync += 1; libraryToken = token
@@ -233,12 +230,27 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
         if library.isRecording { scheduledSync += 1; player.stop() }
         if wasRecording && value.state == .stopped { scheduleSync() }
     }
+    private func logOggDuration(result: String) {
+        guard let started = oggStartedAt else { return }
+        oggStartedAt = nil
+        let elapsedMs = (ProcessInfo.processInfo.systemUptime - started) * 1_000
+        print("[WaveNoteDemo][OpusToOgg] operationID=\(progressID?.uuidString ?? "unknown") result=\(result) elapsedMs=\(String(format: "%.1f", elapsedMs)) rawBytes=\(progressFile?.size ?? 0) scope=finishingToCompletion")
+    }
     private func resetAudio() {
+        logOggDuration(result: "interrupted")
         audioSession += 1; scheduledSync += 1; libraryToken = nil; progressID = nil; progressCallback = nil
         library.invalidate(); recordingClock.update(DemoRecordingValue(state: 0, name: nil, mode: nil)); player.stop()
     }
     func files(_ files: WaveNoteFiles, didUpdate progress: WaveNoteTransferProgress) {
         guard flow.ready, progress.operationID == progressID else { return }
-        progressCallback?(progress.receivedBytes)
+        if progress.state == .finishing, oggStartedAt == nil { oggStartedAt = ProcessInfo.processInfo.systemUptime }
+        if let file = progressFile {
+            if progress.state == .running, library.rows.first(where: { $0.file.key == file.key })?.status == "检查断点" { library.phase(file: file, text: "正在同步") }
+            if progress.state == .checkingStorage { library.phase(file: file, text: "检查断点") }
+            if progress.state == .resuming { library.phase(file: file, text: "继续下载") }
+            if progress.state == .repackaging { library.phase(file: file, text: "重新封装") }
+        }
+        if [.running, .finishing, .completed].contains(progress.state) { progressCallback?(progress.receivedBytes) }
+        if progress.state == .finishing { library.converting(bytes: progress.convertedBytes, total: progress.totalBytes) }
     }
 }
