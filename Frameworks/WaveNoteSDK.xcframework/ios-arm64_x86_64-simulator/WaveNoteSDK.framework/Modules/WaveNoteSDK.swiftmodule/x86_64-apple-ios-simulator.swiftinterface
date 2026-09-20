@@ -397,7 +397,7 @@ import _SwiftConcurrencyShims
   case unbindingRequiresReadyConnection = 1008
   case cloudUnbindFailed = 1009
   case unbindingOperationConflict = 1011
-  case apiKeyInvalidOrExpired = 1012
+  case authenticationCredentialInvalidOrExpired = 1012
   case identityProviderUnavailable = 1013
   case deviceNotBound = 1014
   case invalidConfiguration = 1015
@@ -467,25 +467,29 @@ import _SwiftConcurrencyShims
   }
 }
 @objc public protocol WaveNoteIdentityProvider {
-  @objc func checkOwnership(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteOwnership, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
-  @objc func bind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
-  @objc func unbind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
-  @objc optional func authenticateDevice(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteAuthenticationMaterial?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func checkOwnership(serialNumber: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteOwnership, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func bind(serialNumber: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func unbind(serialNumber: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func fetchDeviceSignature(serialNumber: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteDeviceSignature?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc func fetchUserKeyPair(userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteUserKeyPair?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
 }
-@objc @objcMembers final public class WaveNoteAuthenticationMaterial : ObjectiveC::NSObject {
+@objc @objcMembers final public class WaveNoteDeviceSignature : ObjectiveC::NSObject {
   @objc final public let serialSignatureBase64: Swift::String
+  @objc public init(serialSignatureBase64: Swift::String)
+  @objc deinit
+}
+@objc @objcMembers final public class WaveNoteUserKeyPair : ObjectiveC::NSObject {
   @objc final public let userPublicKeySPKIBase64: Swift::String
   @objc final public let userPrivateKeyPKCS8Base64: Swift::String
-  @objc public init(serialSignatureBase64: Swift::String, userPublicKeySPKIBase64: Swift::String, userPrivateKeyPKCS8Base64: Swift::String)
+  @objc public init(userPublicKeySPKIBase64: Swift::String, userPrivateKeyPKCS8Base64: Swift::String)
   @objc deinit
 }
 @objc @objcMembers final public class WaveNoteSDKConfiguration : ObjectiveC::NSObject {
-  @objc final public let apiKey: Swift::String
   @objc final public let userIdentifier: Swift::String
   @objc final public let enableAutoReconnect: Swift::Bool
   @objc final public let reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy
   @objc final public let identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)?
-  @objc(initWithAPIKey:userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) public init(apiKey: Swift::String, userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
+  @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
   @objc deinit
 }
 @objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteScanToken : ObjectiveC::NSObject {
@@ -541,6 +545,7 @@ import _SwiftConcurrencyShims
   @objc deinit
   @objc(openLog:logBlock:) @_Concurrency::MainActor final public func openLog(_ opened: Swift::Bool, logBlock: ((Swift::String) -> Swift::Void)? = nil)
   @objc(configureWithConfiguration:) @_Concurrency::MainActor final public func configure(with configuration: WaveNoteSDK::WaveNoteSDKConfiguration)
+  @objc @_Concurrency::MainActor final public func clearConfiguration()
   @discardableResult
   @objc(startScanningWithTimeout:) @_Concurrency::MainActor final public func startScanning(timeout: Foundation::TimeInterval = 8) -> WaveNoteSDK::WaveNoteScanToken
   @objc @_Concurrency::MainActor final public func stopScanning()
@@ -549,6 +554,7 @@ import _SwiftConcurrencyShims
   @objc(connectToDevice:) @_Concurrency::MainActor final public func connect(to device: WaveNoteSDK::WaveNoteDiscoveredDevice)
   @objc @_Concurrency::MainActor final public func disconnectDevice()
   @objc @_Concurrency::MainActor final public func unbindCurrentDevice()
+  @objc(unbindCurrentDeviceWithEraseDeviceFiles:completion:) @_Concurrency::MainActor final public func unbindCurrentDevice(eraseDeviceFiles: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc(unbindCurrentDeviceWithCompletion:) @_Concurrency::MainActor final public func unbindCurrentDevice(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func reconnectLastDevice()
   @objc @_Concurrency::MainActor final public func refreshDeviceInformation()

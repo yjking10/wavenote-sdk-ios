@@ -14,29 +14,36 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     }
     private func hash(_ value: String) -> String { SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined() }
     func isBound(_ sn: String) -> Bool { store.owner(hash(sn)) == hash("demo-user") }
-    func checkOwnership(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteOwnership, WaveNoteError?) -> Void) {
+    func checkOwnership(serialNumber: String, userIdentifier: String, completion: @escaping (WaveNoteOwnership, WaveNoteError?) -> Void) {
         let owner = store.owner(hash(serialNumber))
         completion(owner == nil ? .unbound : owner == hash(userIdentifier) ? .currentUser : .anotherUser, nil)
     }
-    func bind(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
+    func bind(serialNumber: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
         completion(store.bind(hash(serialNumber), user: hash(userIdentifier)) ? nil : WaveNoteError(.deviceBoundToAnotherUser, operation: "bind", message: "设备已属于其他演示账户"))
     }
-    func unbind(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
+    func unbind(serialNumber: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
         completion(store.unbind(hash(serialNumber), user: hash(userIdentifier)) ? nil : WaveNoteError(.cloudUnbindFailed, operation: "unbind", message: "模拟归属不匹配"))
     }
     /// Development only. Production must request the SN signature and user key pair from cloud;
     /// never ship a production cloud private key in an App bundle, log, or repository.
-    func authenticateDevice(serialNumber: String, apiKey: String, userIdentifier: String,
-                            completion: @escaping (WaveNoteAuthenticationMaterial?, WaveNoteError?) -> Void) {
+    func fetchDeviceSignature(serialNumber: String, userIdentifier: String,
+                              completion: @escaping (WaveNoteDeviceSignature?, WaveNoteError?) -> Void) {
         guard let cloud = Bundle.main.object(forInfoDictionaryKey: "DEV_CLOUD_PRIVATE_KEY_PKCS8_B64") as? String,
-              let userPublic = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64") as? String,
-              let userPrivate = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64") as? String,
-              !cloud.isEmpty, !userPublic.isEmpty, !userPrivate.isEmpty,
+              !cloud.isEmpty,
               let key = DemoRSA.privateKey(pkcs8Base64: cloud),
               let signature = DemoRSA.sign(serialNumber, key: key) else {
-            completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "deviceAuthentication", message: "缺少本地开发鉴权配置")); return
+            completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "deviceSignature", message: "缺少本地开发签名配置")); return
         }
-        completion(WaveNoteAuthenticationMaterial(serialSignatureBase64: signature, userPublicKeySPKIBase64: userPublic, userPrivateKeyPKCS8Base64: userPrivate), nil)
+        completion(WaveNoteDeviceSignature(serialSignatureBase64: signature), nil)
+    }
+    func fetchUserKeyPair(userIdentifier: String,
+                          completion: @escaping (WaveNoteUserKeyPair?, WaveNoteError?) -> Void) {
+        guard let userPublic = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64") as? String,
+              let userPrivate = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64") as? String,
+              !userPublic.isEmpty, !userPrivate.isEmpty else {
+            completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "userKeyPair", message: "缺少本地开发用户密钥配置")); return
+        }
+        completion(WaveNoteUserKeyPair(userPublicKeySPKIBase64: userPublic, userPrivateKeyPKCS8Base64: userPrivate), nil)
     }
 }
 
@@ -90,13 +97,14 @@ private enum DemoRSA {
     private var scanGeneration = 0
     private var unbinding = false
     private var unbindCompleted = false
+    private var erasedDeviceFiles = false
     override init() {
         super.init()
         sdk.delegate = self; sdk.deviceSettings.delegate = self; sdk.recording.delegate = self; sdk.files.delegate = self
         configureLibrary()
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
-        sdk.configure(with: WaveNoteSDKConfiguration(apiKey: "demo-simulation-not-a-credential", userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity))
+        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity))
     }
     func scan() {
         guard !flow.busy, !flow.ready else { return }
@@ -188,9 +196,11 @@ private enum DemoRSA {
         toggleRecording()
     }
     func disconnect() { guard !flow.busy else { return }; sdk.disconnectDevice() }
-    func unbind() {
+    func unbind(eraseDeviceFiles: Bool = false) {
         guard flow.beginSetting() != nil else { return }
-        unbinding = true; status = "正在解绑…"; changed?(); sdk.unbindCurrentDevice()
+        erasedDeviceFiles = eraseDeviceFiles && sdk.connectedDevice?.serialNumber.hasPrefix("R202") == true
+        unbinding = true; status = erasedDeviceFiles ? "正在解绑并清空内容…" : "正在解绑…"; changed?()
+        sdk.unbindCurrentDevice(eraseDeviceFiles: eraseDeviceFiles) { _ in }
     }
     static func errorText(_ error: WaveNoteError) -> String {
         DemoValues.error(error.code)
@@ -207,7 +217,7 @@ private enum DemoRSA {
             status = "已连接，点击顶部 SN 查看设备设置。"
         } else if state == .disconnected || state == .failed {
             resetAudio()
-            if state == .failed { flow.invalidate() } else { flow.disconnected() }; snapshot = nil; mode = nil; status = unbindCompleted ? "已解绑，设备内容保留。" : state == .failed ? "连接失败，请重新扫描。" : "已断开，请重新扫描连接。"
+            if state == .failed { flow.invalidate() } else { flow.disconnected() }; snapshot = nil; mode = nil; status = unbindCompleted ? (erasedDeviceFiles ? "已解绑，设备内容已清空。" : "已解绑，设备内容保留。") : state == .failed ? "连接失败，请重新扫描。" : "已断开，请重新扫描连接。"
             unbindCompleted = false
         } else if flow.ready { resetAudio(); flow.invalidate(); snapshot = nil; mode = nil }
         if state == .connecting || state == .discoveringServices { status = "正在连接并同步设备状态…" }
@@ -215,7 +225,7 @@ private enum DemoRSA {
     }
     func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeUnbindingState state: WaveNoteUnbindingState, device: WaveNoteDevice?) {
         guard unbinding else { return }
-        if state == .completed { unbinding = false; unbindCompleted = true; status = "已解绑，设备内容保留。" }
+        if state == .completed { unbinding = false; unbindCompleted = true; status = erasedDeviceFiles ? "已解绑，设备内容已清空。" : "已解绑，设备内容保留。" }
         if state == .failed { unbinding = false; _ = flow.finish(flow.generation); status = "解绑失败，保留当前归属与连接。" }
         changed?()
     }

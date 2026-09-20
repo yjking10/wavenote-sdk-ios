@@ -33,7 +33,7 @@ open WaveNoteDemo.xcodeproj
 5. 点击顶部已连接 SN 进入设置；电量等查询顺序执行，设置等待回读确认。增益使用 0–255 原始整数。
 6. 断开时停止同步和播放、退出设置并隔离旧回调。断开保留模拟归属；解绑需确认，不清空设备内容。维护操作需确认，结果未确认不能当作执行成功。
 
-接入代码：[Swift](App/SwiftIntegration.swift) · [Objective-C](App/ObjCIntegration.m) · [HTTP Provider](App/HTTPIdentityProvider.swift)。HTTP 示例只请求宿主提供的 HTTPS 服务，用户 Token 由宿主登录系统提供；Demo 界面不会发起真实身份请求。切换身份前取消旧请求并重新配置 SDK，不自动重试绑定或解绑。
+接入代码：[Swift](App/SwiftIntegration.swift) · [Objective-C](App/ObjCIntegration.m) · [HTTP Provider](App/HTTPIdentityProvider.swift)。HTTP 示例只请求宿主提供的 HTTPS 服务，用户 Token 由 Provider 从宿主登录系统取得，不进入 SDK 配置；Demo 界面不会发起真实身份请求。退出登录时先调用 `clearConfiguration()`，再取消旧请求、删除该用户密钥缓存并清理登录态；绑定、解绑和不确定的设备命令均不自动重试。
 
 SDK 日志默认由 Demo 开启，仅输出脱敏摘要；可在配置处调用 `openLog(false)` 关闭。不要记录凭据、原始身份或音频。模拟归属和音频保存在应用私有目录，卸载应用会清除；解绑保留本地音频。首页只展示当前设备的文件，不自动录音。同步失败后保留任务和原始文件，由用户重连后继续；同一会话不会重复续传。元数据缺失或损坏时明确报错，不自动覆盖或丢弃原文件。新目录为 `wavenote/安全编码的userIdentifier/SHA256(SN)/SHA256("mode:文件名")/设备文件主名.ogg`，由 SDK 管理。旧 Demo 的 Recordings/recordings 目录原样保留，不自动迁移或认领。文件匹配不包含设备端内容哈希，不能识别同名同大小的内容替换。
 

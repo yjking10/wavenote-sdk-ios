@@ -15677,8 +15677,8 @@
           },
           {
             "kind": "Var",
-            "name": "apiKeyInvalidOrExpired",
-            "printedName": "apiKeyInvalidOrExpired",
+            "name": "authenticationCredentialInvalidOrExpired",
+            "printedName": "authenticationCredentialInvalidOrExpired",
             "children": [
               {
                 "kind": "TypeFunc",
@@ -15708,8 +15708,8 @@
               }
             ],
             "declKind": "EnumElement",
-            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeApiKeyInvalidOrExpired",
-            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO22apiKeyInvalidOrExpiredyA2CmF",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeAuthenticationCredentialInvalidOrExpired",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO40authenticationCredentialInvalidOrExpiredyA2CmF",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "RawDocComment",
@@ -18443,18 +18443,12 @@
           {
             "kind": "Function",
             "name": "checkOwnership",
-            "printedName": "checkOwnership(serialNumber:apiKey:userIdentifier:completion:)",
+            "printedName": "checkOwnership(serialNumber:userIdentifier:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
               },
               {
                 "kind": "TypeNominal",
@@ -18509,8 +18503,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)checkOwnershipWithSerialNumber:apiKey:userIdentifier:completion:",
-            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP14checkOwnership12serialNumber6apiKey14userIdentifier10completionySS_S2SyAA0abG0O_AA0aB5ErrorCSgtctF",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)checkOwnershipWithSerialNumber:userIdentifier:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP14checkOwnership12serialNumber14userIdentifier10completionySS_SSyAA0abG0O_AA0aB5ErrorCSgtctF",
             "moduleName": "WaveNoteSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteIdentityProvider>",
             "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteIdentityProvider>",
@@ -18525,18 +18519,12 @@
           {
             "kind": "Function",
             "name": "bind",
-            "printedName": "bind(serialNumber:apiKey:userIdentifier:completion:)",
+            "printedName": "bind(serialNumber:userIdentifier:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
               },
               {
                 "kind": "TypeNominal",
@@ -18578,8 +18566,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)bindWithSerialNumber:apiKey:userIdentifier:completion:",
-            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP4bind12serialNumber6apiKey14userIdentifier10completionySS_S2SyAA0aB5ErrorCSgctF",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)bindWithSerialNumber:userIdentifier:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP4bind12serialNumber14userIdentifier10completionySS_SSyAA0aB5ErrorCSgctF",
             "moduleName": "WaveNoteSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteIdentityProvider>",
             "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteIdentityProvider>",
@@ -18594,18 +18582,12 @@
           {
             "kind": "Function",
             "name": "unbind",
-            "printedName": "unbind(serialNumber:apiKey:userIdentifier:completion:)",
+            "printedName": "unbind(serialNumber:userIdentifier:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
               },
               {
                 "kind": "TypeNominal",
@@ -18647,8 +18629,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)unbindWithSerialNumber:apiKey:userIdentifier:completion:",
-            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP6unbind12serialNumber6apiKey14userIdentifier10completionySS_S2SyAA0aB5ErrorCSgctF",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)unbindWithSerialNumber:userIdentifier:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP6unbind12serialNumber14userIdentifier10completionySS_SSyAA0aB5ErrorCSgctF",
             "moduleName": "WaveNoteSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteIdentityProvider>",
             "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteIdentityProvider>",
@@ -18662,8 +18644,8 @@
           },
           {
             "kind": "Function",
-            "name": "authenticateDevice",
-            "printedName": "authenticateDevice(serialNumber:apiKey:userIdentifier:completion:)",
+            "name": "fetchDeviceSignature",
+            "printedName": "fetchDeviceSignature(serialNumber:userIdentifier:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -18683,15 +18665,9 @@
                 "usr": "s:SS"
               },
               {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
-              },
-              {
                 "kind": "TypeFunc",
                 "name": "Function",
-                "printedName": "(WaveNoteSDK.WaveNoteAuthenticationMaterial?, WaveNoteSDK.WaveNoteError?) -> ()",
+                "printedName": "(WaveNoteSDK.WaveNoteDeviceSignature?, WaveNoteSDK.WaveNoteError?) -> ()",
                 "children": [
                   {
                     "kind": "TypeNominal",
@@ -18701,18 +18677,18 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Tuple",
-                    "printedName": "(WaveNoteSDK.WaveNoteAuthenticationMaterial?, WaveNoteSDK.WaveNoteError?)",
+                    "printedName": "(WaveNoteSDK.WaveNoteDeviceSignature?, WaveNoteSDK.WaveNoteError?)",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "Optional",
-                        "printedName": "WaveNoteSDK.WaveNoteAuthenticationMaterial?",
+                        "printedName": "WaveNoteSDK.WaveNoteDeviceSignature?",
                         "children": [
                           {
                             "kind": "TypeNominal",
-                            "name": "WaveNoteAuthenticationMaterial",
-                            "printedName": "WaveNoteSDK.WaveNoteAuthenticationMaterial",
-                            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial"
+                            "name": "WaveNoteDeviceSignature",
+                            "printedName": "WaveNoteSDK.WaveNoteDeviceSignature",
+                            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature"
                           }
                         ],
                         "usr": "s:Sq"
@@ -18737,17 +18713,93 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)authenticateDeviceWithSerialNumber:apiKey:userIdentifier:completion:",
-            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP18authenticateDevice12serialNumber6apiKey14userIdentifier10completionySS_S2SyAA0aB22AuthenticationMaterialCSg_AA0aB5ErrorCSgtctF",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)fetchDeviceSignatureWithSerialNumber:userIdentifier:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP20fetchDeviceSignature12serialNumber14userIdentifier10completionySS_SSyAA0abgH0CSg_AA0aB5ErrorCSgtctF",
             "moduleName": "WaveNoteSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteIdentityProvider>",
             "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteIdentityProvider>",
             "protocolReq": true,
-            "objc_name": "authenticateDeviceWithSerialNumber:apiKey:userIdentifier:completion:",
             "declAttributes": [
-              "Optional",
-              "ObjC",
-              "RawDocComment"
+              "RawDocComment",
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchUserKeyPair",
+            "printedName": "fetchUserKeyPair(userIdentifier:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteUserKeyPair?, WaveNoteSDK.WaveNoteError?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(WaveNoteSDK.WaveNoteUserKeyPair?, WaveNoteSDK.WaveNoteError?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "WaveNoteSDK.WaveNoteUserKeyPair?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "WaveNoteUserKeyPair",
+                            "printedName": "WaveNoteSDK.WaveNoteUserKeyPair",
+                            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "WaveNoteSDK.WaveNoteError?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "WaveNoteError",
+                            "printedName": "WaveNoteSDK.WaveNoteError",
+                            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteIdentityProvider(im)fetchUserKeyPairWithUserIdentifier:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB16IdentityProviderP16fetchUserKeyPair14userIdentifier10completionySS_yAA0abghI0CSg_AA0aB5ErrorCSgtctF",
+            "moduleName": "WaveNoteSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteIdentityProvider>",
+            "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteIdentityProvider>",
+            "protocolReq": true,
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
             ],
             "reqNewWitnessTableEntry": true,
             "funcSelfKind": "NonMutating"
@@ -18783,8 +18835,8 @@
       },
       {
         "kind": "TypeDecl",
-        "name": "WaveNoteAuthenticationMaterial",
-        "printedName": "WaveNoteAuthenticationMaterial",
+        "name": "WaveNoteDeviceSignature",
+        "printedName": "WaveNoteDeviceSignature",
         "children": [
           {
             "kind": "Var",
@@ -18799,8 +18851,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(py)serialSignatureBase64",
-            "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC21serialSignatureBase64SSvp",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature(py)serialSignatureBase64",
+            "mangledName": "$s11WaveNoteSDK0aB15DeviceSignatureC06serialE6Base64SSvp",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "Final",
@@ -18824,8 +18876,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(im)serialSignatureBase64",
-                "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC21serialSignatureBase64SSvg",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature(im)serialSignatureBase64",
+                "mangledName": "$s11WaveNoteSDK0aB15DeviceSignatureC06serialE6Base64SSvg",
                 "moduleName": "WaveNoteSDK",
                 "implicit": true,
                 "declAttributes": [
@@ -18836,6 +18888,147 @@
               }
             ]
           },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(serialSignatureBase64:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteDeviceSignature",
+                "printedName": "WaveNoteSDK.WaveNoteDeviceSignature",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature(im)initWithSerialSignatureBase64:",
+            "mangledName": "$s11WaveNoteSDK0aB15DeviceSignatureC06serialE6Base64ACSS_tcfc",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteDeviceSignature",
+                "printedName": "WaveNoteSDK.WaveNoteDeviceSignature",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature(im)init",
+            "mangledName": "$s11WaveNoteSDK0aB15DeviceSignatureCACycfc",
+            "moduleName": "WaveNoteSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteDeviceSignature",
+        "mangledName": "$s11WaveNoteSDK0aB15DeviceSignatureC",
+        "moduleName": "WaveNoteSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "RawDocComment",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "WaveNoteUserKeyPair",
+        "printedName": "WaveNoteUserKeyPair",
+        "children": [
           {
             "kind": "Var",
             "name": "userPublicKeySPKIBase64",
@@ -18849,8 +19042,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(py)userPublicKeySPKIBase64",
-            "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC23userPublicKeySPKIBase64SSvp",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(py)userPublicKeySPKIBase64",
+            "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC010userPublicE10SPKIBase64SSvp",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "Final",
@@ -18874,8 +19067,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(im)userPublicKeySPKIBase64",
-                "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC23userPublicKeySPKIBase64SSvg",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(im)userPublicKeySPKIBase64",
+                "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC010userPublicE10SPKIBase64SSvg",
                 "moduleName": "WaveNoteSDK",
                 "implicit": true,
                 "declAttributes": [
@@ -18899,8 +19092,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(py)userPrivateKeyPKCS8Base64",
-            "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC25userPrivateKeyPKCS8Base64SSvp",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(py)userPrivateKeyPKCS8Base64",
+            "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC011userPrivateE11PKCS8Base64SSvp",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "Final",
@@ -18924,8 +19117,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(im)userPrivateKeyPKCS8Base64",
-                "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC25userPrivateKeyPKCS8Base64SSvg",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(im)userPrivateKeyPKCS8Base64",
+                "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC011userPrivateE11PKCS8Base64SSvg",
                 "moduleName": "WaveNoteSDK",
                 "implicit": true,
                 "declAttributes": [
@@ -18939,19 +19132,13 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(serialSignatureBase64:userPublicKeySPKIBase64:userPrivateKeyPKCS8Base64:)",
+            "printedName": "init(userPublicKeySPKIBase64:userPrivateKeyPKCS8Base64:)",
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "WaveNoteAuthenticationMaterial",
-                "printedName": "WaveNoteSDK.WaveNoteAuthenticationMaterial",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
+                "name": "WaveNoteUserKeyPair",
+                "printedName": "WaveNoteSDK.WaveNoteUserKeyPair",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair"
               },
               {
                 "kind": "TypeNominal",
@@ -18967,8 +19154,8 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(im)initWithSerialSignatureBase64:userPublicKeySPKIBase64:userPrivateKeyPKCS8Base64:",
-            "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC21serialSignatureBase6423userPublicKeySPKIBase640i7Privatek5PKCS8H0ACSS_S2Stcfc",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(im)initWithUserPublicKeySPKIBase64:userPrivateKeyPKCS8Base64:",
+            "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC010userPublicE10SPKIBase640g7PrivateE11PKCS8Base64ACSS_SStcfc",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "AccessControl",
@@ -18983,14 +19170,14 @@
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "WaveNoteAuthenticationMaterial",
-                "printedName": "WaveNoteSDK.WaveNoteAuthenticationMaterial",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial"
+                "name": "WaveNoteUserKeyPair",
+                "printedName": "WaveNoteSDK.WaveNoteUserKeyPair",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair"
               }
             ],
             "declKind": "Constructor",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial(im)init",
-            "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialCACycfc",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair(im)init",
+            "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairCACycfc",
             "moduleName": "WaveNoteSDK",
             "overriding": true,
             "implicit": true,
@@ -19004,8 +19191,8 @@
           }
         ],
         "declKind": "Class",
-        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteAuthenticationMaterial",
-        "mangledName": "$s11WaveNoteSDK0aB22AuthenticationMaterialC",
+        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteUserKeyPair",
+        "mangledName": "$s11WaveNoteSDK0aB11UserKeyPairC",
         "moduleName": "WaveNoteSDK",
         "declAttributes": [
           "Final",
@@ -19089,56 +19276,6 @@
         "name": "WaveNoteSDKConfiguration",
         "printedName": "WaveNoteSDKConfiguration",
         "children": [
-          {
-            "kind": "Var",
-            "name": "apiKey",
-            "printedName": "apiKey",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDKConfiguration(py)apiKey",
-            "mangledName": "$s11WaveNoteSDK0aB16SDKConfigurationC6apiKeySSvp",
-            "moduleName": "WaveNoteSDK",
-            "declAttributes": [
-              "Final",
-              "HasStorage",
-              "AccessControl",
-              "ObjC"
-            ],
-            "isLet": true,
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDKConfiguration(im)apiKey",
-                "mangledName": "$s11WaveNoteSDK0aB16SDKConfigurationC6apiKeySSvg",
-                "moduleName": "WaveNoteSDK",
-                "implicit": true,
-                "declAttributes": [
-                  "Final",
-                  "ObjC"
-                ],
-                "accessorKind": "get"
-              }
-            ]
-          },
           {
             "kind": "Var",
             "name": "userIdentifier",
@@ -19358,19 +19495,13 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(apiKey:userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:)",
+            "printedName": "init(userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "WaveNoteSDKConfiguration",
                 "printedName": "WaveNoteSDK.WaveNoteSDKConfiguration",
                 "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDKConfiguration"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
               },
               {
                 "kind": "TypeNominal",
@@ -19409,10 +19540,10 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDKConfiguration(im)initWithAPIKey:userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:",
-            "mangledName": "$s11WaveNoteSDK0aB16SDKConfigurationC6apiKey14userIdentifier19enableAutoReconnect15reconnectPolicy16identityProviderACSS_SSSbAA0abkM0OAA0ab8IdentityO0_pSgtcfc",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDKConfiguration(im)initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:",
+            "mangledName": "$s11WaveNoteSDK0aB16SDKConfigurationC14userIdentifier19enableAutoReconnect15reconnectPolicy16identityProviderACSS_SbAA0abiK0OAA0ab8IdentityM0_pSgtcfc",
             "moduleName": "WaveNoteSDK",
-            "objc_name": "initWithAPIKey:userIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:",
+            "objc_name": "initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:",
             "declAttributes": [
               "AccessControl",
               "ObjC",
@@ -20961,6 +21092,30 @@
           },
           {
             "kind": "Function",
+            "name": "clearConfiguration",
+            "printedName": "clearConfiguration()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(im)clearConfiguration",
+            "mangledName": "$s11WaveNoteSDKAAC18clearConfigurationyyF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
             "name": "startScanning",
             "printedName": "startScanning(timeout:)",
             "children": [
@@ -21233,6 +21388,63 @@
               "AccessControl",
               "RawDocComment",
               "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "unbindCurrentDevice",
+            "printedName": "unbindCurrentDevice(eraseDeviceFiles:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteError?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "WaveNoteSDK.WaveNoteError?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteError",
+                        "printedName": "WaveNoteSDK.WaveNoteError",
+                        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(im)unbindCurrentDeviceWithEraseDeviceFiles:completion:",
+            "mangledName": "$s11WaveNoteSDKAAC19unbindCurrentDevice05eraseF5Files10completionySb_yAA0aB5ErrorCSgctF",
+            "moduleName": "WaveNoteSDK",
+            "objc_name": "unbindCurrentDeviceWithEraseDeviceFiles:completion:",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -21931,14 +22143,14 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12079,
+      "offset": 12075,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "Dictionary",
-      "offset": 19149,
+      "offset": 19145,
       "length": 3,
       "value": "[]"
     },
@@ -22659,7 +22871,7 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "Dictionary",
-      "offset": 14076,
+      "offset": 14227,
       "length": 3,
       "value": "[]"
     },
@@ -22967,182 +23179,182 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 3836,
+      "offset": 3824,
       "length": 4,
       "value": "1012"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4007,
+      "offset": 3995,
       "length": 4,
       "value": "1013"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4153,
+      "offset": 4141,
       "length": 4,
       "value": "1014"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4291,
+      "offset": 4279,
       "length": 4,
       "value": "1015"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4440,
+      "offset": 4428,
       "length": 4,
       "value": "1016"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4593,
+      "offset": 4581,
       "length": 4,
       "value": "1017"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4733,
+      "offset": 4721,
       "length": 4,
       "value": "1018"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 4877,
+      "offset": 4865,
       "length": 4,
       "value": "1101"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5097,
+      "offset": 5085,
       "length": 4,
       "value": "1102"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5261,
+      "offset": 5249,
       "length": 4,
       "value": "1103"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5400,
+      "offset": 5388,
       "length": 4,
       "value": "1104"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5560,
+      "offset": 5548,
       "length": 4,
       "value": "1106"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5714,
+      "offset": 5702,
       "length": 4,
       "value": "1201"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 5827,
+      "offset": 5815,
       "length": 4,
       "value": "1202"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6061,
+      "offset": 6049,
       "length": 4,
       "value": "1203"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6218,
+      "offset": 6206,
       "length": 4,
       "value": "1204"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6384,
+      "offset": 6372,
       "length": 4,
       "value": "1205"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6535,
+      "offset": 6523,
       "length": 4,
       "value": "1206"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6697,
+      "offset": 6685,
       "length": 4,
       "value": "1207"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 6853,
+      "offset": 6841,
       "length": 4,
       "value": "1208"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 7167,
+      "offset": 7155,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "StringLiteral",
-      "offset": 10103,
+      "offset": 10091,
       "length": 10,
       "value": "\"WaveNote\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 10638,
+      "offset": 10626,
       "length": 2,
       "value": "-1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 11144,
+      "offset": 11132,
       "length": 11,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 11157,
+      "offset": 11145,
       "length": 11,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 15266,
+      "offset": 15325,
       "length": 4,
       "value": "true"
     },
@@ -23219,16 +23431,30 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 13274,
+      "offset": 14201,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 38589,
+      "offset": 43402,
       "length": 1,
       "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 43438,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 43474,
+      "length": 5,
+      "value": "false"
     }
   ]
 }

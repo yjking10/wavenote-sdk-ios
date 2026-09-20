@@ -3,12 +3,14 @@ import WaveNoteSDK
 
 /// 宿主持有传入的 provider 和 delegate；在主线程调用。
 @MainActor enum SwiftIntegration {
-    static func configure(token: String, user: String, provider: WaveNoteIdentityProvider, delegate: WaveNoteSDKDelegate) -> WaveNoteSDK {
+    static func configure(user: String, provider: WaveNoteIdentityProvider, delegate: WaveNoteSDKDelegate) -> WaveNoteSDK {
         let sdk = WaveNoteSDK.shared
         sdk.delegate = delegate
-        sdk.configure(with: WaveNoteSDKConfiguration(apiKey: token, userIdentifier: user, enableAutoReconnect: false, identityProvider: provider))
+        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: user, enableAutoReconnect: false, identityProvider: provider))
         return sdk
     }
+    /// 退出登录时先释放 SDK 对旧 Provider 的持有，再由宿主取消网络请求并删除用户密钥缓存。
+    static func clearForLogout(_ sdk: WaveNoteSDK) { sdk.clearConfiguration() }
     /// READY 后调用；error 非 nil 时不得使用快照。
     static func battery(_ sdk: WaveNoteSDK, completion: @escaping (WaveNoteSettingsSnapshot?, WaveNoteError?) -> Void) {
         sdk.deviceSettings.query(.battery, completion: completion)

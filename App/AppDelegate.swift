@@ -211,7 +211,8 @@ final class SettingsController: UITableViewController {
             ("高级录音设置", [Row(title: "麦克风增益", value: value(s?.microphoneGain), action: { self.gain(microphone: true) }),
                            Row(title: "振动传感器增益", value: value(s?.vibrationGain), action: { self.gain(microphone: false) })]),
             ("连接管理", [Row(title: "断开连接", value: "", action: { self.model.disconnect() }),
-                        Row(title: "解绑设备", value: "", action: { self.confirm("解绑设备", "仅解除本机演示账户归属，不清空设备内容。") { self.model.unbind() } })])
+                        Row(title: "解绑设备", value: "", action: { self.confirm("解绑设备", "仅解除本机演示账户归属，不清空设备内容。") { self.model.unbind() } }),
+                        Row(title: "解绑设备并清空内容", value: "", action: { self.confirm("解绑设备并清空内容", "R202 将解除本机演示账户归属并永久清空设备内容，此操作不可恢复；其他设备仅解绑。") { self.model.unbind(eraseDeviceFiles: true) } })])
         ]
     }
     override func numberOfSections(in tableView: UITableView) -> Int { groups.count }

@@ -391,18 +391,6 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteAudioCodec, open) {
   WaveNoteAudioCodecOpus = 0,
 };
 
-@class NSString;
-/// R202 connection-scoped authentication material. The SDK never persists or logs these values.
-SWIFT_CLASS("_TtC11WaveNoteSDK30WaveNoteAuthenticationMaterial")
-@interface WaveNoteAuthenticationMaterial : NSObject
-@property (nonatomic, readonly, copy) NSString * _Nonnull serialSignatureBase64;
-@property (nonatomic, readonly, copy) NSString * _Nonnull userPublicKeySPKIBase64;
-@property (nonatomic, readonly, copy) NSString * _Nonnull userPrivateKeyPKCS8Base64;
-- (nonnull instancetype)initWithSerialSignatureBase64:(NSString * _Nonnull)serialSignatureBase64 userPublicKeySPKIBase64:(NSString * _Nonnull)userPublicKeySPKIBase64 userPrivateKeyPKCS8Base64:(NSString * _Nonnull)userPrivateKeyPKCS8Base64 OBJC_DESIGNATED_INITIALIZER;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
 /// 平台绑定流程状态，与 BLE 是否已连接相互独立。
 typedef SWIFT_ENUM(NSInteger, WaveNoteBindingState, open) {
   WaveNoteBindingStateIdle = 0,
@@ -453,6 +441,7 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteConnectionState, open) {
   WaveNoteConnectionStateFailed = 7,
 };
 
+@class NSString;
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteDeviceType)
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteRuntimeStatus)
 /// 不可变设备状态快照；未知电量为 -1，未经连接校验的固件版本为 nil。
@@ -548,6 +537,15 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK30WaveNoteDeviceSettingsDelegate_")
 - (void)deviceSettings:(WaveNoteDeviceSettings * _Nonnull)settings didUpdate:(WaveNoteSettingsSnapshot * _Nonnull)snapshot;
 @end
 
+/// R202 命令 1001 所需材料。Provider 应在每次连接尝试时获取最新值。
+SWIFT_CLASS("_TtC11WaveNoteSDK23WaveNoteDeviceSignature")
+@interface WaveNoteDeviceSignature : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull serialSignatureBase64;
+- (nonnull instancetype)initWithSerialSignatureBase64:(NSString * _Nonnull)serialSignatureBase64 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 /// 对外统一的 WaveNote 设备类型。
 typedef SWIFT_ENUM(NSInteger, WaveNoteDeviceType, open) {
   WaveNoteDeviceTypeWaveNote = 0,
@@ -614,8 +612,8 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteErrorCode, open) {
   WaveNoteErrorCodeCloudUnbindFailed = 1009,
 /// 解绑与当前身份任务或设备状态冲突，例如身份操作未完成、正在录音或 USB 已挂载。
   WaveNoteErrorCodeUnbindingOperationConflict = 1011,
-/// API Key 为空，或身份适配器判定凭据无效、过期；SDK 不按字符串格式推断有效性。
-  WaveNoteErrorCodeApiKeyInvalidOrExpired = 1012,
+/// 身份适配器判定宿主登录凭据缺失、无效、过期或已撤销。
+  WaveNoteErrorCodeAuthenticationCredentialInvalidOrExpired = 1012,
 /// 未配置身份适配器，无法执行归属查询、绑定、受身份约束的连接或解绑；仍允许扫描。
   WaveNoteErrorCodeIdentityProviderUnavailable = 1013,
 /// 平台返回设备未绑定；也用于显式重连时找不到当前用户的上次成功连接记录。
@@ -840,44 +838,41 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK30WaveNoteFirmwareUpdateDelegate_")
 @end
 
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteOwnership)
+@class WaveNoteUserKeyPair;
 /// 宿主实现的平台身份接口。每次请求必须且只能回调一次，可在任意队列回调。
-/// SDK 会切回主线程处理并忽略过期回调；适配器应在服务端校验凭据且不得记录凭据。
+/// SDK 会切回主线程处理并忽略过期回调；Provider 从宿主登录会话取得请求凭据，
+/// 为每次请求保存不可变快照，并在服务端核对凭据用户与 userIdentifier。
 SWIFT_PROTOCOL("_TtP11WaveNoteSDK24WaveNoteIdentityProvider_")
 @protocol WaveNoteIdentityProvider
 /// 查询指定 SN 相对当前用户的归属，不应在查询中产生绑定副作用。
 /// \param serialNumber 设备的稳定 SN 标识。
 ///
-/// \param apiKey 宿主传入的平台凭据，有效性由真实平台判定。
-///
 /// \param userIdentifier 当前用户标识。
 ///
 /// \param completion 返回归属与可选错误；存在错误时 SDK 忽略归属值。
 ///
-- (void)checkOwnershipWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(enum WaveNoteOwnership, WaveNoteError * _Nullable))completion;
+- (void)checkOwnershipWithSerialNumber:(NSString * _Nonnull)serialNumber userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(enum WaveNoteOwnership, WaveNoteError * _Nullable))completion;
 /// 请求平台将设备绑定到当前用户；不会建立 BLE 连接。
 /// \param serialNumber 待绑定的设备 SN。
-///
-/// \param apiKey 需要平台校验的宿主凭据。
 ///
 /// \param userIdentifier 待绑定的用户标识。
 ///
 /// \param completion 平台确认成功后返回 nil，失败时返回明确错误。
 ///
-- (void)bindWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+- (void)bindWithSerialNumber:(NSString * _Nonnull)serialNumber userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 请求平台解除当前用户与设备的绑定；不清空内容、不取消硬件激活。
 /// \param serialNumber 待解绑的设备 SN。
-///
-/// \param apiKey 需要平台校验的宿主凭据。
 ///
 /// \param userIdentifier 发起解绑的当前用户标识。
 ///
 /// \param completion 只有平台确认解绑成功才返回 nil。
 ///
-- (void)unbindWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-@optional
-/// R202 only: obtain the cloud-generated 1001 signature and the current user’s RSA key pair.
-/// Production implementations must request this material from the authenticated cloud service.
-- (void)authenticateDeviceWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteAuthenticationMaterial * _Nullable, WaveNoteError * _Nullable))completion;
+- (void)unbindWithSerialNumber:(NSString * _Nonnull)serialNumber userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+/// 仅适用于 R202：获取由云端生成的命令 1001 最新签名。
+- (void)fetchDeviceSignatureWithSerialNumber:(NSString * _Nonnull)serialNumber userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteDeviceSignature * _Nullable, WaveNoteError * _Nullable))completion;
+/// 仅适用于 R202：从按用户隔离的安全缓存或云端返回当前用户的 RSA 密钥对。
+/// 生产环境的 Provider 应使用不可迁移的 Keychain 项，并在退出登录时删除。
+- (void)fetchUserKeyPairWithUserIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteUserKeyPair * _Nullable, WaveNoteError * _Nullable))completion;
 @end
 
 @protocol WaveNoteLiveAudioDelegate;
@@ -1166,9 +1161,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// 应用新配置，取消旧身份请求、停止扫描并断开旧连接，再按当前用户读取重连记录。
 /// note:
 /// 每次调用都会更换操作代际，旧引擎和旧身份回调不会影响新配置。
-/// \param configuration 包含非空用户标识、平台凭据及可选身份适配器的配置。
+/// \param configuration 包含非空用户标识、重连策略及可选身份适配器的配置。
 ///
 - (void)configureWithConfiguration:(WaveNoteSDKConfiguration * _Nonnull)configuration;
+/// 清除当前用户配置。宿主退出登录时应先调用本方法，再取消 Provider 请求并删除其 Keychain 密钥。
+/// SDK 会取消旧任务、停止扫描和重连、断开 BLE，并释放强持有的 Provider；迟到回调会被忽略。
+- (void)clearConfiguration;
 /// 启动新一轮扫描并清空旧发现列表；无需身份适配器，连接或身份操作进行中则拒绝。
 /// note:
 /// 列表通过 Delegate 更新，错误通过 didReceive 回调报告。
@@ -1200,6 +1198,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// 解绑当前已就绪且空闲的设备：平台确认成功后清理本地记录，再断开 BLE。
 /// 失败时保留现有连接及记录；进度和错误通过 Delegate 返回，不发送设备还原命令。
 - (void)unbindCurrentDevice;
+/// R202 可选择先清空设备内容并确认硬件未激活，再请求平台解绑。
+/// 硬件清空成功会断开 BLE；后续云端解绑失败时，设备内容无法恢复。
+- (void)unbindCurrentDeviceWithEraseDeviceFiles:(BOOL)eraseDeviceFiles completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 解绑并在主线程恰好完成一次；nil 表示平台确认解绑，取消不证明服务端回滚。
 /// 保留原 Delegate 状态和错误通知。失败保留连接，超时后先查询归属再决定是否重试。
 - (void)unbindCurrentDeviceWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
@@ -1214,14 +1215,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// SDK 配置快照；切换用户或适配器时应重新调用 configure(with:)。
 SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 @interface WaveNoteSDKConfiguration : NSObject
-@property (nonatomic, readonly, copy) NSString * _Nonnull apiKey;
 @property (nonatomic, readonly, copy) NSString * _Nonnull userIdentifier;
 @property (nonatomic, readonly) BOOL enableAutoReconnect;
 @property (nonatomic, readonly) enum WaveNoteReconnectPolicy reconnectPolicy;
 @property (nonatomic, readonly, strong) id <WaveNoteIdentityProvider> _Nullable identityProvider;
-/// 构建配置，不在初始化时发起网络请求或猜测 API Key 格式。
-/// \param apiKey 传给身份适配器的凭据；受身份约束的操作要求非空。
-///
+/// 构建配置，不在初始化时发起网络请求；登录凭据只由宿主 Provider 管理。
 /// \param userIdentifier 非空用户标识，用于归属查询及隔离本地重连记录。
 ///
 /// \param enableAutoReconnect 是否在可恢复的异常断连后自动重连，默认开启。
@@ -1230,7 +1228,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 ///
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
-- (nonnull instancetype)initWithAPIKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1385,6 +1383,16 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteUnbindingState, open) {
   WaveNoteUnbindingStateCompleted = 2,
   WaveNoteUnbindingStateFailed = 3,
 };
+
+/// R202 用户 RSA 材料。安全缓存及退出登录时的删除由宿主 Provider 负责。
+SWIFT_CLASS("_TtC11WaveNoteSDK19WaveNoteUserKeyPair")
+@interface WaveNoteUserKeyPair : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPublicKeySPKIBase64;
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPrivateKeyPKCS8Base64;
+- (nonnull instancetype)initWithUserPublicKeySPKIBase64:(NSString * _Nonnull)userPublicKeySPKIBase64 userPrivateKeyPKCS8Base64:(NSString * _Nonnull)userPrivateKeyPKCS8Base64 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 @protocol WaveNoteWiFiDelegate;
 @class WaveNoteWiFiSnapshot;
