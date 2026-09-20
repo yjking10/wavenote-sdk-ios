@@ -1,5 +1,6 @@
 import UIKit
 import CryptoKit
+import Security
 import WaveNoteSDK
 
 /// 模拟身份在 Debug / Release 均明确启用，仅用于独立演示。
@@ -22,6 +23,45 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     }
     func unbind(serialNumber: String, apiKey: String, userIdentifier: String, completion: @escaping (WaveNoteError?) -> Void) {
         completion(store.unbind(hash(serialNumber), user: hash(userIdentifier)) ? nil : WaveNoteError(.cloudUnbindFailed, operation: "unbind", message: "模拟归属不匹配"))
+    }
+    /// Development only. Production must request the SN signature and user key pair from cloud;
+    /// never ship a production cloud private key in an App bundle, log, or repository.
+    func authenticateDevice(serialNumber: String, apiKey: String, userIdentifier: String,
+                            completion: @escaping (WaveNoteAuthenticationMaterial?, WaveNoteError?) -> Void) {
+        guard let cloud = Bundle.main.object(forInfoDictionaryKey: "DEV_CLOUD_PRIVATE_KEY_PKCS8_B64") as? String,
+              let userPublic = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64") as? String,
+              let userPrivate = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64") as? String,
+              !cloud.isEmpty, !userPublic.isEmpty, !userPrivate.isEmpty,
+              let key = DemoRSA.privateKey(pkcs8Base64: cloud),
+              let signature = DemoRSA.sign(serialNumber, key: key) else {
+            completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "deviceAuthentication", message: "缺少本地开发鉴权配置")); return
+        }
+        completion(WaveNoteAuthenticationMaterial(serialSignatureBase64: signature, userPublicKeySPKIBase64: userPublic, userPrivateKeyPKCS8Base64: userPrivate), nil)
+    }
+}
+
+/// Parses local development-only PKCS#8 material without writing it to logs or UserDefaults.
+private enum DemoRSA {
+    static func privateKey(pkcs8Base64: String) -> SecKey? {
+        guard let der = Data(base64Encoded: pkcs8Base64) else { return nil }
+        return SecKeyCreateWithData(pkcs8InnerKey(der) as CFData, [kSecAttrKeyType: kSecAttrKeyTypeRSA, kSecAttrKeyClass: kSecAttrKeyClassPrivate, kSecAttrKeySizeInBits: 2048] as CFDictionary, nil)
+    }
+    static func sign(_ serial: String, key: SecKey) -> String? {
+        var error: Unmanaged<CFError>?
+        guard let value = SecKeyCreateSignature(key, .rsaSignatureMessagePKCS1v15SHA256, Data(serial.utf8) as CFData, &error) as Data? else { return nil }
+        return value.base64EncodedString()
+    }
+    private static func pkcs8InnerKey(_ der: Data) -> Data {
+        func fields(_ data: Data) -> [(UInt8, Data)] {
+            var index = 0; var values: [(UInt8, Data)] = []
+            while index + 2 <= data.count {
+                let tag = data[index]; index += 1; var length = Int(data[index]); index += 1
+                if length & 0x80 != 0 { let bytes = length & 0x7f; guard bytes > 0, bytes <= 4, index + bytes <= data.count else { return [] }; length = 0; for _ in 0..<bytes { length = length << 8 | Int(data[index]); index += 1 } }
+                guard index + length <= data.count else { return [] }; values.append((tag, data.subdata(in: index..<(index + length)))); index += length
+            }; return values
+        }
+        guard let outer = fields(der).first(where: { $0.0 == 0x30 })?.1 else { return Data() }
+        return fields(outer).first(where: { $0.0 == 0x04 })?.1 ?? Data()
     }
 }
 
@@ -119,6 +159,34 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
             self.changed?()
         }
     }
+    /// 仅在已连接且没有文件同步或设置事务时控制录音；最终状态以 recording Delegate 为准。
+    func toggleRecording() {
+        guard flow.ready else { return }
+        guard !library.busy else { status = "文件同步中，请等待同步完成后再操作录音。"; changed?(); return }
+        guard let token = flow.beginSetting() else { status = "设备忙碌，请等待当前操作完成。"; changed?(); return }
+        let state = sdk.recording.snapshot.state
+        let starting = state == .stopped
+        guard starting || state == .recording || state == .paused else {
+            _ = flow.finish(token); status = "录音状态未知，请稍后重试。"; changed?(); return
+        }
+        status = starting ? "正在开启录音…" : "正在停止录音…"; changed?()
+        let action: (@escaping (WaveNoteError?) -> Void) -> Void = starting ? sdk.recording.start : sdk.recording.stop
+        action { [weak self] error in
+            guard let self, self.flow.accepts(token), self.flow.ready else { return }
+            _ = self.flow.finish(token)
+            self.status = error.map(Self.errorText) ?? (starting ? "录音已开启，文件同步已暂停。" : "录音已停止，准备同步文件。")
+            self.changed?()
+        }
+    }
+    func startRecording() {
+        guard sdk.recording.snapshot.state == .stopped else { status = "录音状态未知，请稍后重试。"; changed?(); return }
+        toggleRecording()
+    }
+    func stopRecording() {
+        let state = sdk.recording.snapshot.state
+        guard state == .recording || state == .paused else { status = "录音状态未知，请稍后重试。"; changed?(); return }
+        toggleRecording()
+    }
     func disconnect() { guard !flow.busy else { return }; sdk.disconnectDevice() }
     func unbind() {
         guard flow.beginSetting() != nil else { return }
@@ -208,6 +276,12 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
                 self.progressID = operation?.identifier; self.progressCallback = progress; self.progressFile = file
             }
             return { cancelled = true; operation?.cancel() }
+        }
+        library.deleteLocal = { [weak self] file, done in
+            guard let self, let sn = self.sdk.connectedDevice?.serialNumber else { done("连接已失效"); return }
+            self.sdk.files.deleteLocalAudio(serialNumber: sn, mode: file.mode == 1 ? .note : .call, fileName: file.name) { error in
+                done(error.map(Self.errorText))
+            }
         }
     }
 

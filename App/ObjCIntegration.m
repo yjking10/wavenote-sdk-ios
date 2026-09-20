@@ -16,6 +16,10 @@ void UnbindWaveNote(void (^completion)(WaveNoteError *)) {
 void FindWaveNoteAudio(NSString *sn, WaveNoteRecordMode mode, NSString *name, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
     [WaveNoteSDK.sharedSDK.files findLocalAudioWithSerialNumber:sn mode:mode fileName:name completion:completion];
 }
-WaveNoteOperation *DownloadWaveNoteAudio(WaveNoteFile *file, BOOL resume, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
-    return [WaveNoteSDK.sharedSDK.files downloadToStorage:file transport:WaveNoteTransferTransportBluetooth resume:resume completion:completion];
+void DeleteWaveNoteLocalAudio(NSString *sn, WaveNoteRecordMode mode, NSString *name, void (^completion)(WaveNoteError *)) {
+    [WaveNoteSDK.sharedSDK.files deleteLocalAudioWithSerialNumber:sn mode:mode fileName:name completion:completion];
+}
+/// deleteSource=NO 保留设备文件；YES 在本地校验完成后请求删除，删除失败会返回错误且保留本地音频。
+WaveNoteOperation *DownloadWaveNoteAudio(WaveNoteFile *file, BOOL resume, BOOL deleteSource, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
+    return [WaveNoteSDK.sharedSDK.files downloadToStorage:file transport:WaveNoteTransferTransportBluetooth resume:resume deleteSource:deleteSource completion:completion];
 }

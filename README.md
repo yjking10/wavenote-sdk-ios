@@ -20,6 +20,10 @@ open WaveNoteDemo.xcodeproj
 
 允许蓝牙访问。模拟器可以检查界面，不支持真实 BLE 连接。Info.plist 已包含蓝牙用途、后台 central 模式和本地网络用途说明；本 Demo 不加入热点。
 
+## R202 开发鉴权配置
+
+仅为联调，可在本机未提交的 `App/Info.plist` 中填入 `DEV_CLOUD_PRIVATE_KEY_PKCS8_B64`、`DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64` 和 `DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64`。Demo 使用云私钥对 SN 做 RS256 签名，并将用户密钥交给 SDK 完成 1001–1003。严禁将生产云私钥或用户私钥放入 App、日志或仓库；生产版本必须向云端请求签名和密钥材料。
+
 ## 主要调用顺序
 
 1. 主线程配置 SDK，持有 Provider 和 Delegate，关闭自动重连。Demo 默认使用固定演示账户及持久化本地模拟归属；这不代表真实服务端绑定。

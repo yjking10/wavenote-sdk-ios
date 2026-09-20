@@ -41,6 +41,7 @@ final class DemoAudioLibrary {
     var count: (Int, @escaping (Int?, String?) -> Void) -> Void = { _, _ in }
     var page: (Int, Int, @escaping ([DemoAudioFile]?, String?) -> Void) -> Void = { _, _, _ in }
     var download: (DemoAudioFile, @escaping (Int64) -> Void, @escaping (String?, String?) -> Void) -> (() -> Void) = { _, _, _ in {} }
+    var deleteLocal: (DemoAudioFile, @escaping (String?) -> Void) -> Void = { _, completion in completion("删除本地音频未配置") }
     var changed: (() -> Void)?
     var finished: (() -> Void)?
     var completedRow: ((DemoAudioRow) -> Void)?
@@ -169,6 +170,15 @@ final class DemoAudioLibrary {
     func phase(file: DemoAudioFile, text: String) {
         guard busy, let index = rows.firstIndex(where: { $0.file.key == file.key && $0.localPath == nil }) else { return }
         rows[index].status = text; message = text; changed?()
+    }
+    func deleteLocalAudio(_ file: DemoAudioFile, completion: @escaping (String?) -> Void) {
+        guard !busy else { completion("文件同步中，请稍候"); return }
+        deleteLocal(file) { [weak self] error in
+            guard let self, error == nil else { completion(error); return }
+            self.rows.removeAll { $0.file.key == file.key }
+            self.changed?()
+            completion(nil)
+        }
     }
     func converting(bytes: Int64, total: Int64) {
         guard busy, let index = rows.firstIndex(where: { $0.localPath == nil && (["正在同步", "检查断点", "继续下载"].contains($0.status) || $0.status.hasPrefix("正在生成音频") || $0.status.hasPrefix("重新封装")) }) else { return }

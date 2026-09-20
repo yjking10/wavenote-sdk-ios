@@ -55,10 +55,10 @@ final class HomeController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int { model.flow.ready || model.flow.showsNearby ? 2 : 1 }
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { section == 0 ? "连接设备" : !model.flow.ready ? "附近设备" : model.library.isRecording ? "当前录音" : "录音文件" }
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 1 && model.flow.ready { return model.player.message.isEmpty ? "音频仅保存在本机，不删除设备文件。下载中停止同步可能断开蓝牙，需要重新连接。" : model.player.message }
+        if section == 1 && model.flow.ready { return model.player.message.isEmpty ? "音频仅保存在本机。左滑已完成文件可删除本地音频。" : model.player.message }
         return section == 0 ? "演示身份：本地模拟。绑定记录仅在本机保存，两端不共享。" : "选择设备后绑定并连接；已绑定设备直接连接。"
     }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? 3 : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? 5 : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
     override func tableView(_ tableView: UITableView, cellForRowAt path: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.numberOfLines = 0; cell.detailTextLabel?.numberOfLines = 0
@@ -96,6 +96,18 @@ final class HomeController: UITableViewController {
                 }
             }
         } else if path.section == 0 {
+            if path.row == 3 || path.row == 4 {
+                let state = model.sdk.recording.snapshot.state
+                let starting = path.row == 3
+                cell.textLabel?.text = starting ? "开始录音" : "停止录音"
+                cell.detailTextLabel?.text = starting ? "设备空闲时开始录音" : "结束正在进行或已暂停的录音"
+                cell.textLabel?.textColor = starting ? view.tintColor : .systemRed
+                cell.isUserInteractionEnabled = !model.flow.busy && !model.library.busy && (starting ? state == .stopped : state == .recording || state == .paused)
+                cell.textLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.detailTextLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.accessibilityIdentifier = starting ? "startRecording" : "stopRecording"
+                return cell
+            }
             cell.textLabel?.text = ["开始扫描", model.bluetooth, model.status][path.row]
             if path.row == 0 { cell.textLabel?.textColor = model.flow.busy || model.flow.ready ? .secondaryLabel : view.tintColor; cell.accessibilityIdentifier = "scan" }
             if path.row == 1 && model.sdk.bluetoothState == .unauthorized { cell.accessoryType = .disclosureIndicator }
@@ -126,7 +138,22 @@ final class HomeController: UITableViewController {
         } else if path.section == 0 {
             if path.row == 0 { model.scan() }
             if path.row == 1 && model.sdk.bluetoothState == .unauthorized, let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+            if path.row == 3 { model.startRecording() }
+            if path.row == 4 { model.stopRecording() }
         } else if !model.devices.isEmpty { model.select(model.devices[path.row]) }
+    }
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == 1, model.flow.ready, !model.library.isRecording, indexPath.row > 0,
+              indexPath.row - 1 < model.library.rows.count else { return nil }
+        let row = model.library.rows[indexPath.row - 1]
+        guard row.localPath != nil, !model.library.busy else { return nil }
+        let action = UIContextualAction(style: .destructive, title: "删除") { [weak self] _, _, completion in
+            self?.model.library.deleteLocalAudio(row.file) { error in
+                if let error { self?.model.status = error; self?.model.changed?() }
+                completion(error == nil)
+            }
+        }
+        return UISwipeActionsConfiguration(actions: [action])
     }
 }
 

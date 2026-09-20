@@ -17,8 +17,12 @@ import WaveNoteSDK
     static func localAudio(_ sdk: WaveNoteSDK, sn: String, mode: WaveNoteRecordMode, name: String, completion: @escaping (WaveNoteLocalAudio?, WaveNoteError?) -> Void) {
         sdk.files.findLocalAudio(serialNumber: sn, mode: mode, fileName: name, completion: completion)
     }
-    /// READY 后显式下载或恢复；SDK 自动选择用户目录并持久化索引。
-    static func download(_ sdk: WaveNoteSDK, file: WaveNoteFile, resume: Bool, completion: @escaping (WaveNoteLocalAudio?, WaveNoteError?) -> Void) -> WaveNoteOperation {
-        sdk.files.downloadToStorage(file, resume: resume, completion: completion)
+    /// 仅删除 SDK 托管的本地音频和续传数据，不删除设备文件。
+    static func deleteLocalAudio(_ sdk: WaveNoteSDK, sn: String, mode: WaveNoteRecordMode, name: String, completion: @escaping (WaveNoteError?) -> Void) {
+        sdk.files.deleteLocalAudio(serialNumber: sn, mode: mode, fileName: name, completion: completion)
+    }
+    /// READY 后显式下载或恢复；默认保留设备文件。删除失败时本地已完成音频仍保留。
+    static func download(_ sdk: WaveNoteSDK, file: WaveNoteFile, resume: Bool, deleteSource: Bool = false, completion: @escaping (WaveNoteLocalAudio?, WaveNoteError?) -> Void) -> WaveNoteOperation {
+        sdk.files.downloadToStorage(file, resume: resume, deleteSource: deleteSource, completion: completion)
     }
 }

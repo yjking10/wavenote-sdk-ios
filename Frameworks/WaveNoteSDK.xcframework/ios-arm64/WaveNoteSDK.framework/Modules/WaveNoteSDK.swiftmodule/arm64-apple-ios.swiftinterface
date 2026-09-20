@@ -8,6 +8,7 @@ import CryptoKit
 import Foundation
 import Network
 import NetworkExtension
+import Security
 import Swift
 import UIKit
 import _Concurrency
@@ -257,7 +258,10 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteFilesDelegate)?
   @objc @discardableResult
   @_Concurrency::MainActor final public func downloadToStorage(_ file: WaveNoteSDK::WaveNoteFile, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func downloadToStorage(_ file: WaveNoteSDK::WaveNoteFile, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, deleteSource: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc @_Concurrency::MainActor final public func findLocalAudio(serialNumber: Swift::String, mode: WaveNoteSDK::WaveNoteRecordMode, fileName: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func deleteLocalAudio(serialNumber: Swift::String, mode: WaveNoteSDK::WaveNoteRecordMode, fileName: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func count(mode: WaveNoteSDK::WaveNoteRecordMode, completion: @escaping (Foundation::NSNumber?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func page(mode: WaveNoteSDK::WaveNoteRecordMode, index: Swift::Int, completion: @escaping ([WaveNoteSDK::WaveNoteFile]?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @discardableResult
@@ -265,6 +269,8 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor final public func delete(_ file: WaveNoteSDK::WaveNoteFile, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @discardableResult
   @_Concurrency::MainActor final public func download(_ file: WaveNoteSDK::WaveNoteFile, to destination: Foundation::URL, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, completion: @escaping (Foundation::URL?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func download(_ file: WaveNoteSDK::WaveNoteFile, to destination: Foundation::URL, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, deleteSource: Swift::Bool, completion: @escaping (Foundation::URL?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc deinit
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteLiveAudio : WaveNoteSDK::WaveNoteFeature {
@@ -464,6 +470,14 @@ import _SwiftConcurrencyShims
   @objc func checkOwnership(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteOwnership, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc func bind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc func unbind(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc optional func authenticateDevice(serialNumber: Swift::String, apiKey: Swift::String, userIdentifier: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteAuthenticationMaterial?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+}
+@objc @objcMembers final public class WaveNoteAuthenticationMaterial : ObjectiveC::NSObject {
+  @objc final public let serialSignatureBase64: Swift::String
+  @objc final public let userPublicKeySPKIBase64: Swift::String
+  @objc final public let userPrivateKeyPKCS8Base64: Swift::String
+  @objc public init(serialSignatureBase64: Swift::String, userPublicKeySPKIBase64: Swift::String, userPrivateKeyPKCS8Base64: Swift::String)
+  @objc deinit
 }
 @objc @objcMembers final public class WaveNoteSDKConfiguration : ObjectiveC::NSObject {
   @objc final public let apiKey: Swift::String

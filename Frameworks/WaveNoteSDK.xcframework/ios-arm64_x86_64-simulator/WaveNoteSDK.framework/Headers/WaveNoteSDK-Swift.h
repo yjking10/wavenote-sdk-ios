@@ -391,6 +391,18 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteAudioCodec, open) {
   WaveNoteAudioCodecOpus = 0,
 };
 
+@class NSString;
+/// R202 connection-scoped authentication material. The SDK never persists or logs these values.
+SWIFT_CLASS("_TtC11WaveNoteSDK30WaveNoteAuthenticationMaterial")
+@interface WaveNoteAuthenticationMaterial : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull serialSignatureBase64;
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPublicKeySPKIBase64;
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPrivateKeyPKCS8Base64;
+- (nonnull instancetype)initWithSerialSignatureBase64:(NSString * _Nonnull)serialSignatureBase64 userPublicKeySPKIBase64:(NSString * _Nonnull)userPublicKeySPKIBase64 userPrivateKeyPKCS8Base64:(NSString * _Nonnull)userPrivateKeyPKCS8Base64 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 /// 平台绑定流程状态，与 BLE 是否已连接相互独立。
 typedef SWIFT_ENUM(NSInteger, WaveNoteBindingState, open) {
   WaveNoteBindingStateIdle = 0,
@@ -441,7 +453,6 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteConnectionState, open) {
   WaveNoteConnectionStateFailed = 7,
 };
 
-@class NSString;
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteDeviceType)
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteRuntimeStatus)
 /// 不可变设备状态快照；未知电量为 -1，未经连接校验的固件版本为 nil。
@@ -682,11 +693,19 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// 弱引用下载代理，进度用本地 operationID 区分。
 @property (nonatomic, weak) id <WaveNoteFilesDelegate> _Nullable delegate;
 /// 下载到当前用户的 SDK 托管目录。索引持久化成功后才回调；同名同大小复用缓存。
-/// resume 仅表示允许显式恢复已有任务，不会在超时后自动重试。新任务无需断点。
+/// 下载到当前用户的 SDK 托管目录。此兼容重载默认保留设备原文件。
 - (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
+/// 下载到当前用户的 SDK 托管目录。索引持久化成功后才回调；同名同大小复用缓存。
+/// resume 仅表示允许显式恢复已有任务，不会在超时后自动重试。新任务无需断点。
+/// \param deleteSource false 保留设备原文件；true 时仅在本地 Ogg 校验并提交索引后删除设备原文件。删除未获设备确认时回调错误，本地已完成音频保留。
+///
+- (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume deleteSource:(BOOL)deleteSource completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
 /// 查询当前配置用户在指定设备上的已完成音频；无需连接。无匹配项为 nil/nil，损坏返回错误。
 /// 在内部队列校验并修复可恢复的索引；主线程 completion 恰好一次。不会查询其他用户。
 - (void)findLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
+/// 删除当前配置用户的 SDK 托管本地音频及其续传数据；不向设备发送命令。
+/// 以 serialNumber、mode、fileName 定位。不存在时成功；同一文件正在下载或实时落盘时返回 operationBlocked。
+- (void)deleteLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 查询指定录音模式的文件数量。
 /// \param mode Note 或 Call 文件分组。
 ///
@@ -730,12 +749,16 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// \param resume 默认 false，且不允许已有 .partial；true 仅在新的已确认会话中恢复同一目标及匹配的元数据。
 /// 续传偏移由已验证的原始字节和完整 Ogg 页恢复，不能使用 Ogg 文件大小代替。
 ///
+/// \param deleteSource 默认 false。true 时仅在最终 Ogg 校验成功后请求删除设备原文件；删除未确认则以错误结束，本地 Ogg 保留。
+///
 /// \param completion 主线程回调一次；成功返回完整 Ogg URL，失败返回错误，未完成路径由下载代理报告。
 ///
 ///
 /// returns:
 /// 本次下载的取消令牌，其 identifier 与进度的 operationID 一致。
+/// 兼容重载，默认保留设备原文件。
 - (WaveNoteOperation * _Nonnull)download:(WaveNoteFile * _Nonnull)file to:(NSURL * _Nonnull)destination transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume completion:(void (^ _Nonnull)(NSURL * _Nullable, WaveNoteError * _Nullable))completion;
+- (WaveNoteOperation * _Nonnull)download:(WaveNoteFile * _Nonnull)file to:(NSURL * _Nonnull)destination transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume deleteSource:(BOOL)deleteSource completion:(void (^ _Nonnull)(NSURL * _Nullable, WaveNoteError * _Nullable))completion;
 @end
 
 @class WaveNoteTransferProgress;
@@ -851,6 +874,10 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK24WaveNoteIdentityProvider_")
 /// \param completion 只有平台确认解绑成功才返回 nil。
 ///
 - (void)unbindWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+@optional
+/// R202 only: obtain the cloud-generated 1001 signature and the current user’s RSA key pair.
+/// Production implementations must request this material from the authenticated cloud service.
+- (void)authenticateDeviceWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteAuthenticationMaterial * _Nullable, WaveNoteError * _Nullable))completion;
 @end
 
 @protocol WaveNoteLiveAudioDelegate;
@@ -1828,6 +1855,18 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteAudioCodec, open) {
   WaveNoteAudioCodecOpus = 0,
 };
 
+@class NSString;
+/// R202 connection-scoped authentication material. The SDK never persists or logs these values.
+SWIFT_CLASS("_TtC11WaveNoteSDK30WaveNoteAuthenticationMaterial")
+@interface WaveNoteAuthenticationMaterial : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull serialSignatureBase64;
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPublicKeySPKIBase64;
+@property (nonatomic, readonly, copy) NSString * _Nonnull userPrivateKeyPKCS8Base64;
+- (nonnull instancetype)initWithSerialSignatureBase64:(NSString * _Nonnull)serialSignatureBase64 userPublicKeySPKIBase64:(NSString * _Nonnull)userPublicKeySPKIBase64 userPrivateKeyPKCS8Base64:(NSString * _Nonnull)userPrivateKeyPKCS8Base64 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 /// 平台绑定流程状态，与 BLE 是否已连接相互独立。
 typedef SWIFT_ENUM(NSInteger, WaveNoteBindingState, open) {
   WaveNoteBindingStateIdle = 0,
@@ -1878,7 +1917,6 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteConnectionState, open) {
   WaveNoteConnectionStateFailed = 7,
 };
 
-@class NSString;
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteDeviceType)
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteRuntimeStatus)
 /// 不可变设备状态快照；未知电量为 -1，未经连接校验的固件版本为 nil。
@@ -2119,11 +2157,19 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// 弱引用下载代理，进度用本地 operationID 区分。
 @property (nonatomic, weak) id <WaveNoteFilesDelegate> _Nullable delegate;
 /// 下载到当前用户的 SDK 托管目录。索引持久化成功后才回调；同名同大小复用缓存。
-/// resume 仅表示允许显式恢复已有任务，不会在超时后自动重试。新任务无需断点。
+/// 下载到当前用户的 SDK 托管目录。此兼容重载默认保留设备原文件。
 - (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
+/// 下载到当前用户的 SDK 托管目录。索引持久化成功后才回调；同名同大小复用缓存。
+/// resume 仅表示允许显式恢复已有任务，不会在超时后自动重试。新任务无需断点。
+/// \param deleteSource false 保留设备原文件；true 时仅在本地 Ogg 校验并提交索引后删除设备原文件。删除未获设备确认时回调错误，本地已完成音频保留。
+///
+- (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume deleteSource:(BOOL)deleteSource completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
 /// 查询当前配置用户在指定设备上的已完成音频；无需连接。无匹配项为 nil/nil，损坏返回错误。
 /// 在内部队列校验并修复可恢复的索引；主线程 completion 恰好一次。不会查询其他用户。
 - (void)findLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
+/// 删除当前配置用户的 SDK 托管本地音频及其续传数据；不向设备发送命令。
+/// 以 serialNumber、mode、fileName 定位。不存在时成功；同一文件正在下载或实时落盘时返回 operationBlocked。
+- (void)deleteLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 查询指定录音模式的文件数量。
 /// \param mode Note 或 Call 文件分组。
 ///
@@ -2167,12 +2213,16 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// \param resume 默认 false，且不允许已有 .partial；true 仅在新的已确认会话中恢复同一目标及匹配的元数据。
 /// 续传偏移由已验证的原始字节和完整 Ogg 页恢复，不能使用 Ogg 文件大小代替。
 ///
+/// \param deleteSource 默认 false。true 时仅在最终 Ogg 校验成功后请求删除设备原文件；删除未确认则以错误结束，本地 Ogg 保留。
+///
 /// \param completion 主线程回调一次；成功返回完整 Ogg URL，失败返回错误，未完成路径由下载代理报告。
 ///
 ///
 /// returns:
 /// 本次下载的取消令牌，其 identifier 与进度的 operationID 一致。
+/// 兼容重载，默认保留设备原文件。
 - (WaveNoteOperation * _Nonnull)download:(WaveNoteFile * _Nonnull)file to:(NSURL * _Nonnull)destination transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume completion:(void (^ _Nonnull)(NSURL * _Nullable, WaveNoteError * _Nullable))completion;
+- (WaveNoteOperation * _Nonnull)download:(WaveNoteFile * _Nonnull)file to:(NSURL * _Nonnull)destination transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume deleteSource:(BOOL)deleteSource completion:(void (^ _Nonnull)(NSURL * _Nullable, WaveNoteError * _Nullable))completion;
 @end
 
 @class WaveNoteTransferProgress;
@@ -2288,6 +2338,10 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK24WaveNoteIdentityProvider_")
 /// \param completion 只有平台确认解绑成功才返回 nil。
 ///
 - (void)unbindWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+@optional
+/// R202 only: obtain the cloud-generated 1001 signature and the current user’s RSA key pair.
+/// Production implementations must request this material from the authenticated cloud service.
+- (void)authenticateDeviceWithSerialNumber:(NSString * _Nonnull)serialNumber apiKey:(NSString * _Nonnull)apiKey userIdentifier:(NSString * _Nonnull)userIdentifier completion:(void (^ _Nonnull)(WaveNoteAuthenticationMaterial * _Nullable, WaveNoteError * _Nullable))completion;
 @end
 
 @protocol WaveNoteLiveAudioDelegate;
