@@ -132,7 +132,7 @@ private enum DemoRSA {
         configureLibrary()
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
-        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity, enableLiveAudio: false))
+        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity, enableLiveAudio: true))
     }
     func scan() {
         guard !flow.busy, !flow.ready else { return }
