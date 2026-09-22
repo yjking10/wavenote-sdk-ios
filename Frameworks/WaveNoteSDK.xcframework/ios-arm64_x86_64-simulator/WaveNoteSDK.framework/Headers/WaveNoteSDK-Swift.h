@@ -882,14 +882,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK17WaveNoteLiveAudio")
 @interface WaveNoteLiveAudio : WaveNoteFeature
 /// 弱引用数据与生命周期代理，宿主需保持其存活并快速处理回调。
 @property (nonatomic, weak) id <WaveNoteLiveAudioDelegate> _Nullable delegate;
-/// 设置设备边录边传开关并回读；此调用不会自动开始录音或创建接收操作。
-/// \param enabled true 开启边录边传，false 关闭；应在录音前配置。
-///
-/// \param completion 主线程回调一次；开关回读一致时为 nil，否则返回错误。
-///
-- (void)setEnabled:(BOOL)enabled completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-/// 开始接收实时流，可与录音控制共存；结束、取消、错误及落盘结果通过 delegate 返回。
-/// 需要边录边传时，宿主应先显式开启设备开关，并独立控制录音。
+/// 当前已推流时直接返回同一接收操作；断线重连或流停止后显式发送307恢复当前实时数据。
+/// 109开启的新录音会自动接收和回调，无需调用本方法；中途调用不回放历史数据。
 /// \param fileURL nil 表示仅交付原始数据；指定时须为不存在的本地 .ogg 文件且无已有 .partial。
 /// 宿主须准备父目录并维持文件访问权限；落盘要求流从位置 0 开始，中途加入仅支持原始回调。
 ///
@@ -899,7 +893,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK17WaveNoteLiveAudio")
 /// returns:
 /// 本次流的取消令牌，其 identifier 与音频片段和生命周期事件的 operationID 一致。
 - (WaveNoteOperation * _Nonnull)startWithFileURL:(NSURL * _Nullable)fileURL completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-/// 请求停止接收，等待设备的流结束通知；不会隐式停止录音或修改边录边传开关。
+/// 发送309停止整条实时流并等待308；同时停止托管追加，不会停止录音或修改109。
 /// 缺少结束通知时返回错误，未完成 Ogg 保留为 .partial，不将写入指令成功视为流已结束。
 /// \param completion 主线程回调一次；收到结束依据且必要的 Ogg 收尾成功后为 nil，否则返回错误。
 ///
@@ -1196,7 +1190,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// 已取消的绑定 completion 会在主线程收到 operationCancelled，后续蓝牙开启不会自行重连。
 - (void)disconnectDevice;
 /// 解绑当前已就绪且空闲的设备：平台确认成功后清理本地记录，再断开 BLE。
-/// 失败时保留现有连接及记录；进度和错误通过 Delegate 返回，不发送设备还原命令。
+/// R202 先取消硬件激活并确认未激活，再请求平台解绑；R201 直接请求平台解绑。
+/// 失败时保留现有连接及记录；硬件阶段失败不会调用 Provider。
 - (void)unbindCurrentDevice;
 /// R202 可选择先清空设备内容并确认硬件未激活，再请求平台解绑。
 /// 硬件清空成功会断开 BLE；后续云端解绑失败时，设备内容无法恢复。
@@ -1219,6 +1214,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 @property (nonatomic, readonly) BOOL enableAutoReconnect;
 @property (nonatomic, readonly) enum WaveNoteReconnectPolicy reconnectPolicy;
 @property (nonatomic, readonly, strong) id <WaveNoteIdentityProvider> _Nullable identityProvider;
+@property (nonatomic, readonly) BOOL enableLiveAudio;
 /// 构建配置，不在初始化时发起网络请求；登录凭据只由宿主 Provider 管理。
 /// \param userIdentifier 非空用户标识，用于归属查询及隔离本地重连记录。
 ///
@@ -1228,7 +1224,9 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 ///
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
-- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
+/// 兼容既有调用；未显式配置时默认关闭边录边传。
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2354,14 +2352,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK17WaveNoteLiveAudio")
 @interface WaveNoteLiveAudio : WaveNoteFeature
 /// 弱引用数据与生命周期代理，宿主需保持其存活并快速处理回调。
 @property (nonatomic, weak) id <WaveNoteLiveAudioDelegate> _Nullable delegate;
-/// 设置设备边录边传开关并回读；此调用不会自动开始录音或创建接收操作。
-/// \param enabled true 开启边录边传，false 关闭；应在录音前配置。
-///
-/// \param completion 主线程回调一次；开关回读一致时为 nil，否则返回错误。
-///
-- (void)setEnabled:(BOOL)enabled completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-/// 开始接收实时流，可与录音控制共存；结束、取消、错误及落盘结果通过 delegate 返回。
-/// 需要边录边传时，宿主应先显式开启设备开关，并独立控制录音。
+/// 当前已推流时直接返回同一接收操作；断线重连或流停止后显式发送307恢复当前实时数据。
+/// 109开启的新录音会自动接收和回调，无需调用本方法；中途调用不回放历史数据。
 /// \param fileURL nil 表示仅交付原始数据；指定时须为不存在的本地 .ogg 文件且无已有 .partial。
 /// 宿主须准备父目录并维持文件访问权限；落盘要求流从位置 0 开始，中途加入仅支持原始回调。
 ///
@@ -2371,7 +2363,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK17WaveNoteLiveAudio")
 /// returns:
 /// 本次流的取消令牌，其 identifier 与音频片段和生命周期事件的 operationID 一致。
 - (WaveNoteOperation * _Nonnull)startWithFileURL:(NSURL * _Nullable)fileURL completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-/// 请求停止接收，等待设备的流结束通知；不会隐式停止录音或修改边录边传开关。
+/// 发送309停止整条实时流并等待308；同时停止托管追加，不会停止录音或修改109。
 /// 缺少结束通知时返回错误，未完成 Ogg 保留为 .partial，不将写入指令成功视为流已结束。
 /// \param completion 主线程回调一次；收到结束依据且必要的 Ogg 收尾成功后为 nil，否则返回错误。
 ///
@@ -2668,7 +2660,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// 已取消的绑定 completion 会在主线程收到 operationCancelled，后续蓝牙开启不会自行重连。
 - (void)disconnectDevice;
 /// 解绑当前已就绪且空闲的设备：平台确认成功后清理本地记录，再断开 BLE。
-/// 失败时保留现有连接及记录；进度和错误通过 Delegate 返回，不发送设备还原命令。
+/// R202 先取消硬件激活并确认未激活，再请求平台解绑；R201 直接请求平台解绑。
+/// 失败时保留现有连接及记录；硬件阶段失败不会调用 Provider。
 - (void)unbindCurrentDevice;
 /// R202 可选择先清空设备内容并确认硬件未激活，再请求平台解绑。
 /// 硬件清空成功会断开 BLE；后续云端解绑失败时，设备内容无法恢复。
@@ -2691,6 +2684,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 @property (nonatomic, readonly) BOOL enableAutoReconnect;
 @property (nonatomic, readonly) enum WaveNoteReconnectPolicy reconnectPolicy;
 @property (nonatomic, readonly, strong) id <WaveNoteIdentityProvider> _Nullable identityProvider;
+@property (nonatomic, readonly) BOOL enableLiveAudio;
 /// 构建配置，不在初始化时发起网络请求；登录凭据只由宿主 Provider 管理。
 /// \param userIdentifier 非空用户标识，用于归属查询及隔离本地重连记录。
 ///
@@ -2700,7 +2694,9 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 ///
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
-- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
+/// 兼容既有调用；未显式配置时默认关闭边录边传。
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end

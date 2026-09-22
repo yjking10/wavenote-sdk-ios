@@ -4,7 +4,7 @@
 void ConfigureWaveNote(NSString *user, id<WaveNoteIdentityProvider> provider, id<WaveNoteSDKDelegate> delegate) {
     WaveNoteSDK *sdk = WaveNoteSDK.sharedSDK;
     sdk.delegate = delegate;
-    [sdk configureWithConfiguration:[[WaveNoteSDKConfiguration alloc] initWithUserIdentifier:user enableAutoReconnect:NO reconnectPolicy:WaveNoteReconnectPolicyNone identityProvider:provider]];
+    [sdk configureWithConfiguration:[[WaveNoteSDKConfiguration alloc] initWithUserIdentifier:user enableAutoReconnect:NO reconnectPolicy:WaveNoteReconnectPolicyNone identityProvider:provider enableLiveAudio:NO]];
 }
 void ClearWaveNoteForLogout(void) { [WaveNoteSDK.sharedSDK clearConfiguration]; }
 void QueryWaveNoteBattery(void (^completion)(WaveNoteSettingsSnapshot *, WaveNoteError *)) {

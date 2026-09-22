@@ -1,6 +1,6 @@
 # wavenote-sdk-ios
 
-WaveNote iOS 原生 Demo，演示扫描绑定连接、设备设置、空闲时文件同步、已完成/总文件数、逐文件进度及原生音频播放。使用 **0.2.0-alpha.1** SDK 候选版本。
+WaveNote iOS 原生 Demo，演示扫描绑定连接、设备设置、空闲时文件同步、已完成/总文件数、逐文件进度及原生音频播放。使用 **0.2.0** SDK 版本。
 
 ## 快速集成
 
@@ -22,7 +22,17 @@ open WaveNoteDemo.xcodeproj
 
 ## R202 开发鉴权配置
 
-仅为联调，可在本机未提交的 `App/Info.plist` 中填入 `DEV_CLOUD_PRIVATE_KEY_PKCS8_B64`、`DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64` 和 `DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64`。Demo 使用云私钥对 SN 做 RS256 签名，并将用户密钥交给 SDK 完成 1001–1003。严禁将生产云私钥或用户私钥放入 App、日志或仓库；生产版本必须向云端请求签名和密钥材料。
+运行 Demo 前，复制自己的本地密钥配置：
+
+`App/Config/Secrets.example.plist`
+
+↓ copy
+
+`App/Config/Secrets.plist`
+
+↓ 填入自己的开发私钥
+
+填写 `DEV_CLOUD_PRIVATE_KEY_PKCS8_B64`、`DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64` 和 `DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64`。`Secrets.plist` 已被 Git 忽略，Demo 会从 App bundle 读取它。Demo 使用云私钥对 SN 做 RS256 签名，并将用户密钥交给 SDK 完成 1001–1003。严禁将生产云私钥或用户私钥放入 App、日志或仓库；生产版本必须向云端请求签名和密钥材料。
 
 ## 主要调用顺序
 

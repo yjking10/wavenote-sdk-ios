@@ -275,7 +275,6 @@ import _SwiftConcurrencyShims
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteLiveAudio : WaveNoteSDK::WaveNoteFeature {
   @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteLiveAudioDelegate)?
-  @objc @_Concurrency::MainActor final public func setEnabled(_ enabled: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @discardableResult
   @_Concurrency::MainActor final public func start(fileURL: Foundation::URL? = nil, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc @_Concurrency::MainActor final public func stop(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
@@ -489,7 +488,9 @@ import _SwiftConcurrencyShims
   @objc final public let enableAutoReconnect: Swift::Bool
   @objc final public let reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy
   @objc final public let identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)?
-  @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
+  @objc final public let enableLiveAudio: Swift::Bool
+  @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:enableLiveAudio:) public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil, enableLiveAudio: Swift::Bool)
+  @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) convenience public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
   @objc deinit
 }
 @objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteScanToken : ObjectiveC::NSObject {

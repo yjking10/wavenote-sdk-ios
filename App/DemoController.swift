@@ -3,6 +3,41 @@ import CryptoKit
 import Security
 import WaveNoteSDK
 
+private enum Secrets {
+    private static let values: [String: Any] = {
+        guard let url = Bundle.main.url(forResource: "Secrets", withExtension: "plist") else {
+            fatalError("Secrets.plist not found")
+        }
+
+        guard let data = try? Data(contentsOf: url),
+              let plist = try? PropertyListSerialization.propertyList(from: data, format: nil),
+              let dictionary = plist as? [String: Any] else {
+            fatalError("Unable to read Secrets.plist")
+        }
+
+        return dictionary
+    }()
+
+    static var devicePrivateKey: String {
+        value(for: "DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64")
+    }
+
+    static var devicePublicKey: String {
+        value(for: "DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64")
+    }
+
+    static var serverPrivateKey: String {
+        value(for: "DEV_CLOUD_PRIVATE_KEY_PKCS8_B64")
+    }
+
+    private static func value(for key: String) -> String {
+        guard let value = values[key] as? String, !value.isEmpty else {
+            fatalError("\(key) not configured")
+        }
+        return value
+    }
+}
+
 /// 模拟身份在 Debug / Release 均明确启用，仅用于独立演示。
 final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     private let store: DemoOwnershipStore
@@ -28,9 +63,7 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     /// never ship a production cloud private key in an App bundle, log, or repository.
     func fetchDeviceSignature(serialNumber: String, userIdentifier: String,
                               completion: @escaping (WaveNoteDeviceSignature?, WaveNoteError?) -> Void) {
-        guard let cloud = Bundle.main.object(forInfoDictionaryKey: "DEV_CLOUD_PRIVATE_KEY_PKCS8_B64") as? String,
-              !cloud.isEmpty,
-              let key = DemoRSA.privateKey(pkcs8Base64: cloud),
+        guard let key = DemoRSA.privateKey(pkcs8Base64: Secrets.serverPrivateKey),
               let signature = DemoRSA.sign(serialNumber, key: key) else {
             completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "deviceSignature", message: "缺少本地开发签名配置")); return
         }
@@ -38,12 +71,7 @@ final class DemoIdentityProvider: NSObject, WaveNoteIdentityProvider {
     }
     func fetchUserKeyPair(userIdentifier: String,
                           completion: @escaping (WaveNoteUserKeyPair?, WaveNoteError?) -> Void) {
-        guard let userPublic = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PUBLIC_KEY_SPKI_B64") as? String,
-              let userPrivate = Bundle.main.object(forInfoDictionaryKey: "DEV_AUTH_USER_PRIVATE_KEY_PKCS8_B64") as? String,
-              !userPublic.isEmpty, !userPrivate.isEmpty else {
-            completion(nil, WaveNoteError(.identityProviderUnavailable, operation: "userKeyPair", message: "缺少本地开发用户密钥配置")); return
-        }
-        completion(WaveNoteUserKeyPair(userPublicKeySPKIBase64: userPublic, userPrivateKeyPKCS8Base64: userPrivate), nil)
+        completion(WaveNoteUserKeyPair(userPublicKeySPKIBase64: Secrets.devicePublicKey, userPrivateKeyPKCS8Base64: Secrets.devicePrivateKey), nil)
     }
 }
 
@@ -104,7 +132,7 @@ private enum DemoRSA {
         configureLibrary()
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
-        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity))
+        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity, enableLiveAudio: false))
     }
     func scan() {
         guard !flow.busy, !flow.ready else { return }

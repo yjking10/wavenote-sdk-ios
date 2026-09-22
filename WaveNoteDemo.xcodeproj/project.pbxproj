@@ -11,6 +11,8 @@
 		16742C1EE7D41E7875139B13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B241E8F41B2EE541C981B00D /* AppDelegate.swift */; };
 		2010861D459F1BA8E38CE27E /* WaveNoteSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */; };
+		39DF028E306266ED00592854 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39DF028D306266ED00592854 /* Secrets.plist */; };
+		39DF02903062670C00592854 /* Secrets.example.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39DF028F3062670C00592854 /* Secrets.example.plist */; };
 		3EE7C7FA231B37FEE0E9CE8D /* DemoAudioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E77F5B987CA7F0572794CFE /* DemoAudioTests.swift */; };
 		4439E55BEF98FDFBA5A1B10E /* WaveNoteSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */; };
 		9CC0736F739E171985FBA31A /* DemoFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */; };
@@ -54,6 +56,8 @@
 		0A6F43D359DC6A7839ADA2F6 /* ObjCIntegration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ObjCIntegration.m; sourceTree = "<group>"; };
 		0B93827F530A3D9D1ACB2A60 /* DemoFlowTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoFlowTests.swift; sourceTree = "<group>"; };
 		2BCBFD0EB91403DE0191D674 /* DemoController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoController.swift; sourceTree = "<group>"; };
+		39DF028D306266ED00592854 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
+		39DF028F3062670C00592854 /* Secrets.example.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.example.plist; sourceTree = "<group>"; };
 		3D2734274CBE13C61F234325 /* HTTPIdentityProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HTTPIdentityProvider.swift; sourceTree = "<group>"; };
 		5793584D36346748C49273A6 /* DemoFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoFlow.swift; sourceTree = "<group>"; };
 		661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SwiftIntegration.swift; sourceTree = "<group>"; };
@@ -110,6 +114,15 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
+		39DF028A3062669800592854 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				39DF028D306266ED00592854 /* Secrets.plist */,
+				39DF028F3062670C00592854 /* Secrets.example.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		49BE4B1873FC422CF7594AA3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +173,7 @@
 		EC65A138972AAB825399A21F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				39DF028A3062669800592854 /* Config */,
 				B241E8F41B2EE541C981B00D /* AppDelegate.swift */,
 				2BCBFD0EB91403DE0191D674 /* DemoController.swift */,
 				AABB00000000000000000003 /* DemoNativePlayer.swift */,
@@ -242,6 +256,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39DF02903062670C00592854 /* Secrets.example.plist in Resources */,
+				39DF028E306266ED00592854 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
