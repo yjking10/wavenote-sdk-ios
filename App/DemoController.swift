@@ -130,6 +130,7 @@ private enum DemoRSA {
         super.init()
         sdk.delegate = self; sdk.deviceSettings.delegate = self; sdk.recording.delegate = self; sdk.files.delegate = self
         configureLibrary()
+        print("[WaveNoteDemo] SDK version=\(WaveNoteSDK.sdkVersion)")
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
         sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity, enableLiveAudio: true))

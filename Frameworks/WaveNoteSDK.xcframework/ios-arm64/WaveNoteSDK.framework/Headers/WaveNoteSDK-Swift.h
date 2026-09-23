@@ -1116,6 +1116,9 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteRuntimeStatus, open) {
 /// 每次重新配置都会更新操作代际并取消旧任务；BLE 与协议处理由内部串行队列执行。
 SWIFT_CLASS("_TtC11WaveNoteSDK11WaveNoteSDK")
 @interface WaveNoteSDK : NSObject
+/// 当前 SDK 的发布版本；与仓库根目录 VERSION 一致。
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull sdkVersion;)
++ (NSString * _Nonnull)sdkVersion SWIFT_WARN_UNUSED_RESULT;
 /// 应用共享实例；公开调用和 Delegate 回调均要求在主线程执行。
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK * _Nonnull sharedSDK;)
 + (WaveNoteSDK * _Nonnull)sharedSDK SWIFT_WARN_UNUSED_RESULT;

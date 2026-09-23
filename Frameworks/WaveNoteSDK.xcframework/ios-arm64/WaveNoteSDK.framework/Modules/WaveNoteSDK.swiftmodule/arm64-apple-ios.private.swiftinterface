@@ -508,6 +508,7 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didReceive error: WaveNoteSDK::WaveNoteError)
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteSDK : ObjectiveC::NSObject {
+  @objc @_Concurrency::MainActor public static let sdkVersion: Swift::String
   @objc(sharedSDK) @_Concurrency::MainActor public static let shared: WaveNoteSDK::WaveNoteSDK
   @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteSDKDelegate)?
   @objc @_Concurrency::MainActor final public var bluetoothState: WaveNoteSDK::WaveNoteBluetoothState {

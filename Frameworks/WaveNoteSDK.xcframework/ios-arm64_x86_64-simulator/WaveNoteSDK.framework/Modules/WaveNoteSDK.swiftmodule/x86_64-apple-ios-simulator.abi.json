@@ -20291,6 +20291,61 @@
         "children": [
           {
             "kind": "Var",
+            "name": "sdkVersion",
+            "printedName": "sdkVersion",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(cpy)sdkVersion",
+            "mangledName": "$s11WaveNoteSDKAAC10sdkVersionSSvpZ",
+            "moduleName": "WaveNoteSDK",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "Custom",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(cm)sdkVersion",
+                "mangledName": "$s11WaveNoteSDKAAC10sdkVersionSSvgZ",
+                "moduleName": "WaveNoteSDK",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "shared",
             "printedName": "shared",
             "children": [
@@ -23462,99 +23517,106 @@
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 430,
+      "length": 7,
+      "value": "\"0.2.1\""
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Array",
-      "offset": 842,
+      "offset": 959,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Dictionary",
-      "offset": 2222,
+      "offset": 2339,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 2263,
+      "offset": 2380,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "StringLiteral",
-      "offset": 5943,
+      "offset": 6060,
       "length": 21,
       "value": "\"cn.wavenote.storage\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 8141,
+      "offset": 8258,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 8232,
+      "offset": 8349,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 8273,
+      "offset": 8390,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 8341,
+      "offset": 8458,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Array",
-      "offset": 8403,
+      "offset": 8520,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 8913,
+      "offset": 9030,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 14710,
+      "offset": 14827,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 44376,
+      "offset": 44493,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 44412,
+      "offset": 44529,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 44448,
+      "offset": 44565,
       "length": 5,
       "value": "false"
     }
