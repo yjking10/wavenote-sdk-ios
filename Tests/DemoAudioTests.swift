@@ -62,14 +62,42 @@ final class DemoAudioTests: XCTestCase {
         XCTAssertEqual(json["localPath"] as? String, "/one.ogg")
         XCTAssertEqual((json["file"] as? [String: Any])?["name"] as? String, "one.opus")
     }
-    func testPositionFailureSkipsFileUntilReconnect() {
+    func testTransportPreparationRunsAfterBothListsAndBeforeFirstDownload() {
+        let lib = configured(); var calls: [String] = []; var prepared: ((String?) -> Void)?
+        lib.count = { mode, done in calls.append("count\(mode)"); done(mode == 1 ? 1 : 0, nil) }
+        lib.page = { _, _, done in calls.append("page"); done([self.file], nil) }
+        lib.prepareDownloads = { done in calls.append("prepare"); prepared = done }
+        lib.download = { _, _, _ in calls.append("download"); return {} }
+        XCTAssertTrue(lib.start())
+        XCTAssertEqual(calls, ["count1", "page", "count2", "prepare"])
+        prepared?(nil)
+        XCTAssertEqual(calls.last, "download")
+    }
+    func testTransportPreparationFailureEndsWithoutDownload() {
+        let lib = configured(); var finished = 0
+        lib.prepareDownloads = { $0("Wi-Fi 未就绪") }
+        lib.download = { _, _, _ in XCTFail("must not download"); return {} }
+        lib.finished = { finished += 1 }
+        XCTAssertTrue(lib.start())
+        XCTAssertFalse(lib.busy); XCTAssertEqual(lib.message, "Wi-Fi 未就绪"); XCTAssertEqual(finished, 1)
+    }
+    func testManualStopDuringTransportPreparationDoesNotStartDownload() {
+        let lib = configured(); var prepared: ((String?) -> Void)?
+        lib.prepareDownloads = { prepared = $0 }
+        lib.download = { _, _, _ in XCTFail("must not download"); return {} }
+        XCTAssertTrue(lib.start()); lib.stop(); XCTAssertTrue(lib.busy)
+        prepared?(nil)
+        XCTAssertFalse(lib.busy); XCTAssertEqual(lib.message, "同步已停止，可点击重新同步")
+    }
+    func testPositionFailureSkipsCurrentRunAndManualSyncRetriesFile() {
         let lib = configured()
         var downloads: [String] = []
         lib.count = { mode, done in done(mode == 1 ? 2 : 0, nil) }
         lib.page = { mode, _, done in done(mode == 1 ? [self.file, DemoAudioFile(name: "two.opus", size: 7, mode: 1)] : [], nil) }
         lib.download = { file, _, done in
             downloads.append(file.name)
-            done(file.name == "one.opus" ? nil : "/two.ogg", file.name == "one.opus" ? "downloadPositionMismatch" : nil)
+            let firstFailure = file.name == "one.opus" && downloads.filter { $0 == "one.opus" }.count == 1
+            done(firstFailure ? nil : "/\(file.name).ogg", firstFailure ? "downloadPositionMismatch" : nil)
             return {}
         }
         XCTAssertTrue(lib.start())
@@ -78,7 +106,9 @@ final class DemoAudioTests: XCTestCase {
         XCTAssertEqual(lib.completedCount, 1)
         XCTAssertTrue(lib.message.contains("失败 1"))
         XCTAssertTrue(lib.start())
-        XCTAssertEqual(downloads, ["one.opus", "two.opus", "two.opus"])
+        XCTAssertEqual(downloads, ["one.opus", "two.opus", "one.opus", "two.opus"])
+        XCTAssertEqual(lib.failedCount, 0)
+        XCTAssertEqual(lib.completedCount, 2)
     }
     func testRecordingAndUnknownNeverList() {
         for value in [active, DemoRecordingValue(state: 3, name: nil, mode: nil), DemoRecordingValue(state: 0, name: nil, mode: nil)] {

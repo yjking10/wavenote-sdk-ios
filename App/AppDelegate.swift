@@ -58,7 +58,7 @@ final class HomeController: UITableViewController {
         if section == 1 && model.flow.ready { return model.player.message.isEmpty ? "音频仅保存在本机。左滑已完成文件可删除本地音频。" : model.player.message }
         return section == 0 ? "演示身份：本地模拟。绑定记录仅在本机保存，两端不共享。" : "选择设备后绑定并连接；已绑定设备直接连接。"
     }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? 5 : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? 6 : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
     override func tableView(_ tableView: UITableView, cellForRowAt path: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.numberOfLines = 0; cell.detailTextLabel?.numberOfLines = 0
@@ -96,9 +96,20 @@ final class HomeController: UITableViewController {
                 }
             }
         } else if path.section == 0 {
-            if path.row == 3 || path.row == 4 {
+            if path.row == 3 {
+                cell.textLabel?.text = model.wifiButtonTitle
+                cell.detailTextLabel?.text = model.wifiButtonDetail
+                cell.textLabel?.textColor = model.wifiTransferActive ? .systemRed : view.tintColor
+                let canOpen = !model.flow.busy && !model.library.busy && model.sdk.recording.snapshot.state == .stopped
+                cell.isUserInteractionEnabled = model.wifiTransferActive || canOpen
+                cell.textLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.detailTextLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.accessibilityIdentifier = "wifiTransfer"
+                return cell
+            }
+            if path.row == 4 || path.row == 5 {
                 let state = model.sdk.recording.snapshot.state
-                let starting = path.row == 3
+                let starting = path.row == 4
                 cell.textLabel?.text = starting ? "开始录音" : "停止录音"
                 cell.detailTextLabel?.text = starting ? "设备空闲时开始录音" : "结束正在进行或已暂停的录音"
                 cell.textLabel?.textColor = starting ? view.tintColor : .systemRed
@@ -138,8 +149,9 @@ final class HomeController: UITableViewController {
         } else if path.section == 0 {
             if path.row == 0 { model.scan() }
             if path.row == 1 && model.sdk.bluetoothState == .unauthorized, let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
-            if path.row == 3 { model.startRecording() }
-            if path.row == 4 { model.stopRecording() }
+            if path.row == 3 { model.toggleWiFiTransfer() }
+            if path.row == 4 { model.startRecording() }
+            if path.row == 5 { model.stopRecording() }
         } else if !model.devices.isEmpty { model.select(model.devices[path.row]) }
     }
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

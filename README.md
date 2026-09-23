@@ -18,7 +18,7 @@
 | 应用退到后台后继续作为蓝牙中心设备工作 | `UIBackgroundModes` 中加入 `bluetooth-central`。 | 仅需要后台蓝牙时 |
 | 连接设备热点或进行局域网传输 | `NSLocalNetworkUsageDescription`，填写面向用户的本地网络用途说明。 | 仅使用热点/局域网传输时 |
 
-蓝牙授权由系统在首次使用时请求。当前 Demo 不请求麦克风、相册、文件或定位权限；Demo 的 [Info.plist](App/Info.plist) 可作为配置参考。
+Wi-Fi 快传还需要在 Signing & Capabilities 中启用 **Hotspot Configuration**。当前实现不读取手机当前连接的 SSID/BSSID，因此不需要 **Access WiFi Information** capability。蓝牙授权由系统在首次使用时请求。当前 Demo 不请求麦克风、相册、文件或定位权限；Demo 的 [Info.plist](App/Info.plist) 可作为配置参考。
 
 ## 运行 Demo 的开发凭据
 

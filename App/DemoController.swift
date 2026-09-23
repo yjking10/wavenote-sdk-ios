@@ -100,7 +100,7 @@ private enum DemoRSA {
     }
 }
 
-@MainActor final class DemoController: NSObject, WaveNoteSDKDelegate, WaveNoteDeviceSettingsDelegate, WaveNoteRecordingDelegate, WaveNoteFilesDelegate {
+@MainActor final class DemoController: NSObject, WaveNoteSDKDelegate, WaveNoteDeviceSettingsDelegate, WaveNoteRecordingDelegate, WaveNoteFilesDelegate, WaveNoteWiFiDelegate {
     let sdk = WaveNoteSDK.shared
     let identity = DemoIdentityProvider()
     let flow = DemoFlow()
@@ -115,12 +115,32 @@ private enum DemoRSA {
     private var oggStartedAt: TimeInterval?
     private var progressID: UUID?
     private var progressCallback: ((Int64) -> Void)?
+    private var syncTransport: WaveNoteTransferTransport = .bluetooth
+    private var syncSerialNumber: String?
+    private var wifiWorkflow = false
+    private var wifiOpenOperation: WaveNoteOperation?
+    private var wifiResult = ""
     var changed: (() -> Void)?
     var devices: [WaveNoteDiscoveredDevice] = []
     var snapshot: WaveNoteSettingsSnapshot?
     var mode: Int?
     var status = "点击开始扫描，选择身边的 Note 设备。"
     var bluetooth = "正在检查蓝牙状态"
+    var wifiTransferActive: Bool { wifiWorkflow }
+    var wifiButtonTitle: String { wifiWorkflow ? "关闭 Wi-Fi 快传" : "使用 Wi-Fi 快传" }
+    var wifiButtonDetail: String {
+        switch sdk.wifi.snapshot.state {
+        case .enabling: return "正在请求设备开启热点…"
+        case .joining: return "正在加入设备热点…"
+        case .connecting: return "正在连接设备 TCP…"
+        case .ready: return library.busy ? "正在通过 Wi-Fi 同步；点击可停止并恢复蓝牙" : "Wi-Fi 已就绪；点击关闭并恢复蓝牙"
+        case .closing: return "正在关闭 Wi-Fi 快传…"
+        case .restoringBluetooth: return "Wi-Fi 已关闭，正在恢复蓝牙…"
+        case .failed: return "Wi-Fi 快传失败，正在恢复蓝牙"
+        case .off: return "先通过蓝牙读取列表，再以 Wi-Fi 下载；完成后自动恢复蓝牙"
+        @unknown default: return "Wi-Fi 快传状态未知"
+        }
+    }
     private var scanning = false
     private var scanGeneration = 0
     private var unbinding = false
@@ -128,12 +148,12 @@ private enum DemoRSA {
     private var erasedDeviceFiles = false
     override init() {
         super.init()
-        sdk.delegate = self; sdk.deviceSettings.delegate = self; sdk.recording.delegate = self; sdk.files.delegate = self
+        sdk.delegate = self; sdk.deviceSettings.delegate = self; sdk.recording.delegate = self; sdk.files.delegate = self; sdk.wifi.delegate = self
         configureLibrary()
         print("[WaveNoteDemo] SDK version=\(WaveNoteSDK.sdkVersion)")
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
-        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: false, identityProvider: identity, enableLiveAudio: true))
+        sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: true, identityProvider: identity, enableLiveAudio: true))
     }
     func scan() {
         guard !flow.busy, !flow.ready else { return }
@@ -224,6 +244,19 @@ private enum DemoRSA {
         guard state == .recording || state == .paused else { status = "录音状态未知，请稍后重试。"; changed?(); return }
         toggleRecording()
     }
+    func toggleWiFiTransfer() {
+        if wifiWorkflow {
+            status = "正在停止 Wi-Fi 传输，随后恢复蓝牙…"
+            if library.busy { library.stop() }
+            if [.enabling, .joining, .connecting].contains(sdk.wifi.snapshot.state) { wifiOpenOperation?.cancel() }
+            else if !library.busy { closeWiFiAfterSync() }
+            changed?(); return
+        }
+        guard flow.ready, sdk.recording.snapshot.state == .stopped, !library.busy else {
+            status = "请等待设备空闲且当前同步完成后再开启 Wi-Fi 快传。"; changed?(); return
+        }
+        startSync(transport: .wifi)
+    }
     func disconnect() { guard !flow.busy else { return }; sdk.disconnectDevice() }
     func unbind(eraseDeviceFiles: Bool = false) {
         guard flow.beginSetting() != nil else { return }
@@ -241,7 +274,23 @@ private enum DemoRSA {
     func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateDiscoveredDevices values: [WaveNoteDiscoveredDevice]) { devices = values; changed?() }
     func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeConnectionState state: WaveNoteConnectionState, device: WaveNoteDevice?) {
         if state == .disconnected && flow.selecting { return }
+        if wifiWorkflow, state != .ready {
+            if state == .failed, !library.busy, sdk.wifi.snapshot.state != .ready, sdk.wifi.snapshot.state != .closing {
+                let result = wifiResult.isEmpty ? library.message : wifiResult
+                wifiWorkflow = false; wifiOpenOperation = nil; wifiResult = ""
+                finishLibraryFlow(); resetAudio(); flow.invalidate()
+                status = "\(result)；Wi-Fi 已关闭，但蓝牙恢复失败，请重新扫描连接。"
+            } else if state == .connecting || state == .discoveringServices || state == .reconnecting {
+                status = "Wi-Fi 已关闭，正在恢复蓝牙连接…"
+            } else {
+                status = state == .failed ? "Wi-Fi 切换期间蓝牙连接失败，等待恢复…" : wifiButtonDetail
+            }
+            changed?(); return
+        }
         if state == .ready {
+            if wifiWorkflow, !library.busy, ![.ready, .closing].contains(sdk.wifi.snapshot.state) {
+                finishWiFiWorkflow(); return
+            }
             if !flow.ready { flow.connected(); snapshot = nil; mode = nil; audioSession += 1; library.invalidate(); observeRecording(sdk.recording.snapshot); scheduleSync() }
             status = "已连接，点击顶部 SN 查看设备设置。"
         } else if state == .disconnected || state == .failed {
@@ -266,6 +315,19 @@ private enum DemoRSA {
     }
     func deviceSettings(_ settings: WaveNoteDeviceSettings, didUpdate value: WaveNoteSettingsSnapshot) { guard flow.ready else { return }; snapshot = value; changed?() }
     func recording(_ recording: WaveNoteRecording, didUpdate value: WaveNoteRecordingSnapshot) { guard flow.ready else { return }; mode = value.mode?.intValue; observeRecording(value); changed?() }
+    func wifi(_ wifi: WaveNoteWiFi, didUpdate value: WaveNoteWiFiSnapshot) {
+        guard wifiWorkflow else { return }
+        switch value.state {
+        case .ready: status = "Wi-Fi 已连接，开始传输文件。"
+        case .closing: status = "正在关闭 Wi-Fi 快传…"
+        case .restoringBluetooth: status = "Wi-Fi 已关闭，正在恢复蓝牙连接…"
+        case .failed: status = value.error.map(Self.errorText) ?? "Wi-Fi 快传失败，正在恢复蓝牙。"
+        case .off:
+            if sdk.connectionState == .ready, !library.busy { finishWiFiWorkflow(); return }
+        default: status = wifiButtonDetail
+        }
+        changed?()
+    }
 }
 
 @MainActor extension DemoController {
@@ -275,7 +337,12 @@ private enum DemoRSA {
         player.changed = { [weak self] in self?.changed?() }
         library.finished = { [weak self] in
             guard let self else { return }
-            if let token = self.libraryToken { _ = self.flow.finish(token) }; self.libraryToken = nil; self.changed?()
+            if self.wifiWorkflow {
+                self.wifiResult = self.library.message
+                self.closeWiFiAfterSync()
+            } else {
+                self.finishLibraryFlow()
+            }
         }
         library.readRecording = { [weak self] done in
             self?.sdk.recording.refresh { value, error in
@@ -288,8 +355,18 @@ private enum DemoRSA {
                 done(values?.map { DemoAudioFile(name: $0.name, size: $0.size, mode: $0.mode.rawValue) }, error.map(Self.errorText))
             }
         }
+        library.prepareDownloads = { [weak self] done in
+            guard let self else { done("连接已失效"); return }
+            guard self.syncTransport == .wifi else { done(nil); return }
+            self.status = "文件列表已读取，正在开启 Wi-Fi 快传…"; self.changed?()
+            self.wifiOpenOperation = self.sdk.wifi.open { [weak self] error in
+                guard let self else { return }
+                self.wifiOpenOperation = nil
+                done(error.map(Self.errorText))
+            }
+        }
         library.download = { [weak self] file, progress, done in
-            guard let self, let sn = self.sdk.connectedDevice?.serialNumber else { done(nil, "连接已失效"); return {} }
+            guard let self, let sn = self.syncSerialNumber else { done(nil, "连接已失效"); return {} }
             let session = self.audioSession
             self.library.phase(file: file, text: "检查断点")
             var cancelled = false
@@ -302,7 +379,7 @@ private enum DemoRSA {
                 if let error, error.errorCode != .fileIOFailed { done(nil, Self.errorText(error)); return }
                 if let error { print("[WaveNoteDemo][AudioCache] cache unavailable; redownload operation=\(error.operation) code=\(error.code)") }
                 if let cached, cached.rawBytes == file.size { done(cached.url.path, nil); return }
-                operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), resume: true) { [weak self] audio, error in
+                operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), transport: self.syncTransport, resume: true, deleteSource: true) { [weak self] audio, error in
                     guard let self, self.audioSession == session else { return }
                     self.logOggDuration(result: error == nil && audio != nil ? "completed" : error?.code == WaveNoteErrorCode.operationCancelled.rawValue ? "cancelled" : "failed")
                     self.progressID = nil; self.progressCallback = nil; self.progressFile = nil
@@ -325,9 +402,49 @@ private enum DemoRSA {
     }
 
     func syncFiles() {
-        guard flow.ready, !library.isRecording, !library.busy, let token = flow.beginSetting() else { return }
+        startSync(transport: .bluetooth)
+    }
+    private func startSync(transport: WaveNoteTransferTransport) {
+        guard flow.ready, !library.isRecording, !library.busy, let serial = sdk.connectedDevice?.serialNumber,
+              let token = flow.beginSetting() else { return }
+        syncTransport = transport; syncSerialNumber = serial; wifiWorkflow = transport == .wifi
         scheduledSync += 1; libraryToken = token
-        if !library.start() { _ = flow.finish(token); libraryToken = nil }
+        if !library.start() {
+            _ = flow.finish(token); libraryToken = nil; syncSerialNumber = nil; syncTransport = .bluetooth; wifiWorkflow = false
+        }
+    }
+    private func finishLibraryFlow() {
+        if let token = libraryToken { _ = flow.finish(token) }
+        libraryToken = nil; syncSerialNumber = nil; syncTransport = .bluetooth; changed?()
+    }
+    private func closeWiFiAfterSync() {
+        switch sdk.wifi.snapshot.state {
+        case .ready:
+            wifiOpenOperation = nil
+            status = "正在关闭 Wi-Fi 快传并恢复蓝牙…"; changed?()
+            sdk.wifi.close { [weak self] error in
+                guard let self else { return }
+                if let error { self.status = Self.errorText(error); self.changed?() }
+            }
+        case .enabling, .joining, .connecting:
+            wifiOpenOperation?.cancel()
+            wifiOpenOperation = nil
+        case .closing, .restoringBluetooth:
+            break
+        case .off:
+            if sdk.connectionState == .ready { finishWiFiWorkflow() }
+            else { status = "正在恢复蓝牙连接…"; changed?() }
+        case .failed:
+            status = "Wi-Fi 快传失败，正在恢复蓝牙连接…"; changed?()
+        @unknown default:
+            status = "Wi-Fi 状态未知，请检查设备连接。"; changed?()
+        }
+    }
+    private func finishWiFiWorkflow() {
+        let result = wifiResult.isEmpty ? library.message : wifiResult
+        wifiWorkflow = false; wifiOpenOperation = nil; wifiResult = ""
+        finishLibraryFlow()
+        status = "\(result)；Wi-Fi 已关闭，蓝牙已恢复。"; changed?()
     }
     private func scheduleSync() {
         scheduledSync += 1; let ticket = scheduledSync; let session = audioSession

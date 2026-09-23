@@ -40,6 +40,8 @@ final class DemoAudioLibrary {
     var readRecording: (@escaping (DemoRecordingValue?, String?) -> Void) -> Void = { _ in }
     var count: (Int, @escaping (Int?, String?) -> Void) -> Void = { _, _ in }
     var page: (Int, Int, @escaping ([DemoAudioFile]?, String?) -> Void) -> Void = { _, _, _ in }
+    /// 文件列表必须通过 BLE 获取；需要切换传输通道时，在完整列表确认后、首个下载前执行。
+    var prepareDownloads: (@escaping (String?) -> Void) -> Void = { $0(nil) }
     var download: (DemoAudioFile, @escaping (Int64) -> Void, @escaping (String?, String?) -> Void) -> (() -> Void) = { _, _, _ in {} }
     var deleteLocal: (DemoAudioFile, @escaping (String?) -> Void) -> Void = { _, completion in completion("删除本地音频未配置") }
     var changed: (() -> Void)?
@@ -54,7 +56,7 @@ final class DemoAudioLibrary {
     private var stopRequested = false
     private var cancelDownload: (() -> Void)?
     private var collected: [DemoAudioFile] = []
-    private var failedThisConnection = Set<String>()
+    private var failedThisRun = Set<String>()
     var isRecording: Bool { recording.state == 2 || recording.state == 3 }
     /// 仅完整交付到本地的文件计为已完成；失败、取消和空文件不计入。
     var completedCount: Int { rows.lazy.filter { $0.localPath != nil }.count }
@@ -63,7 +65,7 @@ final class DemoAudioLibrary {
     var syncCountText: String { "已完成同步 \(completedCount)/\(totalCount) 个文件" + (failedCount > 0 ? "，失败 \(failedCount) 个" : "") }
     func invalidate() {
         generation += 1; request += 1; cancelDownload = nil; busy = false
-        stopRequested = false; rows = []; collected = []; failedThisConnection.removeAll()
+        stopRequested = false; rows = []; collected = []; failedThisRun.removeAll()
         recording = DemoRecordingValue(state: 0, name: nil, mode: nil); message = "连接已断开，重新连接后同步"
     }
     func observe(_ value: DemoRecordingValue) {
@@ -76,7 +78,7 @@ final class DemoAudioLibrary {
     }
     @discardableResult func start() -> Bool {
         guard !busy, !isRecording else { return false }
-        generation += 1; busy = true; stopRequested = false; collected = []
+        generation += 1; busy = true; stopRequested = false; collected = []; failedThisRun.removeAll()
         message = "正在确认录音状态…"; changed?()
         let ticket = next()
         readRecording { [weak self] value, error in
@@ -120,7 +122,13 @@ final class DemoAudioLibrary {
             if mode == 1 { listMode(2) }
             else {
                 let old = Dictionary(rows.map { ($0.file.key, $0) }, uniquingKeysWith: { a, _ in a })
-                rows = collected.map { old[$0.key] ?? DemoAudioRow(file: $0) }; changed?(); downloadNext(0)
+                rows = collected.map { old[$0.key] ?? DemoAudioRow(file: $0) }; changed?()
+                let ticket = next()
+                prepareDownloads { [weak self] error in
+                    guard let self, self.accept(ticket), self.proceed() else { return }
+                    if let error { self.end(error) }
+                    else { self.downloadNext(0) }
+                }
             }
             return
         }
@@ -138,7 +146,7 @@ final class DemoAudioLibrary {
         guard proceed() else { return }
         guard index < rows.count else { end(rows.isEmpty ? "设备暂无录音文件" : failedCount > 0 ? "同步结束：成功 \(completedCount)、失败 \(failedCount)、总计 \(totalCount) 个文件" : "同步完成，点击播放本地音频"); return }
         let file = rows[index].file
-        if failedThisConnection.contains(file.key) { rows[index].status = "同步失败，断点已保留"; changed?(); downloadNext(index + 1); return }
+        if failedThisRun.contains(file.key) { rows[index].status = "同步失败，断点已保留"; changed?(); downloadNext(index + 1); return }
         if file.size == 0 { rows[index].status = "空文件，无法播放"; changed?(); downloadNext(index + 1); return }
         rows[index].status = "正在同步"; rows[index].received = 0; rows[index].localPath = nil
         message = "正在同步第 \(index + 1) 个文件"; changed?()
@@ -155,7 +163,7 @@ final class DemoAudioLibrary {
             self.rows[index].kilobytesPerSecond = nil
             if let error {
                 if error == "downloadPositionMismatch", !self.stopRequested, !self.isRecording {
-                    self.failedThisConnection.insert(file.key); self.rows[index].status = "同步失败，断点已保留"
+                    self.failedThisRun.insert(file.key); self.rows[index].status = "同步失败，断点已保留"
                     self.changed?(); self.downloadNext(index + 1); return
                 }
                 self.rows[index].status = self.isRecording ? "录音开始，下载中断" : error

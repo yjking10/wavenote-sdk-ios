@@ -22110,15 +22110,43 @@
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1982,
+      "length": 2,
+      "value": "64"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2011,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2038,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2084,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "Dictionary",
-      "offset": 2036,
+      "offset": 3466,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "BooleanLiteral",
-      "offset": 2140,
+      "offset": 3570,
       "length": 5,
       "value": "false"
     },
@@ -22188,105 +22216,105 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 3631,
+      "offset": 3954,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 4036,
+      "offset": 4359,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4062,
+      "offset": 4385,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4097,
+      "offset": 4420,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4132,
+      "offset": 4455,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4167,
+      "offset": 4490,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 4269,
+      "offset": 4592,
       "length": 2,
       "value": "-1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4503,
+      "offset": 4826,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4599,
+      "offset": 4922,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "StringLiteral",
-      "offset": 5075,
+      "offset": 5398,
       "length": 22,
       "value": "\"com.wavenote.sdk.ble\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5240,
+      "offset": 5563,
       "length": 1,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5277,
+      "offset": 5600,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12435,
+      "offset": 12758,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "Dictionary",
-      "offset": 20079,
+      "offset": 21589,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 24401,
+      "offset": 25911,
       "length": 5,
       "value": "false"
     },
@@ -22956,6 +22984,13 @@
       "value": "\"%@\""
     },
     {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/SDKLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2140,
+      "length": 5,
+      "value": "false"
+    },
+    {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "StringLiteral",
       "offset": 162,
@@ -22993,35 +23028,35 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "Array",
-      "offset": 8070,
+      "offset": 8605,
       "length": 161,
       "value": "[0x2c, 0x03, 0x0f, 0xb3, 0xc8, 0xb4, 0x5e, 0xf7, 0xdc, 0x62, 0xd9, 0x55, 0x3b, 0xfe, 0x99, 0xa4, 0xd8, 0x84, 0xde, 0xa0, 0xb3, 0xd9, 0x2d, 0xe9, 0xe2, 0x0e, 0xae, 0x50, 0x60, 0xf4, 0xa2, 0xb9]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "IntegerLiteral",
-      "offset": 8318,
+      "offset": 8853,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "IntegerLiteral",
-      "offset": 8322,
+      "offset": 8857,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "IntegerLiteral",
-      "offset": 8402,
+      "offset": 8937,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
       "kind": "Dictionary",
-      "offset": 14227,
+      "offset": 14762,
       "length": 3,
       "value": "[]"
     },
