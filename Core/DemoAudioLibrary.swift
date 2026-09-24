@@ -162,6 +162,10 @@ final class DemoAudioLibrary {
             self.cancelDownload = nil
             self.rows[index].kilobytesPerSecond = nil
             if let error {
+                if self.stopRequested, error == "同步已取消" {
+                    self.rows[index].status = "同步已停止，断点已保留"
+                    self.end("同步已停止，可点击重新同步"); return
+                }
                 if error == "downloadPositionMismatch", !self.stopRequested, !self.isRecording {
                     self.failedThisRun.insert(file.key); self.rows[index].status = "同步失败，断点已保留"
                     self.changed?(); self.downloadNext(index + 1); return

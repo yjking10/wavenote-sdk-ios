@@ -10879,8 +10879,8 @@
           },
           {
             "kind": "Function",
-            "name": "open",
-            "printedName": "open(completion:)",
+            "name": "startFastTransfer",
+            "printedName": "startFastTransfer(completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -10916,8 +10916,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteWiFi(im)openWithCompletion:",
-            "mangledName": "$s11WaveNoteSDK0aB4WiFiC4open10completionAA0aB9OperationCyAA0aB5ErrorCSgc_tF",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteWiFi(im)startFastTransferWithCompletion:",
+            "mangledName": "$s11WaveNoteSDK0aB4WiFiC17startFastTransfer10completionAA0aB9OperationCyAA0aB5ErrorCSgc_tF",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "Final",
@@ -10931,8 +10931,8 @@
           },
           {
             "kind": "Function",
-            "name": "close",
-            "printedName": "close(completion:)",
+            "name": "stopFastTransfer",
+            "printedName": "stopFastTransfer(completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -10967,8 +10967,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteWiFi(im)closeWithCompletion:",
-            "mangledName": "$s11WaveNoteSDK0aB4WiFiC5close10completionyyAA0aB5ErrorCSgc_tF",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteWiFi(im)stopFastTransferWithCompletion:",
+            "mangledName": "$s11WaveNoteSDK0aB4WiFiC16stopFastTransfer10completionyyAA0aB5ErrorCSgc_tF",
             "moduleName": "WaveNoteSDK",
             "declAttributes": [
               "Final",
@@ -21796,287 +21796,287 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 976,
+      "offset": 989,
       "length": 4,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1284,
+      "offset": 1297,
       "length": 7,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1408,
+      "offset": 1421,
       "length": 9,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1498,
+      "offset": 1511,
       "length": 9,
       "value": "3"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1584,
+      "offset": 1597,
       "length": 9,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1667,
+      "offset": 1680,
       "length": 6,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1773,
+      "offset": 1786,
       "length": 15,
       "value": "6"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1870,
+      "offset": 1883,
       "length": 8,
       "value": "7"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 1949,
+      "offset": 1962,
       "length": 11,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2235,
+      "offset": 2248,
       "length": 8,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2325,
+      "offset": 2338,
       "length": 7,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2418,
+      "offset": 2431,
       "length": 10,
       "value": "3"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2494,
+      "offset": 2507,
       "length": 5,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2569,
+      "offset": 2582,
       "length": 7,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2662,
+      "offset": 2675,
       "length": 18,
       "value": "6"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2766,
+      "offset": 2779,
       "length": 6,
       "value": "7"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3053,
+      "offset": 3066,
       "length": 12,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3138,
+      "offset": 3151,
       "length": 9,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3220,
+      "offset": 3233,
       "length": 9,
       "value": "3"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3324,
+      "offset": 3337,
       "length": 9,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3413,
+      "offset": 3426,
       "length": 6,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3780,
+      "offset": 3793,
       "length": 11,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4087,
+      "offset": 4100,
       "length": 14,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4206,
+      "offset": 4219,
       "length": 8,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4282,
+      "offset": 4295,
       "length": 7,
       "value": "3"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4350,
+      "offset": 4363,
       "length": 8,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4401,
+      "offset": 4414,
       "length": 14,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4464,
+      "offset": 4477,
       "length": 13,
       "value": "6"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4524,
+      "offset": 4537,
       "length": 7,
       "value": "7"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4571,
+      "offset": 4584,
       "length": 7,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4665,
+      "offset": 4678,
       "length": 13,
       "value": "9"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4750,
+      "offset": 4763,
       "length": 9,
       "value": "10"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4842,
+      "offset": 4855,
       "length": 2,
       "value": "12"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5002,
+      "offset": 5015,
       "length": 7,
       "value": "13"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5084,
+      "offset": 5097,
       "length": 12,
       "value": "14"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5188,
+      "offset": 5201,
       "length": 11,
       "value": "15"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5323,
+      "offset": 5336,
       "length": 12,
       "value": "16"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "Dictionary",
-      "offset": 8023,
+      "offset": 8036,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 12233,
+      "offset": 12246,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 12251,
+      "offset": 12264,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/FeatureModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 12319,
+      "offset": 12332,
       "length": 1,
       "value": "0"
     },
@@ -22097,14 +22097,14 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 19881,
+      "offset": 19894,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 20289,
+      "offset": 20302,
       "length": 5,
       "value": "false"
     },
@@ -22328,56 +22328,56 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 921,
+      "offset": 956,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 953,
+      "offset": 988,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 9774,
+      "offset": 9940,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 9799,
+      "offset": 9965,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 9823,
+      "offset": 9989,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "Dictionary",
-      "offset": 12122,
+      "offset": 12450,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12149,
+      "offset": 12477,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12168,
+      "offset": 12496,
       "length": 5,
       "value": "false"
     },
@@ -22482,70 +22482,77 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "BooleanLiteral",
-      "offset": 582,
+      "offset": 576,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "BooleanLiteral",
-      "offset": 1239,
+      "offset": 602,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "BooleanLiteral",
-      "offset": 1267,
+      "offset": 1259,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "BooleanLiteral",
-      "offset": 1284,
+      "offset": 1287,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "BooleanLiteral",
-      "offset": 1303,
+      "offset": 1304,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1323,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "IntegerLiteral",
-      "offset": 1364,
+      "offset": 1384,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "Array",
-      "offset": 1403,
+      "offset": 1423,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "IntegerLiteral",
-      "offset": 1431,
+      "offset": 1451,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "IntegerLiteral",
-      "offset": 1461,
+      "offset": 1481,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureTransfers.swift",
       "kind": "IntegerLiteral",
-      "offset": 1646,
+      "offset": 1666,
       "length": 1,
       "value": "0"
     },
@@ -22559,9 +22566,51 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
       "kind": "BooleanLiteral",
-      "offset": 3797,
+      "offset": 5471,
       "length": 5,
       "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8297,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8678,
+      "length": 1,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8709,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8747,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "Array",
+      "offset": 8792,
+      "length": 9,
+      "value": "[1, 2, 3]"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureWiFi.swift",
+      "kind": "StringLiteral",
+      "offset": 17237,
+      "length": 25,
+      "value": "\"downloadStopUnconfirmed\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/OpusFile.swift",

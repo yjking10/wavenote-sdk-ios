@@ -742,7 +742,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 ///
 /// \param destination 不存在的本地 .ogg 文件；宿主须准备父目录，并在操作期间维持必要的文件访问权限。
 ///
-/// \param transport 默认 bluetooth；选择 wifi 前必须等待 wifi.open 成功，不自动切换传输方式。
+/// \param transport 默认 bluetooth；选择 wifi 前必须等待 wifi.startFastTransfer 成功，不自动切换传输方式。
 ///
 /// \param resume 默认 false，且不允许已有 .partial；true 仅在新的已确认会话中恢复同一目标及匹配的元数据。
 /// 续传偏移由已验证的原始字节和完整 Ogg 页恢复，不能使用 Ogg 文件大小代替。
@@ -1373,7 +1373,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteTransferProgress")
 typedef SWIFT_ENUM(NSInteger, WaveNoteTransferTransport, open) {
 /// 使用当前已就绪的 BLE 会话。
   WaveNoteTransferTransportBluetooth = 0,
-/// 使用 wifi.open 已确认就绪的 TCP 连接。
+/// 使用 wifi.startFastTransfer 已确认就绪的 TCP 连接。
   WaveNoteTransferTransportWifi = 1,
 };
 
@@ -1405,19 +1405,19 @@ SWIFT_CLASS("_TtC11WaveNoteSDK12WaveNoteWiFi")
 @property (nonatomic, weak) id <WaveNoteWiFiDelegate> _Nullable delegate;
 /// 最新热点/TCP 状态；只有 ready 表示可进行 Wi-Fi 文件操作。
 @property (nonatomic, readonly, strong) WaveNoteWiFiSnapshot * _Nonnull snapshot;
-/// 开启设备热点、按设备返回的 SSID/IP 加入网络，并建立端口 32769 的 TCP 连接。
-/// 切换期间断开 BLE 并暂停自动重连；与录音、下载、实时流、OTA 和维护操作互斥。
+/// 开始快速传输：开启设备热点、加入网络，并建立端口 32769 的 TCP 连接。
+/// BLE 文件下载中调用会先确认停止当前下载并保留断点，再切换热点/TCP；其他冲突操作仍返回忙碌。
 /// \param completion 主线程回调一次；只有 TCP 就绪才返回 nil，权限或连接失败返回错误。
 ///
 ///
 /// returns:
-/// 本次开启流程的取消令牌；成功开启后通过 close 退出快传。
-- (WaveNoteOperation * _Nonnull)openWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-/// 在 Wi-Fi ready 且无其他功能事务时退出快传，关闭 TCP 并清理本次热点配置，随后尝试恢复 BLE。
+/// 本次开启流程的取消令牌；成功开启后通过 stopFastTransfer 退出快传。
+- (WaveNoteOperation * _Nonnull)startFastTransferWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+/// 在 Wi-Fi ready 且无其他功能事务时结束快速传输，关闭 TCP 并清理本次热点配置，随后尝试恢复 BLE。
 /// 系统不保证重新加入之前的特定 Wi-Fi 网络。
 /// \param completion 主线程回调一次；nil 表示关闭阶段完成，BLE 是否 ready 由连接代理及 Wi-Fi 状态继续报告。
 ///
-- (void)closeWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+- (void)stopFastTransferWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 @end
 
 /// Wi-Fi 快传状态代理；主线程报告热点加入、TCP 连接和 BLE 恢复阶段。

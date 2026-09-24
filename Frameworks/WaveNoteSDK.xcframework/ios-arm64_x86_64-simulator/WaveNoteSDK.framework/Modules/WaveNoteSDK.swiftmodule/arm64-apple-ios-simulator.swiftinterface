@@ -286,8 +286,8 @@ import _SwiftConcurrencyShims
     get
   }
   @objc @discardableResult
-  @_Concurrency::MainActor final public func open(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
-  @objc @_Concurrency::MainActor final public func close(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @_Concurrency::MainActor final public func startFastTransfer(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func stopFastTransfer(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc deinit
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteFirmwareUpdate : WaveNoteSDK::WaveNoteFeature {

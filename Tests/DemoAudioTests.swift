@@ -89,6 +89,15 @@ final class DemoAudioTests: XCTestCase {
         prepared?(nil)
         XCTAssertFalse(lib.busy); XCTAssertEqual(lib.message, "同步已停止，可点击重新同步")
     }
+    func testManualStopShowsSavedCheckpointInsteadOfCancellationError() {
+        let lib = configured(); var complete: ((String?, String?) -> Void)?
+        lib.download = { _, _, done in complete = done; return {} }
+        XCTAssertTrue(lib.start())
+        lib.stop(); complete?(nil, "同步已取消")
+        XCTAssertFalse(lib.busy)
+        XCTAssertEqual(lib.rows[0].status, "同步已停止，断点已保留")
+        XCTAssertEqual(lib.message, "同步已停止，可点击重新同步")
+    }
     func testPositionFailureSkipsCurrentRunAndManualSyncRetriesFile() {
         let lib = configured()
         var downloads: [String] = []

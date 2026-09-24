@@ -119,6 +119,7 @@ private enum DemoRSA {
     private var syncSerialNumber: String?
     private var wifiWorkflow = false
     private var wifiOpenOperation: WaveNoteOperation?
+    private var pendingFastTransferStart = false
     private var wifiResult = ""
     var changed: (() -> Void)?
     var devices: [WaveNoteDiscoveredDevice] = []
@@ -252,8 +253,13 @@ private enum DemoRSA {
             else if !library.busy { closeWiFiAfterSync() }
             changed?(); return
         }
-        guard flow.ready, sdk.recording.snapshot.state == .stopped, !library.busy else {
-            status = "请等待设备空闲且当前同步完成后再开启 Wi-Fi 快传。"; changed?(); return
+        guard flow.ready, sdk.recording.snapshot.state == .stopped else {
+            status = "请等待设备连接就绪且停止录音后再开启 Wi-Fi 快传。"; changed?(); return
+        }
+        if library.busy {
+            pendingFastTransferStart = true
+            status = "正在保存当前下载断点，随后切换 Wi-Fi 快传…"
+            library.stop(); changed?(); return
         }
         startSync(transport: .wifi)
     }
@@ -337,7 +343,11 @@ private enum DemoRSA {
         player.changed = { [weak self] in self?.changed?() }
         library.finished = { [weak self] in
             guard let self else { return }
-            if self.wifiWorkflow {
+            if self.pendingFastTransferStart {
+                self.pendingFastTransferStart = false
+                self.finishLibraryFlow()
+                self.startSync(transport: .wifi)
+            } else if self.wifiWorkflow {
                 self.wifiResult = self.library.message
                 self.closeWiFiAfterSync()
             } else {
@@ -359,7 +369,7 @@ private enum DemoRSA {
             guard let self else { done("连接已失效"); return }
             guard self.syncTransport == .wifi else { done(nil); return }
             self.status = "文件列表已读取，正在开启 Wi-Fi 快传…"; self.changed?()
-            self.wifiOpenOperation = self.sdk.wifi.open { [weak self] error in
+            self.wifiOpenOperation = self.sdk.wifi.startFastTransfer { [weak self] error in
                 guard let self else { return }
                 self.wifiOpenOperation = nil
                 done(error.map(Self.errorText))
@@ -384,7 +394,7 @@ private enum DemoRSA {
                     self.logOggDuration(result: error == nil && audio != nil ? "completed" : error?.code == WaveNoteErrorCode.operationCancelled.rawValue ? "cancelled" : "failed")
                     self.progressID = nil; self.progressCallback = nil; self.progressFile = nil
                     if let error {
-                        done(nil, error.operation == "downloadPositionMismatch" ? "downloadPositionMismatch" : Self.errorText(error))
+                        done(nil, error.operation == "downloadPositionMismatch" ? "downloadPositionMismatch" : error.errorCode == .operationCancelled ? "同步已取消" : Self.errorText(error))
                     }
                     else if let audio { done(audio.url.path, nil) }
                     else { done(nil, "下载未交付文件") }
@@ -422,7 +432,7 @@ private enum DemoRSA {
         case .ready:
             wifiOpenOperation = nil
             status = "正在关闭 Wi-Fi 快传并恢复蓝牙…"; changed?()
-            sdk.wifi.close { [weak self] error in
+            sdk.wifi.stopFastTransfer { [weak self] error in
                 guard let self else { return }
                 if let error { self.status = Self.errorText(error); self.changed?() }
             }
