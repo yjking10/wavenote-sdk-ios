@@ -73,6 +73,19 @@ final class DemoAudioTests: XCTestCase {
         prepared?(nil)
         XCTAssertEqual(calls.last, "download")
     }
+    func testEmptyLibraryDoesNotPrepareWiFiTransport() {
+        let lib = configured(); var calls: [String] = []; var finished = 0
+        lib.count = { mode, done in calls.append("count\(mode)"); done(0, nil) }
+        lib.page = { _, _, _ in XCTFail("must not request an empty page") }
+        lib.prepareDownloads = { _ in XCTFail("must not enable Wi-Fi without files") }
+        lib.download = { _, _, _ in XCTFail("must not download"); return {} }
+        lib.finished = { finished += 1 }
+        XCTAssertTrue(lib.start())
+        XCTAssertEqual(calls, ["count1", "count2"])
+        XCTAssertFalse(lib.busy)
+        XCTAssertEqual(lib.message, "设备暂无录音文件")
+        XCTAssertEqual(finished, 1)
+    }
     func testTransportPreparationFailureEndsWithoutDownload() {
         let lib = configured(); var finished = 0
         lib.prepareDownloads = { $0("Wi-Fi 未就绪") }

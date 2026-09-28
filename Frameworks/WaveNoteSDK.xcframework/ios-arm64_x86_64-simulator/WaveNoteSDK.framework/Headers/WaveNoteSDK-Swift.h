@@ -1223,7 +1223,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 ///
 /// \param enableAutoReconnect 是否在可恢复的异常断连后自动重连，默认开启。
 ///
-/// \param reconnectPolicy 重连次数和间隔策略，默认 3 次，间隔 3/30/30 秒。
+/// \param reconnectPolicy 重连次数和间隔策略，默认 3 次，间隔 0/3/10 秒。
 ///
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
@@ -2696,7 +2696,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 ///
 /// \param enableAutoReconnect 是否在可恢复的异常断连后自动重连，默认开启。
 ///
-/// \param reconnectPolicy 重连次数和间隔策略，默认 3 次，间隔 3/30/30 秒。
+/// \param reconnectPolicy 重连次数和间隔策略，默认 3 次，间隔 0/3/10 秒。
 ///
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///

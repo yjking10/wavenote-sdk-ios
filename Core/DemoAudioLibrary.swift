@@ -123,6 +123,7 @@ final class DemoAudioLibrary {
             else {
                 let old = Dictionary(rows.map { ($0.file.key, $0) }, uniquingKeysWith: { a, _ in a })
                 rows = collected.map { old[$0.key] ?? DemoAudioRow(file: $0) }; changed?()
+                guard !rows.isEmpty else { end("设备暂无录音文件"); return }
                 let ticket = next()
                 prepareDownloads { [weak self] error in
                     guard let self, self.accept(ticket), self.proceed() else { return }
