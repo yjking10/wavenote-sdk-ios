@@ -1,0 +1,175 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target arm64-apple-ios15.1-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -module-name WaveNoteAudioEngine -package-name wavenoteaudioengine
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+@preconcurrency import AVFAudio
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum PlaybackState : Swift::Sendable {
+  case idle, preparing, ready, playing, paused, stopped, completed, released, failed
+  public static func == (a: WaveNoteAudioEngine::PlaybackState, b: WaveNoteAudioEngine::PlaybackState) -> Swift::Bool
+  public func hash(into hasher: inout Swift::Hasher)
+  public var hashValue: Swift::Int {
+    get
+  }
+}
+public enum NoiseSuppressionLevel : Swift::Int, Swift::Sendable {
+  case off, light, balanced, strong
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+public enum RepeatMode : Swift::Sendable {
+  case off, one
+  public static func == (a: WaveNoteAudioEngine::RepeatMode, b: WaveNoteAudioEngine::RepeatMode) -> Swift::Bool
+  public func hash(into hasher: inout Swift::Hasher)
+  public var hashValue: Swift::Int {
+    get
+  }
+}
+public enum PlayerEvent : Swift::Sendable {
+  case stateChanged(WaveNoteAudioEngine::PlaybackState), position(milliseconds: Swift::Int64, durationMilliseconds: Swift::Int64), completed
+  case systemInterrupted(Swift::String), preemptedByAnotherPlayer
+  case noiseSuppressionPreparing(WaveNoteAudioEngine::NoiseSuppressionLevel), noiseSuppressionReady(WaveNoteAudioEngine::NoiseSuppressionLevel)
+  case noiseSuppressionBypassed(Swift::String), noiseSuppressionRecovered, fatalError(WaveNoteAudioEngine::WaveNoteAudioEngineError)
+}
+public enum WaveNoteAudioEngineError : Swift::Error, Swift::Sendable {
+  case invalidFile(Foundation::URL), invalidArgument(Swift::String), notPrepared, playback(Swift::String), waveform(Swift::String), released
+}
+final public class WaveNoteAudioDenoiser : Swift::Sendable {
+  public init()
+  final public func denoise(input: Foundation::URL, output: Foundation::URL, level: WaveNoteAudioEngine::NoiseSuppressionLevel, progress: @escaping @Sendable (Swift::Double) -> Swift::Void = { _ in }) async throws
+  @objc deinit
+}
+@objc public enum WaveNoteAudioEnginePlaybackState : Swift::Int {
+  case idle
+  case preparing
+  case ready
+  case playing
+  case paused
+  case stopped
+  case completed
+  case released
+  case failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteAudioEngineNoiseSuppressionLevel : Swift::Int {
+  case off = 0
+  case light = 12
+  case balanced = 20
+  case strong = 30
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public enum WaveNoteAudioEngineRepeatMode : Swift::Int {
+  case off
+  case one
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc public protocol WaveNoteAudioEnginePlayerDelegate {
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didChangeState state: WaveNoteAudioEngine::WaveNoteAudioEnginePlaybackState)
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didUpdatePosition positionMilliseconds: Swift::Int64, durationMilliseconds: Swift::Int64)
+  @objc optional func audioEnginePlayerDidComplete(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer)
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didInterruptWithReason reason: Swift::String)
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didUpdateNoiseSuppression level: WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel, ready: Swift::Bool)
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didBypassNoiseSuppressionWithReason reason: Swift::String)
+  @objc optional func audioEnginePlayer(_ player: WaveNoteAudioEngine::WaveNoteAudioEnginePlayer, didFailWithError error: Foundation::NSError)
+}
+@_inheritsConvenienceInitializers @objc(WaveNoteAudioEnginePlayer) @_Concurrency::MainActor final public class WaveNoteAudioEnginePlayer : ObjectiveC::NSObject {
+  @_Concurrency::MainActor weak final public var delegate: (any WaveNoteAudioEngine::WaveNoteAudioEnginePlayerDelegate)?
+  @_Concurrency::MainActor final public var state: WaveNoteAudioEngine::WaveNoteAudioEnginePlaybackState {
+    get
+  }
+  @_Concurrency::MainActor @objc override dynamic public init()
+  @objc deinit
+  @objc(prepareWithFileURL:completion:) @_Concurrency::MainActor final public func prepare(fileURL: Foundation::NSURL, completion: @escaping (Foundation::NSError?) -> Swift::Void)
+  @objc(playWithError:) @_Concurrency::MainActor final public func play(error: Foundation::NSErrorPointer) -> Swift::Bool
+  @objc @_Concurrency::MainActor final public func pause()
+  @objc @_Concurrency::MainActor final public func stop()
+  @objc(seekToMilliseconds:error:) @_Concurrency::MainActor final public func seek(milliseconds: Swift::Int64, error: Foundation::NSErrorPointer) -> Swift::Bool
+  @objc(setVolume:error:) @_Concurrency::MainActor final public func setVolume(_ value: Swift::Float, error: Foundation::NSErrorPointer) -> Swift::Bool
+  @objc(setRate:error:) @_Concurrency::MainActor final public func setRate(_ value: Swift::Float, error: Foundation::NSErrorPointer) -> Swift::Bool
+  @objc(setRepeatMode:) @_Concurrency::MainActor final public func setRepeatMode(_ mode: WaveNoteAudioEngine::WaveNoteAudioEngineRepeatMode)
+  @objc(setNoiseSuppressionLevel:) @_Concurrency::MainActor final public func setNoiseSuppressionLevel(_ level: WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel)
+  @objc @_Concurrency::MainActor final public func close()
+}
+@_inheritsConvenienceInitializers @objc(WaveNoteAudioEngineWaveformExtractor) @_Concurrency::MainActor final public class WaveNoteAudioEngineWaveformExtractor : ObjectiveC::NSObject {
+  @objc(extractWaveformFromFileURL:sampleCount:progress:completion:) @_Concurrency::MainActor final public func extract(fileURL: Foundation::NSURL, sampleCount: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void, completion: @escaping ([Foundation::NSNumber]?, Foundation::NSError?) -> Swift::Void)
+  @_Concurrency::MainActor @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(WaveNoteAudioEngineDenoiser) @_Concurrency::MainActor final public class WaveNoteAudioEngineDenoiser : ObjectiveC::NSObject {
+  @objc(denoiseFileAtURL:outputURL:level:progress:completion:) @_Concurrency::MainActor final public func denoise(inputURL: Foundation::NSURL, outputURL: Foundation::NSURL, level: WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel, progress: @escaping @Sendable (Swift::Double) -> Swift::Void, completion: @escaping (Foundation::NSError?) -> Swift::Void)
+  @_Concurrency::MainActor @objc override dynamic public init()
+  @objc deinit
+}
+@_Concurrency::MainActor final public class WaveNoteAudioPlayer {
+  @_Concurrency::MainActor final public var state: WaveNoteAudioEngine::PlaybackState {
+    get
+  }
+  @_Concurrency::MainActor final public var noiseSuppressionLevel: WaveNoteAudioEngine::NoiseSuppressionLevel {
+    get
+  }
+  @_Concurrency::MainActor final public var repeatMode: WaveNoteAudioEngine::RepeatMode {
+    get
+  }
+  @_Concurrency::MainActor final public var events: _Concurrency::AsyncStream<WaveNoteAudioEngine::PlayerEvent> {
+    get
+  }
+  @_Concurrency::MainActor public init()
+  @objc deinit
+  @_Concurrency::MainActor final public func prepare(localFile: Foundation::URL) async throws
+  @_Concurrency::MainActor final public func play() throws
+  @_Concurrency::MainActor final public func pause()
+  @_Concurrency::MainActor final public func stop()
+  @_Concurrency::MainActor final public func seek(milliseconds: Swift::Int64) throws
+  @_Concurrency::MainActor final public func setVolume(_ value: Swift::Float) throws
+  @_Concurrency::MainActor final public func setRate(_ value: Swift::Float) throws
+  @_Concurrency::MainActor final public func setRepeatMode(_ mode: WaveNoteAudioEngine::RepeatMode)
+  @_Concurrency::MainActor final public func setNoiseSuppressionLevel(_ level: WaveNoteAudioEngine::NoiseSuppressionLevel)
+  @_Concurrency::MainActor final public func close()
+}
+final public class WaveNoteWaveformExtractor : Swift::Sendable {
+  public init()
+  final public func extract(localFile: Foundation::URL, sampleCount: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void = { _ in }) async throws -> [Swift::Float]
+  @objc deinit
+}
+extension WaveNoteAudioEngine::PlaybackState : Swift::Equatable {}
+extension WaveNoteAudioEngine::PlaybackState : Swift::Hashable {}
+extension WaveNoteAudioEngine::NoiseSuppressionLevel : Swift::Equatable {}
+extension WaveNoteAudioEngine::NoiseSuppressionLevel : Swift::Hashable {}
+extension WaveNoteAudioEngine::NoiseSuppressionLevel : Swift::RawRepresentable {}
+extension WaveNoteAudioEngine::RepeatMode : Swift::Equatable {}
+extension WaveNoteAudioEngine::RepeatMode : Swift::Hashable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEnginePlaybackState : Swift::Equatable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEnginePlaybackState : Swift::Hashable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEnginePlaybackState : Swift::RawRepresentable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel : Swift::Equatable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel : Swift::Hashable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineNoiseSuppressionLevel : Swift::RawRepresentable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineRepeatMode : Swift::Equatable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineRepeatMode : Swift::Hashable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineRepeatMode : Swift::RawRepresentable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEnginePlayer : Swift::Sendable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineWaveformExtractor : Swift::Sendable {}
+extension WaveNoteAudioEngine::WaveNoteAudioEngineDenoiser : Swift::Sendable {}
+extension WaveNoteAudioEngine::WaveNoteAudioPlayer : Swift::Sendable {}

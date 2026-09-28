@@ -389,7 +389,7 @@ private enum DemoRSA {
                 if let error, error.errorCode != .fileIOFailed { done(nil, Self.errorText(error)); return }
                 if let error { print("[WaveNoteDemo][AudioCache] cache unavailable; redownload operation=\(error.operation) code=\(error.code)") }
                 if let cached, cached.rawBytes == file.size { done(cached.url.path, nil); return }
-                operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), transport: self.syncTransport, resume: true, deleteSource: true) { [weak self] audio, error in
+                operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), transport: self.syncTransport, resume: true, deleteSource: false) { [weak self] audio, error in
                     guard let self, self.audioSession == session else { return }
                     self.logOggDuration(result: error == nil && audio != nil ? "completed" : error?.code == WaveNoteErrorCode.operationCancelled.rawValue ? "cancelled" : "failed")
                     self.progressID = nil; self.progressCallback = nil; self.progressFile = nil

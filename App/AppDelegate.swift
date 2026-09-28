@@ -1,5 +1,6 @@
 import UIKit
 import WaveNoteSDK
+import WaveNoteAudioEngine
 
 @main final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -23,7 +24,6 @@ final class HomeController: UITableViewController {
         super.viewDidLoad(); title = "WaveNote"
         navigationItem.backButtonTitle = "返回"
         model.changed = { [weak self] in self?.update() }
-        model.player.progressChanged = { [weak self] in self?.updatePlaybackProgress() }
         update()
     }
     private func update() {
@@ -80,16 +80,13 @@ final class HomeController: UITableViewController {
                 cell.detailTextLabel?.text = "\(row.file.mode == 1 ? "Note" : "Call") · \(row.status) · \(percent)%\(row.speedText)\n\(ByteCountFormatter.string(fromByteCount: row.received, countStyle: .file)) / \(ByteCountFormatter.string(fromByteCount: row.file.size, countStyle: .file))"
                 if let path = row.localPath {
                     let button = UIButton(type: .system)
-                    button.setTitle(model.player.path == path && model.player.playing ? "暂停" : "播放", for: .normal)
-                    button.isEnabled = !model.player.preparing
-                    button.addAction(UIAction { [weak self] _ in self?.model.player.toggle(path) }, for: .touchUpInside)
-                    if model.player.path == path && !model.player.preparing {
-                        let accessory = DemoPlaybackAccessory(button: button)
-                        accessory.update(model.player)
-                        cell.accessoryView = accessory
-                    } else {
-                        button.frame = CGRect(x: 0, y: 0, width: 64, height: 44); cell.accessoryView = button
-                    }
+                    button.setTitle("播放", for: .normal)
+                    button.frame = CGRect(x: 0, y: 0, width: 64, height: 44)
+                    button.addAction(UIAction { [weak self] _ in
+                        guard let self else { return }
+                        self.navigationController?.pushViewController(DemoPlayerController(model: self.model, source: path, fileName: row.file.name), animated: true)
+                    }, for: .touchUpInside)
+                    cell.accessoryView = button
                 } else {
                     let progress = UIProgressView(progressViewStyle: .default); progress.progress = Float(percent) / 100
                     progress.frame = CGRect(x: 0, y: 0, width: 80, height: 4); cell.accessoryView = progress
@@ -131,16 +128,6 @@ final class HomeController: UITableViewController {
         }
         return cell
     }
-    private func updatePlaybackProgress() {
-        for cell in tableView.visibleCells {
-            (cell.accessoryView as? DemoPlaybackAccessory)?.update(model.player)
-        }
-    }
-    override func tableView(_ tableView: UITableView, heightForRowAt path: IndexPath) -> CGFloat {
-        if model.flow.ready, path.section == 1, !model.library.isRecording, path.row > 0,
-           let local = model.library.rows[path.row - 1].localPath, local == model.player.path { return 112 }
-        return UITableView.automaticDimension
-    }
     override func tableView(_ tableView: UITableView, didSelectRowAt path: IndexPath) {
         tableView.deselectRow(at: path, animated: true)
         if path.section == 1 && model.flow.ready {
@@ -169,25 +156,225 @@ final class HomeController: UITableViewController {
     }
 }
 
-/// 播放按钮、时间及进度放在同一文件行；计时刷新不触发 reloadData。
-private final class DemoPlaybackAccessory: UIView {
-    private let time = UILabel()
-    private let progress = UIProgressView(progressViewStyle: .default)
-    init(button: UIButton) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 142, height: 84))
-        time.font = .monospacedDigitSystemFont(ofSize: 11, weight: .regular)
-        time.textAlignment = .center
-        progress.accessibilityLabel = "播放进度"
-        let stack = UIStackView(arrangedSubviews: [button, time, progress])
-        stack.axis = .vertical; stack.spacing = 6
-        stack.frame = bounds; stack.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
-        addSubview(stack)
+/// 已同步音频的独立播放器页面。界面以波形、时间轴和少量直接控制为主，避免在文件列表中塞入播放状态。
+final class DemoPlayerController: UIViewController {
+    private let model: DemoController
+    private let source: String
+    private let fileName: String
+    private let waveform = DemoWaveformView()
+    private let slider = UISlider()
+    private let elapsed = UILabel()
+    private let duration = UILabel()
+    private let playButton = UIButton(type: .system)
+    private let backButton = UIButton(type: .system)
+    private let forwardButton = UIButton(type: .system)
+    private let noiseButton = UIButton(type: .system)
+    private let status = UILabel()
+    private var observation: UUID?
+    private var waveformSampleCount = 0
+    private var hasLoaded = false
+    private let noiseLevels: [(String, NoiseSuppressionLevel)] = [
+        ("关闭", .off), ("轻度", .light), ("均衡", .balanced), ("强力", .strong)
+    ]
+
+    init(model: DemoController, source: String, fileName: String) {
+        self.model = model
+        self.source = source
+        self.fileName = fileName
+        super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder: NSCoder) { fatalError() }
-    func update(_ player: DemoNativePlayer) {
-        time.text = player.timeText; progress.progress = player.fraction
-        progress.accessibilityValue = player.timeText
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "播放器"
+        view.backgroundColor = .systemGroupedBackground
+
+        let name = UILabel()
+        name.text = fileName
+        name.font = .preferredFont(forTextStyle: .headline)
+        name.textAlignment = .center
+        name.numberOfLines = 2
+        name.adjustsFontForContentSizeCategory = true
+
+        let card = UIView()
+        card.backgroundColor = .secondarySystemGroupedBackground
+        card.layer.cornerRadius = 28
+        card.translatesAutoresizingMaskIntoConstraints = false
+
+        waveform.translatesAutoresizingMaskIntoConstraints = false
+        waveform.accessibilityLabel = "音频波形"
+        waveform.progress = 0
+
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.minimumTrackTintColor = UIColor(red: 0.11, green: 0.10, blue: 0.18, alpha: 1)
+        slider.maximumTrackTintColor = .tertiarySystemFill
+        slider.accessibilityLabel = "播放进度"
+        slider.addTarget(self, action: #selector(seek), for: .valueChanged)
+
+        [elapsed, duration].forEach {
+            $0.font = .monospacedDigitSystemFont(ofSize: 16, weight: .medium)
+            $0.textColor = .secondaryLabel
+            $0.adjustsFontForContentSizeCategory = true
+        }
+        duration.textAlignment = .right
+        let times = UIStackView(arrangedSubviews: [elapsed, duration])
+        times.distribution = .fillEqually
+
+        configureControl(playButton, title: "播放", prominent: true, action: #selector(togglePlayback))
+        configureControl(backButton, title: "后退 15 秒", action: #selector(skipBack))
+        configureControl(forwardButton, title: "前进 15 秒", action: #selector(skipForward))
+        let controls = UIStackView(arrangedSubviews: [backButton, playButton, forwardButton])
+        controls.axis = .horizontal
+        controls.alignment = .center
+        controls.distribution = .fillEqually
+        controls.spacing = 8
+
+        configureControl(noiseButton, title: "降噪：均衡")
+        noiseButton.showsMenuAsPrimaryAction = true
+        noiseButton.accessibilityHint = "选择降噪程度"
+
+        status.font = .preferredFont(forTextStyle: .footnote)
+        status.textAlignment = .center
+        status.textColor = .secondaryLabel
+        status.numberOfLines = 0
+        status.adjustsFontForContentSizeCategory = true
+
+        let content = UIStackView(arrangedSubviews: [name, waveform, slider, times, controls, noiseButton, status])
+        content.axis = .vertical
+        content.spacing = 18
+        content.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(content)
+        view.addSubview(card)
+
+        NSLayoutConstraint.activate([
+            card.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            card.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            card.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
+            content.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),
+            content.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
+            content.topAnchor.constraint(equalTo: card.topAnchor, constant: 28),
+            content.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -28),
+            waveform.heightAnchor.constraint(equalToConstant: 132),
+            playButton.heightAnchor.constraint(equalToConstant: 56),
+            noiseButton.heightAnchor.constraint(equalToConstant: 48)
+        ])
+        render()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if observation == nil { observation = model.player.observe { [weak self] in self?.render() } }
+        if hasLoaded, waveformSampleCount > 0, model.player.path != source {
+            model.player.load(source, waveformSampleCount: waveformSampleCount)
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let count = DemoWaveformView.sampleCount(for: waveform.bounds.width, displayScale: traitCollection.displayScale)
+        guard count > 0, count != waveformSampleCount else { return }
+        waveformSampleCount = count
+        if hasLoaded { model.player.reloadWaveform(sampleCount: count) }
+        else if view.window != nil {
+            hasLoaded = true
+            model.player.load(source, waveformSampleCount: count)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let observation { model.player.removeObserver(observation); self.observation = nil }
+        if isMovingFromParent { model.player.stop() }
+    }
+
+    @objc private func togglePlayback() { model.player.toggle() }
+    @objc private func skipBack() { model.player.skip(seconds: -15) }
+    @objc private func skipForward() { model.player.skip(seconds: 15) }
+    @objc private func seek() {
+        let total = max(model.player.durationMilliseconds, 1)
+        model.player.seek(to: Int64((Double(slider.value) * Double(total)).rounded()))
+    }
+
+    private func configureControl(_ button: UIButton, title: String, prominent: Bool = false, action: Selector? = nil) {
+        var configuration = UIButton.Configuration.filled()
+        configuration.title = title
+        configuration.cornerStyle = .capsule
+        configuration.baseForegroundColor = prominent ? .white : view.tintColor
+        configuration.baseBackgroundColor = prominent ? UIColor(red: 0.11, green: 0.10, blue: 0.18, alpha: 1) : .tertiarySystemFill
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = .preferredFont(forTextStyle: .subheadline)
+            return attributes
+        }
+        button.configuration = configuration
+        if let action { button.addTarget(self, action: action, for: .touchUpInside) }
+    }
+
+    private func updateNoiseMenu(selected: NoiseSuppressionLevel) {
+        noiseButton.menu = UIMenu(options: .singleSelection, children: noiseLevels.map { title, level in
+            UIAction(title: title, state: level == selected ? .on : .off) { [weak self] _ in
+                self?.model.player.setNoiseSuppressionLevel(level)
+            }
+        })
+    }
+
+    private func render() {
+        guard isViewLoaded else { return }
+        let player = model.player
+        waveform.samples = player.waveformSamples
+        waveform.progress = player.fraction
+        if !slider.isTracking { slider.value = player.fraction }
+        elapsed.text = DemoNativePlayer.timeText(milliseconds: player.positionMilliseconds)
+        duration.text = DemoNativePlayer.timeText(milliseconds: player.durationMilliseconds)
+        playButton.configuration?.title = player.playing ? "暂停" : "播放"
+        playButton.isEnabled = !player.preparing && player.path != nil
+        backButton.isEnabled = !player.preparing && player.durationMilliseconds > 0
+        forwardButton.isEnabled = backButton.isEnabled
+        noiseButton.configuration?.title = "降噪：\(player.noiseTitle)"
+        updateNoiseMenu(selected: player.noiseLevel)
+        status.text = player.waveformLoading ? "正在生成波形…" : (player.message.isEmpty ? "准备音频后可播放" : player.message)
+        slider.accessibilityValue = player.timeText
+    }
+}
+
+private final class DemoWaveformView: UIView {
+    private static let physicalBarWidth: CGFloat = 2
+    private static let physicalSpacing: CGFloat = 2
+    var samples: [Float] = [] { didSet { setNeedsDisplay() } }
+    var progress: Float = 0 { didSet { setNeedsDisplay() } }
+
+    /// 每条波形与相邻波形均保留 2 个物理像素；提取数随实际可用宽度变化。
+    static func sampleCount(for width: CGFloat, displayScale: CGFloat) -> Int {
+        guard width > 0, displayScale > 0 else { return 0 }
+        let barWidth = physicalBarWidth / displayScale
+        let spacing = physicalSpacing / displayScale
+        return max(1, Int(((width + spacing) / (barWidth + spacing)).rounded(.down)))
+    }
+
+    override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        let displayScale = max(traitCollection.displayScale, 1)
+        let values = samples.isEmpty ? Array(repeating: Float(0.12), count: Self.sampleCount(for: rect.width, displayScale: displayScale)) : samples
+        let count = max(values.count, 1)
+        let spacing = Self.physicalSpacing / displayScale
+        let barWidth = max(1 / displayScale, (rect.width - CGFloat(count - 1) * spacing) / CGFloat(count))
+        let center = rect.midY
+        let maxHeight = rect.height * 0.82
+
+        for index in 0..<count {
+            let value = min(max(CGFloat(abs(values[index])), 0.08), 1)
+            let height = max(7, value * maxHeight)
+            context.setStrokeColor((CGFloat(index) / CGFloat(count) <= CGFloat(progress) ? UIColor(red: 0.11, green: 0.10, blue: 0.18, alpha: 1) : UIColor.secondaryLabel.withAlphaComponent(0.40)).cgColor)
+            context.setLineWidth(barWidth)
+            context.setLineCap(.round)
+            let x = CGFloat(index) * (barWidth + spacing) + barWidth / 2
+            context.move(to: CGPoint(x: x, y: center - height / 2))
+            context.addLine(to: CGPoint(x: x, y: center + height / 2))
+            context.strokePath()
+        }
     }
 }
 

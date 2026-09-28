@@ -10,6 +10,8 @@
 		05305DF5C8B1B8843EFCB6DE /* ObjCIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F43D359DC6A7839ADA2F6 /* ObjCIntegration.m */; };
 		16742C1EE7D41E7875139B13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B241E8F41B2EE541C981B00D /* AppDelegate.swift */; };
 		2010861D459F1BA8E38CE27E /* WaveNoteSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AABD00000000000000000001 /* WaveNoteAudioEngine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABD00000000000000000003 /* WaveNoteAudioEngine.xcframework */; };
+		AABD00000000000000000002 /* WaveNoteAudioEngine.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AABD00000000000000000003 /* WaveNoteAudioEngine.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6B2F1753416F47EBCE0D /* SwiftIntegration.swift */; };
 		39DF028E306266ED00592854 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39DF028D306266ED00592854 /* Secrets.plist */; };
 		39DF02903062670C00592854 /* Secrets.example.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39DF028F3062670C00592854 /* Secrets.example.plist */; };
@@ -44,8 +46,9 @@
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
-			files = (
+		files = (
 				2010861D459F1BA8E38CE27E /* WaveNoteSDK.xcframework in Embed Frameworks */,
+				AABD00000000000000000002 /* WaveNoteAudioEngine.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,6 +73,7 @@
 		AABB00000000000000000000 /* DemoAudioLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAudioLibrary.swift; sourceTree = "<group>"; };
 		AABB00000000000000000002 /* DemoOggPlayback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoOggPlayback.swift; sourceTree = "<group>"; };
 		AABB00000000000000000003 /* DemoNativePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNativePlayer.swift; sourceTree = "<group>"; };
+		AABD00000000000000000003 /* WaveNoteAudioEngine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = WaveNoteAudioEngine.xcframework; sourceTree = "<group>"; };
 		B241E8F41B2EE541C981B00D /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1C03971DC218EA2359DDA3C /* WaveNoteDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveNoteDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4167806BC7B2492D3A1BD43 /* DemoAudioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAudioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,9 +83,10 @@
 		0BD34425EC7DC10D1DCBC32B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
+		files = (
 				A43633CD5433EC22A1BE95D9 /* Foundation.framework in Frameworks */,
 				4439E55BEF98FDFBA5A1B10E /* WaveNoteSDK.xcframework in Frameworks */,
+				AABD00000000000000000001 /* WaveNoteAudioEngine.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,8 +171,9 @@
 		};
 		B6962A49CA8D659111516049 /* Frameworks */ = {
 			isa = PBXGroup;
-			children = (
+		children = (
 				80AF68F8CFC03C439015A95C /* WaveNoteSDK.xcframework */,
+				AABD00000000000000000003 /* WaveNoteAudioEngine.xcframework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -380,7 +386,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -398,7 +404,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 63B6HX65S6;
 				INFOPLIST_FILE = App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -420,7 +426,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.wavenote.demo.ios.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -493,7 +499,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 63B6HX65S6;
 				INFOPLIST_FILE = App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

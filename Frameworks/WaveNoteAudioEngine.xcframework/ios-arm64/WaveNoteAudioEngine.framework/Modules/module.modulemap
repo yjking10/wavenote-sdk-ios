@@ -1,0 +1,6 @@
+framework module WaveNoteAudioEngine {
+    umbrella header "WaveNoteAudioEngine.h"
+    exclude header "WaveNoteAudioEngine-Swift.h"
+    export *
+    module * { export * }
+}

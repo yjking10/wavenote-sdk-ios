@@ -6,7 +6,7 @@
 
 ## 集成前提
 
-- iOS 15 及以上；真实 BLE 连接需要真机。
+- iOS 15.1 及以上；真实 BLE 连接需要真机。
 - 将完整的 `WaveNoteSDK.xcframework` 添加到目标的 **Frameworks, Libraries, and Embedded Content**，并设置为 **Embed & Sign**。
 - Swift 使用 `import WaveNoteSDK`；Objective-C 使用 `@import WaveNoteSDK;`。
 - 所有 SDK API 调用、Completion 和 Delegate 回调均在主线程；耗时 UI 外工作请自行切换至工作线程。
