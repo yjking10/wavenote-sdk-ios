@@ -278,10 +278,14 @@ final class DemoPlayerController: UIViewController {
         guard count > 0, count != waveformSampleCount else { return }
         waveformSampleCount = count
         if hasLoaded { model.player.reloadWaveform(sampleCount: count) }
-        else if view.window != nil {
-            hasLoaded = true
-            model.player.load(source, waveformSampleCount: count)
-        }
+        else { loadIfPossible() }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 首次布局可能发生在视图加入 window 之前，且后续不会再触发布局。
+        // 页面可见时再次确认，确保首次进入也会准备音频和生成波形。
+        loadIfPossible()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -296,6 +300,18 @@ final class DemoPlayerController: UIViewController {
     @objc private func seek() {
         let total = max(model.player.durationMilliseconds, 1)
         model.player.seek(to: Int64((Double(slider.value) * Double(total)).rounded()))
+    }
+
+    private func loadIfPossible() {
+        guard !hasLoaded, view.window != nil else { return }
+        let count = DemoWaveformView.sampleCount(for: waveform.bounds.width, displayScale: traitCollection.displayScale)
+        guard count > 0 else {
+            view.setNeedsLayout()
+            return
+        }
+        waveformSampleCount = count
+        hasLoaded = true
+        model.player.load(source, waveformSampleCount: count)
     }
 
     private func configureControl(_ button: UIButton, title: String, prominent: Bool = false, action: Selector? = nil) {
@@ -343,8 +359,35 @@ final class DemoPlayerController: UIViewController {
 private final class DemoWaveformView: UIView {
     private static let physicalBarWidth: CGFloat = 2
     private static let physicalSpacing: CGFloat = 2
-    var samples: [Float] = [] { didSet { setNeedsDisplay() } }
-    var progress: Float = 0 { didSet { setNeedsDisplay() } }
+    private let remainingLayer = CAShapeLayer()
+    private let playedLayer = CAShapeLayer()
+    private let playedMaskLayer = CALayer()
+    private var waveformSize = CGSize.zero
+    private var needsWaveformPathUpdate = true
+
+    var samples: [Float] = [] {
+        didSet {
+            guard samples != oldValue else { return }
+            needsWaveformPathUpdate = true
+            setNeedsLayout()
+        }
+    }
+    var progress: Float = 0 {
+        didSet {
+            guard progress != oldValue else { return }
+            updateProgressMask()
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureLayers()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configureLayers()
+    }
 
     /// 每条波形与相邻波形均保留 2 个物理像素；提取数随实际可用宽度变化。
     static func sampleCount(for width: CGFloat, displayScale: CGFloat) -> Int {
@@ -354,27 +397,77 @@ private final class DemoWaveformView: UIView {
         return max(1, Int(((width + spacing) / (barWidth + spacing)).rounded(.down)))
     }
 
-    override func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext() else { return }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if needsWaveformPathUpdate || waveformSize != bounds.size {
+            updateWaveformPath()
+            waveformSize = bounds.size
+            needsWaveformPathUpdate = false
+        }
+        updateProgressMask()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateColors()
+    }
+
+    private func configureLayers() {
+        clipsToBounds = true
+        [remainingLayer, playedLayer].forEach {
+            $0.fillColor = nil
+            $0.lineCap = .round
+            layer.addSublayer($0)
+        }
+        playedMaskLayer.backgroundColor = UIColor.black.cgColor
+        playedLayer.mask = playedMaskLayer
+        updateColors()
+    }
+
+    private func updateWaveformPath() {
         let displayScale = max(traitCollection.displayScale, 1)
-        let values = samples.isEmpty ? Array(repeating: Float(0.12), count: Self.sampleCount(for: rect.width, displayScale: displayScale)) : samples
+        let values = samples.isEmpty ? Array(repeating: Float(0.12), count: Self.sampleCount(for: bounds.width, displayScale: displayScale)) : samples
+        guard !values.isEmpty else { return }
         let count = max(values.count, 1)
         let spacing = Self.physicalSpacing / displayScale
-        let barWidth = max(1 / displayScale, (rect.width - CGFloat(count - 1) * spacing) / CGFloat(count))
-        let center = rect.midY
-        let maxHeight = rect.height * 0.82
+        let barWidth = max(1 / displayScale, (bounds.width - CGFloat(count - 1) * spacing) / CGFloat(count))
+        let center = bounds.midY
+        let maxHeight = bounds.height * 0.82
+        let path = CGMutablePath()
 
         for index in 0..<count {
             let value = min(max(CGFloat(abs(values[index])), 0.08), 1)
             let height = max(7, value * maxHeight)
-            context.setStrokeColor((CGFloat(index) / CGFloat(count) <= CGFloat(progress) ? UIColor(red: 0.11, green: 0.10, blue: 0.18, alpha: 1) : UIColor.secondaryLabel.withAlphaComponent(0.40)).cgColor)
-            context.setLineWidth(barWidth)
-            context.setLineCap(.round)
             let x = CGFloat(index) * (barWidth + spacing) + barWidth / 2
-            context.move(to: CGPoint(x: x, y: center - height / 2))
-            context.addLine(to: CGPoint(x: x, y: center + height / 2))
-            context.strokePath()
+            path.move(to: CGPoint(x: x, y: center - height / 2))
+            path.addLine(to: CGPoint(x: x, y: center + height / 2))
         }
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        remainingLayer.contentsScale = displayScale
+        playedLayer.contentsScale = displayScale
+        playedMaskLayer.contentsScale = displayScale
+        remainingLayer.frame = bounds
+        playedLayer.frame = bounds
+        remainingLayer.lineWidth = barWidth
+        playedLayer.lineWidth = barWidth
+        remainingLayer.path = path
+        playedLayer.path = path
+        CATransaction.commit()
+    }
+
+    private func updateProgressMask() {
+        let fraction = min(max(CGFloat(progress), 0), 1)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        playedMaskLayer.frame = CGRect(x: 0, y: 0, width: bounds.width * fraction, height: bounds.height)
+        CATransaction.commit()
+    }
+
+    private func updateColors() {
+        remainingLayer.strokeColor = UIColor.secondaryLabel.withAlphaComponent(0.40).cgColor
+        playedLayer.strokeColor = UIColor(red: 0.11, green: 0.10, blue: 0.18, alpha: 1).cgColor
     }
 }
 

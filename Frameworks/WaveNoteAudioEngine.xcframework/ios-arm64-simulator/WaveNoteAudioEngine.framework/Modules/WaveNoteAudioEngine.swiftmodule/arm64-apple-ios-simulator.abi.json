@@ -2060,6 +2060,13 @@
       },
       {
         "kind": "Import",
+        "name": "Dispatch",
+        "printedName": "Dispatch",
+        "declKind": "Import",
+        "moduleName": "WaveNoteAudioEngine"
+      },
+      {
+        "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
@@ -4243,6 +4250,116 @@
             "funcSelfKind": "NonMutating"
           },
           {
+            "kind": "Function",
+            "name": "extract",
+            "printedName": "extract(fileURL:samplesPerSecond:progress:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSURL",
+                "printedName": "Foundation.NSURL",
+                "usr": "c:objc(cs)NSURL"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Double) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ]
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([Foundation.NSNumber]?, Foundation.NSError?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([Foundation.NSNumber]?, Foundation.NSError?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[Foundation.NSNumber]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[Foundation.NSNumber]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "NSNumber",
+                                "printedName": "Foundation.NSNumber",
+                                "usr": "c:objc(cs)NSNumber"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSError?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSError",
+                            "printedName": "Foundation.NSError",
+                            "usr": "c:objc(cs)NSError"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteAudioEngine@objc(cs)WaveNoteAudioEngineWaveformExtractor(im)extractWaveformFromFileURL:samplesPerSecond:progress:completion:",
+            "mangledName": "$s19WaveNoteAudioEngine0abcD17WaveformExtractorC7extract7fileURL16samplesPerSecond8progress10completionySo5NSURLC_SiySdYbcySaySo8NSNumberCGSg_So7NSErrorCSgtctF",
+            "moduleName": "WaveNoteAudioEngine",
+            "objc_name": "extractWaveformFromFileURL:samplesPerSecond:progress:completion:",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
             "kind": "Constructor",
             "name": "init",
             "printedName": "init()",
@@ -5119,6 +5236,13 @@
       },
       {
         "kind": "Import",
+        "name": "Accelerate",
+        "printedName": "Accelerate",
+        "declKind": "Import",
+        "moduleName": "WaveNoteAudioEngine"
+      },
+      {
+        "kind": "Import",
         "name": "AVFAudio",
         "printedName": "AVFAudio",
         "declKind": "Import",
@@ -5224,7 +5348,128 @@
             "moduleName": "WaveNoteAudioEngine",
             "declAttributes": [
               "Final",
-              "AccessControl"
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "extract",
+            "printedName": "extract(localFile:samplesPerSecond:progress:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.Float]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:Sa"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Double) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "hasDefaultArg": true
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:19WaveNoteAudioEngine0aB17WaveformExtractorC7extract9localFile16samplesPerSecond8progressSaySfG10Foundation3URLV_SiySdYbctYaKF",
+            "mangledName": "$s19WaveNoteAudioEngine0aB17WaveformExtractorC7extract9localFile16samplesPerSecond8progressSaySfG10Foundation3URLV_SiySdYbctYaKF",
+            "moduleName": "WaveNoteAudioEngine",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "extract",
+            "printedName": "extract(localFile:progress:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.Float]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:Sa"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Double) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "hasDefaultArg": true
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:19WaveNoteAudioEngine0aB17WaveformExtractorC7extract9localFile8progressSaySfG10Foundation3URLV_ySdYbctYaKF",
+            "mangledName": "$s19WaveNoteAudioEngine0aB17WaveformExtractorC7extract9localFile8progressSaySfG10Foundation3URLV_ySdYbctYaKF",
+            "moduleName": "WaveNoteAudioEngine",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "RawDocComment"
             ],
             "throwing": true,
             "funcSelfKind": "NonMutating"
@@ -5388,91 +5633,91 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 163,
+      "offset": 179,
       "length": 9,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 182,
+      "offset": 198,
       "length": 5,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 197,
+      "offset": 213,
       "length": 7,
       "value": "3"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 214,
+      "offset": 230,
       "length": 6,
       "value": "4"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 230,
+      "offset": 246,
       "length": 7,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 247,
+      "offset": 263,
       "length": 9,
       "value": "6"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 266,
+      "offset": 282,
       "length": 8,
       "value": "7"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 284,
+      "offset": 300,
       "length": 6,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 451,
+      "offset": 467,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 470,
+      "offset": 486,
       "length": 2,
       "value": "12"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 493,
+      "offset": 509,
       "length": 2,
       "value": "20"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 514,
+      "offset": 530,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteAudioEngineObjC.swift",
       "kind": "IntegerLiteral",
-      "offset": 631,
+      "offset": 647,
       "length": 3,
       "value": "1"
     },
@@ -5517,6 +5762,27 @@
       "offset": 777,
       "length": 5,
       "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteWaveformExtractor.swift",
+      "kind": "IntegerLiteral",
+      "offset": 202,
+      "length": 3,
+      "value": "100"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteWaveformExtractor.swift",
+      "kind": "IntegerLiteral",
+      "offset": 250,
+      "length": 7,
+      "value": "100000"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-audio-engine\/ios\/WaveNoteAudioEngine\/Sources\/WaveNoteAudioPlayer\/WaveNoteWaveformExtractor.swift",
+      "kind": "IntegerLiteral",
+      "offset": 316,
+      "length": 6,
+      "value": "16384"
     }
   ]
 }

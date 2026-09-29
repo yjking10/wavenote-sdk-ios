@@ -3,6 +3,8 @@
 // swift-module-flags: -target arm64-apple-ios15.1-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -module-name WaveNoteAudioEngine -package-name wavenoteaudioengine
 // swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
 @preconcurrency import AVFAudio
+import Accelerate
+import Dispatch
 import Foundation
 import Foundation/*.Bundle*/
 import Foundation/*.ProcessInfo*/
@@ -114,6 +116,7 @@ final public class WaveNoteAudioDenoiser : Swift::Sendable {
 }
 @_inheritsConvenienceInitializers @objc(WaveNoteAudioEngineWaveformExtractor) @_Concurrency::MainActor final public class WaveNoteAudioEngineWaveformExtractor : ObjectiveC::NSObject {
   @objc(extractWaveformFromFileURL:sampleCount:progress:completion:) @_Concurrency::MainActor final public func extract(fileURL: Foundation::NSURL, sampleCount: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void, completion: @escaping ([Foundation::NSNumber]?, Foundation::NSError?) -> Swift::Void)
+  @objc(extractWaveformFromFileURL:samplesPerSecond:progress:completion:) @_Concurrency::MainActor final public func extract(fileURL: Foundation::NSURL, samplesPerSecond: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void, completion: @escaping ([Foundation::NSNumber]?, Foundation::NSError?) -> Swift::Void)
   @_Concurrency::MainActor @objc override dynamic public init()
   @objc deinit
 }
@@ -151,6 +154,8 @@ final public class WaveNoteAudioDenoiser : Swift::Sendable {
 final public class WaveNoteWaveformExtractor : Swift::Sendable {
   public init()
   final public func extract(localFile: Foundation::URL, sampleCount: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void = { _ in }) async throws -> [Swift::Float]
+  final public func extract(localFile: Foundation::URL, samplesPerSecond: Swift::Int, progress: @escaping @Sendable (Swift::Double) -> Swift::Void = { _ in }) async throws -> [Swift::Float]
+  final public func extract(localFile: Foundation::URL, progress: @escaping @Sendable (Swift::Double) -> Swift::Void = { _ in }) async throws -> [Swift::Float]
   @objc deinit
 }
 extension WaveNoteAudioEngine::PlaybackState : Swift::Equatable {}

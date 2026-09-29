@@ -472,6 +472,10 @@ SWIFT_CLASS_NAMED("WaveNoteAudioEngineWaveformExtractor")
 /// <code>sampleCount</code> must be from 1 through 100000. <code>progress</code> receives values from
 /// 0.0 through 1.0, and <code>completion</code> returns an array of <code>NSNumber</code> float values.
 - (void)extractWaveformFromFileURL:(NSURL * _Nonnull)fileURL sampleCount:(NSInteger)sampleCount progress:(void (^ _Nonnull)(double))progress completion:(void (^ _Nonnull)(NSArray<NSNumber *> * _Nullable, NSError * _Nullable))completion;
+/// Extracts normalized RMS waveform samples at the requested density.
+/// The whole file is decoded. The result contains <code>ceil(duration * samplesPerSecond)</code>
+/// values, with at least one value and at most 100000 values.
+- (void)extractWaveformFromFileURL:(NSURL * _Nonnull)fileURL samplesPerSecond:(NSInteger)samplesPerSecond progress:(void (^ _Nonnull)(double))progress completion:(void (^ _Nonnull)(NSArray<NSNumber *> * _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

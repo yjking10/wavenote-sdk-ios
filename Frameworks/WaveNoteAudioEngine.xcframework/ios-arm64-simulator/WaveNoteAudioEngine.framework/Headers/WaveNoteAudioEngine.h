@@ -88,6 +88,13 @@ typedef NS_ENUM(NSInteger, WaveNoteAudioEngineRepeatMode) {
                        sampleCount:(NSInteger)sampleCount
                           progress:(void (^)(double progress))progress
                         completion:(void (^)(NSArray<NSNumber *> * _Nullable values, NSError * _Nullable error))completion;
+/// Returns one normalized float value per requested audio second density (boxed as `NSNumber`).
+/// The result has `ceil(duration * samplesPerSecond)` values, at least one and at most 100000.
+/// `samplesPerSecond` must be positive; progress and completion are called on the main thread.
+- (void)extractWaveformFromFileURL:(NSURL *)fileURL
+                  samplesPerSecond:(NSInteger)samplesPerSecond
+                          progress:(void (^)(double progress))progress
+                        completion:(void (^)(NSArray<NSNumber *> * _Nullable values, NSError * _Nullable error))completion;
 @end
 
 /// Writes a denoised WAV file from a local input file.

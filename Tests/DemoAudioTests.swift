@@ -1,5 +1,8 @@
 import XCTest
 import AVFoundation
+#if canImport(UIKit)
+import UIKit
+#endif
 #if canImport(DemoLogic)
 @testable import DemoLogic
 #else
@@ -224,6 +227,31 @@ final class DemoAudioTests: XCTestCase {
         _ = try DemoOggPlayback.prepare(URL(fileURLWithPath: path), destination: output)
         XCTAssertEqual(try AVAudioFile(forReading: output).length, 103 * 960)
     }
+
+#if canImport(UIKit) && !canImport(DemoLogic)
+    @MainActor func testPlayerStartsLoadingWhenFirstLayoutPrecedesWindowAttachment() throws {
+        let source = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".ogg")
+        try ogg().write(to: source)
+        defer { try? FileManager.default.removeItem(at: source) }
+
+        let model = DemoController()
+        let controller = DemoPlayerController(model: model, source: source.path, fileName: "test.ogg")
+        controller.loadViewIfNeeded()
+        controller.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        controller.view.layoutIfNeeded() // Reproduces the pre-window layout that used to consume the sample-count change.
+        XCTAssertNil(model.player.path)
+
+        let window = UIWindow(frame: controller.view.bounds)
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+
+        XCTAssertEqual(model.player.path, source.path)
+        model.player.stop()
+        window.isHidden = true
+        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+    }
+#endif
 
 
 
