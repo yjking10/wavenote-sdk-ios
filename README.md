@@ -7,8 +7,8 @@
 ## 集成前提
 
 - iOS 15.1 及以上；真实 BLE 连接需要真机。
-- 将完整的 `WaveNoteSDK.xcframework` 添加到目标的 **Frameworks, Libraries, and Embedded Content**，并设置为 **Embed & Sign**。
-- Swift 使用 `import WaveNoteSDK`；Objective-C 使用 `@import WaveNoteSDK;`。
+- 将 `WaveNoteSDK.xcframework` 和 `WaveNoteAudioEngine.xcframework` 添加到目标的 **Frameworks, Libraries, and Embedded Content**，并均设置为 **Embed & Sign**。
+- Swift 使用 `import WaveNoteSDK`；使用本地音频播放、波形或降噪时另加 `import WaveNoteAudioEngine`。Objective-C 分别使用 `@import WaveNoteSDK;` 和 `@import WaveNoteAudioEngine;`。
 - 所有 SDK API 调用、Completion 和 Delegate 回调均在主线程；耗时 UI 外工作请自行切换至工作线程。
 - 在 `Info.plist` 中配置以下权限相关键值：
 
@@ -19,6 +19,96 @@
 | 连接设备热点或进行局域网传输           | `NSLocalNetworkUsageDescription`，填写面向用户的本地网络用途说明。 | 仅使用热点/局域网传输时 |
 
 Wi-Fi 快传还需要在 Signing & Capabilities 中启用 **Hotspot Configuration**。当前实现不读取手机当前连接的 SSID/BSSID，因此不需要 **Access WiFi Information** capability。蓝牙授权由系统在首次使用时请求。当前 Demo 不请求麦克风、相册、文件或定位权限；Demo 的 [Info.plist](App/Info.plist) 可作为配置参考。
+
+## Audio Engine：本地音频处理
+
+Demo 已引入 `WaveNoteAudioEngine.xcframework`，用于处理 `downloadToStorage` 返回的已完成本地音频。它与设备传输解耦，不能播放正在下载、已取消或不完整的文件。
+
+核心能力包括：
+
+- 单文件播放：准备、播放/暂停/停止、跳转、音量（`0...1`）、倍速（`0.5...2`）和单曲循环；播放器同时只管理一个本地文件。
+- 事件流：播放状态、毫秒级位置和时长、播放完成、系统中断/被其他播放器抢占，以及不可恢复错误。
+- 实时降噪：提供关闭、轻度、均衡、强力四档；切换是异步的，应根据事件中的“准备完成”或“已绕过”更新 UI。
+- 波形提取：从本地文件异步生成归一化 RMS 浮点数组，适用于波形预览；可按采样数或每秒采样密度提取。
+- 离线降噪：将本地音频导出为新的 48 kHz、单声道、16-bit PCM WAV 文件。输出 URL 必须是尚不存在的本地 `.wav` 文件。
+
+以下示例使用 Swift 并展示 Demo 采用的高层 API。调用和事件消费均在主线程进行；页面销毁时取消事件任务，并在播放器不再使用时调用 `close()`（关闭后的实例不可复用）。
+
+```swift
+import WaveNoteAudioEngine
+
+@MainActor
+final class LocalAudioController {
+    private let player = WaveNoteAudioPlayer()
+    private var eventTask: Task<Void, Never>?
+
+    init() {
+        player.setNoiseSuppressionLevel(.balanced)
+        eventTask = Task { [weak self] in
+            guard let self else { return }
+            for await event in self.player.events {
+                switch event {
+                case .position(let position, let duration):
+                    self.renderProgress(position, duration)
+                case .completed:
+                    self.showCompleted()
+                case .noiseSuppressionBypassed:
+                    self.showNoiseSuppressionUnavailable()
+                case .fatalError(let error):
+                    self.showError(error)
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    func open(_ audio: WaveNoteLocalAudio) {
+        Task {
+            do {
+                try await player.prepare(localFile: audio.url)
+                try player.setRate(1.25)
+                try player.play()
+            } catch {
+                showError(error)
+            }
+        }
+    }
+
+    func seek(to milliseconds: Int64) {
+        try? player.seek(milliseconds: milliseconds)
+    }
+
+    func pause() { player.pause() }
+
+    func makeWaveform(for audio: WaveNoteLocalAudio) {
+        Task {
+            do {
+                let samples = try await WaveNoteWaveformExtractor().extract(
+                    localFile: audio.url,
+                    sampleCount: 240
+                )
+                renderWaveform(samples)
+            } catch {
+                showError(error)
+            }
+        }
+    }
+
+    deinit {
+        eventTask?.cancel()
+        player.close()
+    }
+
+    private func renderProgress(_ position: Int64, _ duration: Int64) {}
+    private func showCompleted() {}
+    private func showNoiseSuppressionUnavailable() {}
+    private func renderWaveform(_ samples: [Float]) {}
+    private func showError(_ error: Error) {}
+}
+```
+
+完整的页面适配可参考 [DemoNativePlayer.swift](App/DemoNativePlayer.swift)。若使用 Objective-C，可使用 `WaveNoteAudioEnginePlayer`、`WaveNoteAudioEngineWaveformExtractor` 和 `WaveNoteAudioEngineDenoiser` 这三个同等功能的封装；它们的 Completion 和 Delegate 回调也在主线程。
 
 ## 运行 Demo 的开发凭据
 
