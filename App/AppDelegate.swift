@@ -107,7 +107,9 @@ final class HomeController: UITableViewController {
                 cell.textLabel?.text = model.wifiButtonTitle
                 cell.detailTextLabel?.text = model.wifiButtonDetail
                 cell.textLabel?.textColor = model.wifiTransferActive ? .systemRed : view.tintColor
-                let canOpen = !model.flow.busy && !model.library.busy && model.sdk.recording.snapshot.state == .stopped
+                // A running BLE download may be switched to Wi-Fi: the controller stops it,
+                // preserves its resume point, then opens the fast-transfer workflow.
+                let canOpen = (!model.flow.busy || model.library.busy) && model.sdk.recording.snapshot.state == .stopped
                 cell.isUserInteractionEnabled = model.wifiTransferActive || canOpen
                 cell.textLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
                 cell.detailTextLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
