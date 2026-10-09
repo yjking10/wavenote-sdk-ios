@@ -58,7 +58,7 @@ final class HomeController: UITableViewController {
         if section == 1 && model.flow.ready { return model.player.message.isEmpty ? "音频仅保存在本机。左滑已完成文件可删除本地音频。" : model.player.message }
         return section == 0 ? "演示身份：本地模拟。绑定记录仅在本机保存，两端不共享。" : "选择设备后绑定并连接；已绑定设备直接连接。"
     }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? 6 : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? (model.bleInvestigationAvailable ? 7 : 6) : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
     override func tableView(_ tableView: UITableView, cellForRowAt path: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.numberOfLines = 0; cell.detailTextLabel?.numberOfLines = 0
@@ -93,6 +93,16 @@ final class HomeController: UITableViewController {
                 }
             }
         } else if path.section == 0 {
+            if path.row == 6 {
+                cell.textLabel?.text = "排查 BLE 长文件下载"
+                cell.detailTextLabel?.text = model.bleInvestigationStatus.isEmpty ? "对设备上的 7 MB 文件重复下载六轮" : model.bleInvestigationStatus
+                cell.textLabel?.textColor = view.tintColor
+                cell.isUserInteractionEnabled = !model.flow.busy && !model.library.busy && !model.bleInvestigationRunning && model.sdk.recording.snapshot.state == .stopped
+                cell.textLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.detailTextLabel?.alpha = cell.isUserInteractionEnabled ? 1 : 0.45
+                cell.accessibilityIdentifier = "bleGapInvestigation"
+                return cell
+            }
             if path.row == 3 {
                 cell.textLabel?.text = model.wifiButtonTitle
                 cell.detailTextLabel?.text = model.wifiButtonDetail
@@ -139,6 +149,7 @@ final class HomeController: UITableViewController {
             if path.row == 3 { model.toggleWiFiTransfer() }
             if path.row == 4 { model.startRecording() }
             if path.row == 5 { model.stopRecording() }
+            if path.row == 6 { model.investigateBLEDownload() }
         } else if !model.devices.isEmpty { model.select(model.devices[path.row]) }
     }
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -499,7 +510,8 @@ final class SettingsController: UITableViewController {
                       Row(title: "存储", value: disk, action: { self.info("设备存储", "已用 / 总量：\(disk)\n\n容量保留设备原始单位。此页面仅查看使用情况，不清空设备内容。") }),
                       Row(title: "固件版本", value: s?.firmwareVersion ?? "未知"),
                       Row(title: "自动关机", value: DemoFlow.minutes(s?.autoPowerOffMinutes?.intValue), action: { self.autoPower() })]),
-            ("隐私与安全", [Row(title: "USB 访问", value: DemoValues.usb(s?.usbEnabled?.intValue), action: { self.usb() })]),
+            ("隐私与安全", [Row(title: "USB 访问", value: DemoValues.usb(s?.usbEnabled?.intValue), action: { self.usb() }),
+                       Row(title: "设备文件 Log", value: s?.deviceLog == 1 ? "打开" : s?.deviceLog == 0 ? "关闭" : "未知")]),
             ("高级录音设置", [Row(title: "麦克风增益", value: value(s?.microphoneGain), action: { self.gain(microphone: true) }),
                            Row(title: "振动传感器增益", value: value(s?.vibrationGain), action: { self.gain(microphone: false) })]),
             ("连接管理", [Row(title: "断开连接", value: "", action: { self.model.disconnect() }),
@@ -511,7 +523,7 @@ final class SettingsController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { groups[section].0 }
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 { return model.status }
-        if section == 1 { return "开启后允许通过 USB 访问设备内容。此状态不表示线缆是否连接。" }
+        if section == 1 { return "USB 访问允许通过线缆访问设备内容，不表示线缆已连接。文件 Log 查询 110；开关发送 222 并回读确认，与 SDK 控制台日志独立。" }
         if section == 2 { return "原始整数 0–255，数值不代表分贝或百分比。" }
         return "演示身份：本地模拟"
     }
@@ -525,9 +537,17 @@ final class SettingsController: UITableViewController {
         cell.accessoryType = row.action == nil ? .none : .disclosureIndicator
         cell.textLabel?.textColor = path.section == 3 ? .systemRed : .label
         if path.section == 1 {
-            let toggle = UISwitch(); toggle.isOn = model.snapshot?.usbEnabled == 1
-            toggle.isEnabled = DemoValues.canSetUSB(model.snapshot?.usbEnabled?.intValue) && !model.flow.busy
-            toggle.addTarget(self, action: #selector(toggleUSB(_:)), for: .valueChanged); cell.accessoryView = toggle
+            let toggle = UISwitch()
+            if path.row == 0 {
+                toggle.isOn = model.snapshot?.usbEnabled == 1
+                toggle.isEnabled = DemoValues.canSetUSB(model.snapshot?.usbEnabled?.intValue) && !model.flow.busy
+                toggle.addTarget(self, action: #selector(toggleUSB(_:)), for: .valueChanged)
+            } else {
+                toggle.isOn = model.snapshot?.deviceLog == 1
+                toggle.isEnabled = model.snapshot?.deviceLog != nil && !model.flow.busy
+                toggle.addTarget(self, action: #selector(toggleDeviceLog(_:)), for: .valueChanged)
+            }
+            cell.accessoryView = toggle
         }
         return cell
     }
@@ -540,6 +560,10 @@ final class SettingsController: UITableViewController {
     @objc private func toggleUSB(_ sender: UISwitch) {
         let enabled = sender.isOn; sender.isOn = model.snapshot?.usbEnabled == 1
         model.control { self.model.sdk.deviceSettings.setUSBEnabled(enabled, completion: $0) }
+    }
+    @objc private func toggleDeviceLog(_ sender: UISwitch) {
+        let enabled = sender.isOn; sender.isOn = model.snapshot?.deviceLog == 1
+        model.control { self.model.sdk.maintenance.setDeviceLogEnabled(enabled, completion: $0) }
     }
     private func usb() { info("USB 访问", "开启后允许通过 USB 访问设备内容。请使用右侧开关设置；未知状态请先刷新。") }
     private func gain(microphone: Bool) {

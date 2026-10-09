@@ -744,7 +744,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 ///
 /// \param transport 默认 bluetooth；选择 wifi 前必须等待 wifi.startFastTransfer 成功，不自动切换传输方式。
 ///
-/// \param resume 默认 false，且不允许已有 .partial；true 仅在新的已确认会话中恢复同一目标及匹配的元数据。
+/// \param resume 默认 false，且不允许已有 .partial；true 在已确认会话中恢复同一目标及匹配的元数据。
 /// 续传偏移由已验证的原始字节和完整 Ogg 页恢复，不能使用 Ogg 文件大小代替。
 ///
 /// \param deleteSource 默认 false。true 时仅在最终 Ogg 校验成功后请求删除设备原文件；删除未确认则以错误结束，本地 Ogg 保留。
@@ -1218,6 +1218,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 @property (nonatomic, readonly) enum WaveNoteReconnectPolicy reconnectPolicy;
 @property (nonatomic, readonly, strong) id <WaveNoteIdentityProvider> _Nullable identityProvider;
 @property (nonatomic, readonly) BOOL enableLiveAudio;
+@property (nonatomic, readonly) BOOL enableFileTransferAutoRetry;
 /// 构建配置，不在初始化时发起网络请求；登录凭据只由宿主 Provider 管理。
 /// \param userIdentifier 非空用户标识，用于归属查询及隔离本地重连记录。
 ///
@@ -1228,6 +1229,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
+/// 配置 BLE 文件错位后的断点自动重试；最多三次下载尝试（包含首次）。
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio enableFileTransferAutoRetry:(BOOL)enableFileTransferAutoRetry OBJC_DESIGNATED_INITIALIZER;
 /// 兼容既有调用；未显式配置时默认关闭边录边传。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -2217,7 +2220,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 ///
 /// \param transport 默认 bluetooth；选择 wifi 前必须等待 wifi.startFastTransfer 成功，不自动切换传输方式。
 ///
-/// \param resume 默认 false，且不允许已有 .partial；true 仅在新的已确认会话中恢复同一目标及匹配的元数据。
+/// \param resume 默认 false，且不允许已有 .partial；true 在已确认会话中恢复同一目标及匹配的元数据。
 /// 续传偏移由已验证的原始字节和完整 Ogg 页恢复，不能使用 Ogg 文件大小代替。
 ///
 /// \param deleteSource 默认 false。true 时仅在最终 Ogg 校验成功后请求删除设备原文件；删除未确认则以错误结束，本地 Ogg 保留。
@@ -2691,6 +2694,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 @property (nonatomic, readonly) enum WaveNoteReconnectPolicy reconnectPolicy;
 @property (nonatomic, readonly, strong) id <WaveNoteIdentityProvider> _Nullable identityProvider;
 @property (nonatomic, readonly) BOOL enableLiveAudio;
+@property (nonatomic, readonly) BOOL enableFileTransferAutoRetry;
 /// 构建配置，不在初始化时发起网络请求；登录凭据只由宿主 Provider 管理。
 /// \param userIdentifier 非空用户标识，用于归属查询及隔离本地重连记录。
 ///
@@ -2701,6 +2705,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
+/// 配置 BLE 文件错位后的断点自动重试；最多三次下载尝试（包含首次）。
+- (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio enableFileTransferAutoRetry:(BOOL)enableFileTransferAutoRetry OBJC_DESIGNATED_INITIALIZER;
 /// 兼容既有调用；未显式配置时默认关闭边录边传。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;

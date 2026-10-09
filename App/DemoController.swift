@@ -121,6 +121,18 @@ private enum DemoRSA {
     private var wifiOpenOperation: WaveNoteOperation?
     private var pendingFastTransferStart = false
     private var wifiResult = ""
+    private(set) var bleInvestigationRunning = false
+    private(set) var bleInvestigationStatus = ""
+    private var bleInvestigationResults: [String] = []
+    let bleInvestigationAvailable = ProcessInfo.processInfo.arguments.contains("--ble-gap-investigation")
+    private let automaticBLETargetHash: String? = {
+        guard ProcessInfo.processInfo.arguments.contains("--ble-gap-investigation"),
+              let value = ProcessInfo.processInfo.arguments.first(where: { $0.hasPrefix("--ble-gap-device-hash=") })?.split(separator: "=").last,
+              value.count == 8, value.allSatisfy({ $0.isHexDigit }) else { return nil }
+        return String(value).lowercased()
+    }()
+    private var automaticBLEStarted = false
+    private var automaticBLEScanAttempts = 0
     var changed: (() -> Void)?
     var devices: [WaveNoteDiscoveredDevice] = []
     var snapshot: WaveNoteSettingsSnapshot?
@@ -162,6 +174,7 @@ private enum DemoRSA {
             status = "蓝牙权限未授予，请在系统设置中允许访问后重试。"; changed?(); return
         }
         guard sdk.bluetoothState == .poweredOn else { status = "请开启蓝牙，待蓝牙可用后重新扫描。"; changed?(); return }
+        if automaticBLETargetHash != nil { automaticBLEScanAttempts += 1 }
         flow.invalidate(); scanGeneration += 1; let token = scanGeneration
         devices = []; scanning = true; status = "正在扫描…"; changed?(); sdk.startScanning()
         DispatchQueue.main.asyncAfter(deadline: .now() + 8.2) { [weak self] in
@@ -169,6 +182,11 @@ private enum DemoRSA {
             self.scanning = false
             self.status = self.devices.isEmpty ? "未发现设备，请靠近设备后重新扫描。" : "扫描完成，请选择设备。"
             self.changed?()
+            if self.automaticBLETargetHash != nil, !self.automaticBLEStarted {
+                print("[WaveNoteDemo][BLEGapInvestigation] scanAttempt=\(self.automaticBLEScanAttempts) discoveredCount=\(self.devices.count) targetFound=false")
+                if self.automaticBLEScanAttempts < 3 { self.scan() }
+                else { self.bleInvestigationStatus = "三次扫描未找到目标设备"; self.changed?() }
+            }
         }
     }
     func select(_ device: WaveNoteDiscoveredDevice) {
@@ -191,7 +209,7 @@ private enum DemoRSA {
     func refresh() {
         guard let token = flow.beginSetting() else { return }
         status = "正在读取设备设置…"; changed?()
-        let items: [WaveNoteSetting] = [.hardware, .battery, .charging, .storage, .recording, .microphoneGain, .vibrationGain, .autoPowerOff]
+        let items: [WaveNoteSetting] = [.hardware, .battery, .charging, .storage, .recording, .microphoneGain, .vibrationGain, .autoPowerOff, .deviceLog]
         DemoReadSequence.run(items, active: { self.flow.accepts(token) && self.flow.ready }, query: { item, done in
             self.sdk.deviceSettings.query(item) { [weak self] value, error in
                 guard let self, self.flow.accepts(token), self.flow.ready else { return }
@@ -276,8 +294,16 @@ private enum DemoRSA {
 
     func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateBluetoothState state: WaveNoteBluetoothState) {
         bluetooth = ["蓝牙状态未知", "蓝牙未授权 · 可前往系统设置", "此设备不支持蓝牙", "蓝牙已关闭", "蓝牙已开启", "蓝牙正在重置"][state.rawValue]; changed?()
+        if state == .poweredOn, automaticBLETargetHash != nil, !automaticBLEStarted, !flow.ready, !scanning { scan() }
     }
-    func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateDiscoveredDevices values: [WaveNoteDiscoveredDevice]) { devices = values; changed?() }
+    func waveNoteSDK(_ sdk: WaveNoteSDK, didUpdateDiscoveredDevices values: [WaveNoteDiscoveredDevice]) {
+        devices = values; changed?()
+        guard scanning, let target = automaticBLETargetHash, !automaticBLEStarted,
+              let device = values.first(where: {
+                  SHA256.hash(data: Data($0.serialNumber.utf8)).prefix(4).map { String(format: "%02x", $0) }.joined() == target
+              }) else { return }
+        select(device)
+    }
     func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeConnectionState state: WaveNoteConnectionState, device: WaveNoteDevice?) {
         if state == .disconnected && flow.selecting { return }
         if wifiWorkflow, state != .ready {
@@ -297,8 +323,15 @@ private enum DemoRSA {
             if wifiWorkflow, !library.busy, ![.ready, .closing].contains(sdk.wifi.snapshot.state) {
                 finishWiFiWorkflow(); return
             }
-            if !flow.ready { flow.connected(); snapshot = nil; mode = nil; audioSession += 1; library.invalidate(); observeRecording(sdk.recording.snapshot); scheduleSync() }
+            if !flow.ready {
+                flow.connected(); snapshot = nil; mode = nil; audioSession += 1; library.invalidate(); observeRecording(sdk.recording.snapshot)
+                if automaticBLETargetHash == nil { scheduleSync() }
+            }
             status = "已连接，点击顶部 SN 查看设备设置。"
+            if automaticBLETargetHash != nil, !automaticBLEStarted {
+                automaticBLEStarted = true
+                investigateBLEDownload()
+            }
         } else if state == .disconnected || state == .failed {
             resetAudio()
             if state == .failed { flow.invalidate() } else { flow.disconnected() }; snapshot = nil; mode = nil; status = unbindCompleted ? (erasedDeviceFiles ? "已解绑，设备内容已清空。" : "已解绑，设备内容保留。") : state == .failed ? "连接失败，请重新扫描。" : "已断开，请重新扫描连接。"
@@ -413,6 +446,68 @@ private enum DemoRSA {
 
     func syncFiles() {
         startSync(transport: .bluetooth)
+    }
+    func investigateBLEDownload() {
+        guard flow.ready, !flow.busy, !library.busy, !bleInvestigationRunning,
+              sdk.recording.snapshot.state == .stopped else { return }
+        bleInvestigationRunning = true
+        bleInvestigationResults = []
+        bleInvestigationStatus = "查找设备上的 7 MB 文件"
+        changed?()
+        sdk.files.list(mode: .note) { [weak self] note, error in
+            guard let self else { return }
+            if let error { self.finishBLEInvestigation("Note 列表失败 code=\(error.code) operation=\(error.operation)"); return }
+            if let file = self.bleInvestigationFile(note ?? []) {
+                self.beginBLEInvestigation(file)
+                return
+            }
+            self.sdk.files.list(mode: .call) { [weak self] call, error in
+                guard let self else { return }
+                if let error { self.finishBLEInvestigation("Call 列表失败 code=\(error.code) operation=\(error.operation)"); return }
+                guard let file = self.bleInvestigationFile(call ?? []) else {
+                    self.finishBLEInvestigation("未找到 6–8 MB 的设备文件"); return
+                }
+                self.beginBLEInvestigation(file)
+            }
+        }
+    }
+    private func bleInvestigationFile(_ files: [WaveNoteFile]) -> WaveNoteFile? {
+        files.filter { (6_000_000...8_000_000).contains($0.size) }
+            .sorted(by: { $0.size == $1.size ? $0.name < $1.name : $0.size > $1.size }).first
+    }
+    private func beginBLEInvestigation(_ file: WaveNoteFile) {
+        let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("BLEGapInvestigation-\(UUID().uuidString)", isDirectory: true)
+        do { try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true) }
+        catch { finishBLEInvestigation("无法创建诊断目录"); return }
+        print("[WaveNoteDemo][BLEGapInvestigation] selectedBytes=\(file.size) rounds=6")
+        runBLEInvestigationRound(1, file: file, directory: directory)
+    }
+    private func runBLEInvestigationRound(_ round: Int, file: WaveNoteFile, directory: URL) {
+        guard flow.ready else { finishBLEInvestigation("连接已失效，停止后续轮次"); return }
+        let logging = round <= 3
+        sdk.openLog(logging)
+        bleInvestigationStatus = "第 \(round)/6 轮 · 详细日志\(logging ? "开" : "关")"
+        changed?()
+        let started = ProcessInfo.processInfo.systemUptime
+        let destination = directory.appendingPathComponent("round-\(round).ogg")
+        sdk.files.download(file, to: destination, transport: .bluetooth, resume: false, deleteSource: false) { [weak self] url, error in
+            guard let self else { return }
+            let elapsed = Int((ProcessInfo.processInfo.systemUptime - started) * 1_000)
+            let result = error.map { "failed code=\($0.code) operation=\($0.operation)" } ?? (url == nil ? "failed noURL" : "completed")
+            let line = "round=\(round) log=\(logging ? "on" : "off") \(result) elapsedMs=\(elapsed)"
+            self.bleInvestigationResults.append(line)
+            print("[WaveNoteDemo][BLEGapInvestigation] \(line)")
+            if round < 6, self.flow.ready { self.runBLEInvestigationRound(round + 1, file: file, directory: directory) }
+            else { self.finishBLEInvestigation(self.flow.ready ? "六轮结束" : "连接已失效，停止后续轮次") }
+        }
+    }
+    private func finishBLEInvestigation(_ message: String) {
+        sdk.openLog(true)
+        bleInvestigationRunning = false
+        bleInvestigationStatus = "\(message)；\(bleInvestigationResults.filter { $0.contains("completed") }.count)/\(bleInvestigationResults.count) 成功"
+        print("[WaveNoteDemo][BLEGapInvestigation] \(message) results=\(bleInvestigationResults.joined(separator: " | "))")
+        changed?()
     }
     private func startSync(transport: WaveNoteTransferTransport) {
         guard flow.ready, !library.isRecording, !library.busy, let serial = sdk.connectedDevice?.serialNumber,

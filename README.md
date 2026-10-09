@@ -229,7 +229,7 @@ func stopRecording(_ sdk: WaveNoteSDK) {
 
 调用录音控制前先检查 `sdk.recording.snapshot.state`：仅 `.stopped` 状态可开始，`.recording` 或 `.paused` 状态可停止。可设置 `sdk.recording.delegate` 接收状态更新；Delegate 同样需要由宿主强持有。
 
-Demo 还演示了 `setMicrophoneGain`、`setVibrationGain`、`setAutoPowerOff` 和 `setUSBEnabled`。这些设置均应在设备空闲时调用，并在 Completion 返回成功后更新界面。
+Demo 还演示了 `setMicrophoneGain`、`setVibrationGain`、`setAutoPowerOff`、`setUSBEnabled` 和设备文件 Log 开关。设置页查询 110 后显示状态，调用 `sdk.maintenance.setDeviceLogEnabled` 发送 222 并回读确认；未知状态时禁用开关。设备文件 Log 与 SDK 的 `openLog` 独立。这些设置均应在设备空闲时调用，并在 Completion 返回成功后更新界面。
 
 ## 文件同步与本地音频
 

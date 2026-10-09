@@ -489,7 +489,9 @@ import _SwiftConcurrencyShims
   @objc final public let reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy
   @objc final public let identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)?
   @objc final public let enableLiveAudio: Swift::Bool
+  @objc final public let enableFileTransferAutoRetry: Swift::Bool
   @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:enableLiveAudio:) public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil, enableLiveAudio: Swift::Bool)
+  @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:enableLiveAudio:enableFileTransferAutoRetry:) public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil, enableLiveAudio: Swift::Bool = false, enableFileTransferAutoRetry: Swift::Bool)
   @objc(initWithUserIdentifier:enableAutoReconnect:reconnectPolicy:identityProvider:) convenience public init(userIdentifier: Swift::String, enableAutoReconnect: Swift::Bool = true, reconnectPolicy: WaveNoteSDK::WaveNoteReconnectPolicy = .default, identityProvider: (any WaveNoteSDK::WaveNoteIdentityProvider)? = nil)
   @objc deinit
 }
