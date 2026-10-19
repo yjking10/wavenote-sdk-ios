@@ -9,8 +9,13 @@ import WaveNoteSDK
         sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: user, enableAutoReconnect: false, identityProvider: provider, enableLiveAudio: false))
         return sdk
     }
-    /// 退出登录时先释放 SDK 对旧 Provider 的持有，再由宿主取消网络请求并删除用户密钥缓存。
-    static func clearForLogout(_ sdk: WaveNoteSDK) { sdk.clearConfiguration() }
+    /// 宿主先停止新写入；托管音频清理成功后释放旧配置，再由宿主清理凭据。
+    static func clearForLogout(_ sdk: WaveNoteSDK, completion: @escaping (WaveNoteError?) -> Void) {
+        sdk.files.clearLocalAudio { error in
+            if error == nil { sdk.clearConfiguration() }
+            completion(error)
+        }
+    }
     /// READY 后调用；error 非 nil 时不得使用快照。
     static func battery(_ sdk: WaveNoteSDK, completion: @escaping (WaveNoteSettingsSnapshot?, WaveNoteError?) -> Void) {
         sdk.deviceSettings.query(.battery, completion: completion)

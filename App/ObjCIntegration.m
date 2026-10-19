@@ -6,7 +6,13 @@ void ConfigureWaveNote(NSString *user, id<WaveNoteIdentityProvider> provider, id
     sdk.delegate = delegate;
     [sdk configureWithConfiguration:[[WaveNoteSDKConfiguration alloc] initWithUserIdentifier:user enableAutoReconnect:NO reconnectPolicy:WaveNoteReconnectPolicyNone identityProvider:provider enableLiveAudio:NO]];
 }
-void ClearWaveNoteForLogout(void) { [WaveNoteSDK.sharedSDK clearConfiguration]; }
+void ClearWaveNoteForLogout(void (^completion)(WaveNoteError *)) {
+    WaveNoteSDK *sdk = WaveNoteSDK.sharedSDK;
+    [sdk.files clearLocalAudioWithCompletion:^(WaveNoteError *error) {
+        if (error == nil) { [sdk clearConfiguration]; }
+        completion(error);
+    }];
+}
 void QueryWaveNoteBattery(void (^completion)(WaveNoteSettingsSnapshot *, WaveNoteError *)) {
     [WaveNoteSDK.sharedSDK.deviceSettings query:WaveNoteSettingBattery completion:completion];
 }

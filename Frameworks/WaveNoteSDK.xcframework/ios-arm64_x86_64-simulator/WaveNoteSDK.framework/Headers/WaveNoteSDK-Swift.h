@@ -704,6 +704,9 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// 删除当前配置用户的 SDK 托管本地音频及其续传数据；不向设备发送命令。
 /// 以 serialNumber、mode、fileName 定位。不存在时成功；同一文件正在下载或实时落盘时返回 operationBlocked。
 - (void)deleteLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+/// 清空当前配置用户的整个 SDK 托管音频目录；无需连接，不删除设备文件。
+/// 有下载或实时落盘正在写入时返回 operationBlocked，目录不存在时成功。
+- (void)clearLocalAudioWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 查询指定录音模式的文件数量。
 /// \param mode Note 或 Call 文件分组。
 ///
@@ -1116,7 +1119,7 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteRuntimeStatus, open) {
 /// 每次重新配置都会更新操作代际并取消旧任务；BLE 与协议处理由内部串行队列执行。
 SWIFT_CLASS("_TtC11WaveNoteSDK11WaveNoteSDK")
 @interface WaveNoteSDK : NSObject
-/// 当前 SDK 的发布版本；与仓库根目录 VERSION 一致。
+/// 当前 SDK 的发布版本；与 ios/VERSION 一致。
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull sdkVersion;)
 + (NSString * _Nonnull)sdkVersion SWIFT_WARN_UNUSED_RESULT;
 /// 应用共享实例；公开调用和 Delegate 回调均要求在主线程执行。
@@ -1229,7 +1232,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
-/// 配置 BLE 文件错位后的断点自动重试；最多三次下载尝试（包含首次）。
+/// 配置 BLE 文件错位后的断点自动重试；最多二十次下载尝试（包含首次）。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio enableFileTransferAutoRetry:(BOOL)enableFileTransferAutoRetry OBJC_DESIGNATED_INITIALIZER;
 /// 兼容既有调用；未显式配置时默认关闭边录边传。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;
@@ -2180,6 +2183,9 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// 删除当前配置用户的 SDK 托管本地音频及其续传数据；不向设备发送命令。
 /// 以 serialNumber、mode、fileName 定位。不存在时成功；同一文件正在下载或实时落盘时返回 operationBlocked。
 - (void)deleteLocalAudioWithSerialNumber:(NSString * _Nonnull)serialNumber mode:(enum WaveNoteRecordMode)mode fileName:(NSString * _Nonnull)fileName completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+/// 清空当前配置用户的整个 SDK 托管音频目录；无需连接，不删除设备文件。
+/// 有下载或实时落盘正在写入时返回 operationBlocked，目录不存在时成功。
+- (void)clearLocalAudioWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 查询指定录音模式的文件数量。
 /// \param mode Note 或 Call 文件分组。
 ///
@@ -2592,7 +2598,7 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteRuntimeStatus, open) {
 /// 每次重新配置都会更新操作代际并取消旧任务；BLE 与协议处理由内部串行队列执行。
 SWIFT_CLASS("_TtC11WaveNoteSDK11WaveNoteSDK")
 @interface WaveNoteSDK : NSObject
-/// 当前 SDK 的发布版本；与仓库根目录 VERSION 一致。
+/// 当前 SDK 的发布版本；与 ios/VERSION 一致。
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull sdkVersion;)
 + (NSString * _Nonnull)sdkVersion SWIFT_WARN_UNUSED_RESULT;
 /// 应用共享实例；公开调用和 Delegate 回调均要求在主线程执行。
@@ -2705,7 +2711,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteSDKConfiguration")
 /// \param identityProvider 平台身份适配器；为 nil 时允许扫描，拒绝受身份约束的操作。
 ///
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio OBJC_DESIGNATED_INITIALIZER;
-/// 配置 BLE 文件错位后的断点自动重试；最多三次下载尝试（包含首次）。
+/// 配置 BLE 文件错位后的断点自动重试；最多二十次下载尝试（包含首次）。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider enableLiveAudio:(BOOL)enableLiveAudio enableFileTransferAutoRetry:(BOOL)enableFileTransferAutoRetry OBJC_DESIGNATED_INITIALIZER;
 /// 兼容既有调用；未显式配置时默认关闭边录边传。
 - (nonnull instancetype)initWithUserIdentifier:(NSString * _Nonnull)userIdentifier enableAutoReconnect:(BOOL)enableAutoReconnect reconnectPolicy:(enum WaveNoteReconnectPolicy)reconnectPolicy identityProvider:(id <WaveNoteIdentityProvider> _Nullable)identityProvider;

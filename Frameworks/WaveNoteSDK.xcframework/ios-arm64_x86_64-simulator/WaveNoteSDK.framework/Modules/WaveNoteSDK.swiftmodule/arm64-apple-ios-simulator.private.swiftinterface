@@ -262,6 +262,7 @@ import _SwiftConcurrencyShims
   @_Concurrency::MainActor final public func downloadToStorage(_ file: WaveNoteSDK::WaveNoteFile, transport: WaveNoteSDK::WaveNoteTransferTransport = .bluetooth, resume: Swift::Bool = false, deleteSource: Swift::Bool, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc @_Concurrency::MainActor final public func findLocalAudio(serialNumber: Swift::String, mode: WaveNoteSDK::WaveNoteRecordMode, fileName: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteLocalAudio?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func deleteLocalAudio(serialNumber: Swift::String, mode: WaveNoteSDK::WaveNoteRecordMode, fileName: Swift::String, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func clearLocalAudio(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func count(mode: WaveNoteSDK::WaveNoteRecordMode, completion: @escaping (Foundation::NSNumber?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func page(mode: WaveNoteSDK::WaveNoteRecordMode, index: Swift::Int, completion: @escaping ([WaveNoteSDK::WaveNoteFile]?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @discardableResult
