@@ -150,7 +150,8 @@ final class NoteManager: NSObject, WaveNoteSDKDelegate {
         sdk.delegate = self
         sdk.configure(with: WaveNoteSDKConfiguration(
             userIdentifier: userIdentifier,
-            enableAutoReconnect: false,
+            enableAutoReconnect: true,
+            reconnectPolicy: .default,
             identityProvider: identityProvider
         ))
     }
@@ -178,6 +179,8 @@ final class NoteManager: NSObject, WaveNoteSDKDelegate {
                      didChangeConnectionState state: WaveNoteConnectionState,
                      device: WaveNoteDevice?) {
         switch state {
+        case .reconnecting:
+            updateReconnectingUI()
         case .ready:
             refreshDevice()
         case .failed, .disconnected:
@@ -192,6 +195,7 @@ final class NoteManager: NSObject, WaveNoteSDKDelegate {
     }
 
     private func refreshDevice() {}
+    private func updateReconnectingUI() {}
     private func showError(_ error: WaveNoteError) {}
     private func updateDisconnectedUI() {}
 }
@@ -200,6 +204,38 @@ final class NoteManager: NSObject, WaveNoteSDKDelegate {
 使用最近一次扫描回调中的 `WaveNoteDiscoveredDevice` 调用 `bind` 或 `connect(to:)`。`bind` 会先确认账户归属：设备未绑定时绑定到当前用户，已属于当前用户时成功，属于其他用户时返回错误。绑定成功后仍需显式调用 `connect(to:)`。
 
 只有连接状态变为 `.ready` 后，才调用设备设置、录音和文件接口。请按 `WaveNoteError.errorCode` 或 `code` 处理错误，不要解析错误文本。需要停止扫描时调用 `stopScanning()`；主动断开时调用 `disconnectDevice()`。
+
+## 自动重连
+
+将 `enableAutoReconnect` 设为 `true` 后，SDK 会在设备曾成功进入 `.ready` 且发生可恢复的异常断连时，按当前用户保存的设备 SN 重新扫描、重新执行身份校验并连接。业务层只需根据连接状态更新 UI，**不要**在 `.disconnected`、`.failed` 或错误回调中自行循环调用 `connect(to:)`。
+
+`reconnectPolicy` 决定每轮重连前的等待时间：`.none` 不重连；`.conservative` 为 30/30 秒（2 次）；`.default` 为 0/3/10 秒（3 次）；`.aggressive` 为每 3 秒一次（最多 5 次）。`.aggressive` 仅在前台执行，应用进入后台会暂停当前等待或重扫，回到前台后再评估是否恢复。每次尝试都会进行最长 8 秒的目标设备扫描。
+
+```swift
+func waveNoteSDK(_ sdk: WaveNoteSDK,
+                 didChangeConnectionState state: WaveNoteConnectionState,
+                 device: WaveNoteDevice?) {
+    switch state {
+    case .reconnecting:
+        // 告知用户正在恢复连接；无需再次调用 connect(to:)。
+        updateReconnectingUI()
+    case .ready:
+        // 连接或重连已完成；仅此时恢复依赖 BLE 的操作入口。
+        refreshDevice()
+    case .disconnected, .failed:
+        updateDisconnectedUI()
+    default:
+        break
+    }
+}
+
+func retryTapped() {
+    // 仅供用户主动点击“重试”时调用；即使自动重连关闭也可使用。
+    sdk.reconnectLastDevice()
+}
+```
+
+`disconnectDevice()` 会取消自动重连并移除当前用户的上次成功连接记录；用户登出或切换账号时调用 `clearConfiguration()`，同样会取消重连。`reconnectLastDevice()` 仅重建连接，不会重放录音、删除、OTA 等有副作用的业务操作；这些操作应由业务在再次收到 `.ready` 后决定是否发起。Wi-Fi 切换、OTA、关机/重启及清空设备等流程期间，SDK 会暂停自动重连以避免冲突。
 
 ## 设备设置与录音
 
