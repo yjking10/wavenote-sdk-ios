@@ -77,7 +77,7 @@ final class HomeController: UITableViewController {
                 let row = model.library.rows[path.row - 1]
                 cell.textLabel?.text = row.file.name
                 let percent = row.file.size > 0 ? Int(Double(row.received) / Double(row.file.size) * 100) : 0
-                cell.detailTextLabel?.text = "\(row.file.mode == 1 ? "Note" : "Call") · \(row.status) · \(percent)%\(row.speedText)\n\(ByteCountFormatter.string(fromByteCount: row.received, countStyle: .file)) / \(ByteCountFormatter.string(fromByteCount: row.file.size, countStyle: .file))"
+                cell.detailTextLabel?.text = "\(row.file.mode == 1 ? "Note" : "Call") · \(row.status) · \(percent)%\(row.speedText)\(row.durationText)\n\(ByteCountFormatter.string(fromByteCount: row.received, countStyle: .file)) / \(ByteCountFormatter.string(fromByteCount: row.file.size, countStyle: .file))"
                 if let path = row.localPath {
                     let button = UIButton(type: .system)
                     button.setTitle("播放", for: .normal)

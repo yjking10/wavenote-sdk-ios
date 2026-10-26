@@ -926,6 +926,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK18WaveNoteLocalAudio")
 @property (nonatomic, readonly) int64_t rawBytes;
 /// 已完成 Ogg 文件的字节数。
 @property (nonatomic, readonly) int64_t oggBytes;
+/// 由已验证 Ogg/Opus 的 48 kHz granule position 计算的总时长，单位秒。
+@property (nonatomic, readonly) NSTimeInterval duration;
 /// 当前应用私有目录内的正式文件；不是 partial。
 @property (nonatomic, readonly, copy) NSURL * _Nonnull url;
 /// 完成索引首次提交时间；恢复查询不会刷新此时间。
@@ -2405,6 +2407,8 @@ SWIFT_CLASS("_TtC11WaveNoteSDK18WaveNoteLocalAudio")
 @property (nonatomic, readonly) int64_t rawBytes;
 /// 已完成 Ogg 文件的字节数。
 @property (nonatomic, readonly) int64_t oggBytes;
+/// 由已验证 Ogg/Opus 的 48 kHz granule position 计算的总时长，单位秒。
+@property (nonatomic, readonly) NSTimeInterval duration;
 /// 当前应用私有目录内的正式文件；不是 partial。
 @property (nonatomic, readonly, copy) NSURL * _Nonnull url;
 /// 完成索引首次提交时间；恢复查询不会刷新此时间。

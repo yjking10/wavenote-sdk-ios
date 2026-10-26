@@ -17,10 +17,15 @@ struct DemoAudioRow {
     var received: Int64 = 0
     var status = "等待同步"
     var localPath: String?
+    var duration: TimeInterval?
     var kilobytesPerSecond: Double?
     var speedText: String {
         guard ["正在同步", "继续下载"].contains(status) else { return "" }
         return kilobytesPerSecond.map { String(format: " · %.1f KB/s", $0) } ?? " · — KB/s"
+    }
+    var durationText: String {
+        guard let duration else { return "" }
+        return " · 时长 \(DemoRecordingClock.text(max(0, Int(duration))))"
     }
     /// Complete row metadata only; no credentials, raw SN or audio payload.
     var logJSON: String {
@@ -42,7 +47,7 @@ final class DemoAudioLibrary {
     var page: (Int, Int, @escaping ([DemoAudioFile]?, String?) -> Void) -> Void = { _, _, _ in }
     /// 文件列表必须通过 BLE 获取；需要切换传输通道时，在完整列表确认后、首个下载前执行。
     var prepareDownloads: (@escaping (String?) -> Void) -> Void = { $0(nil) }
-    var download: (DemoAudioFile, @escaping (Int64) -> Void, @escaping (String?, String?) -> Void) -> (() -> Void) = { _, _, _ in {} }
+    var download: (DemoAudioFile, @escaping (Int64) -> Void, @escaping (String?, TimeInterval?, String?) -> Void) -> (() -> Void) = { _, _, _ in {} }
     var deleteLocal: (DemoAudioFile, @escaping (String?) -> Void) -> Void = { _, completion in completion("删除本地音频未配置") }
     var changed: (() -> Void)?
     var finished: (() -> Void)?
@@ -149,7 +154,7 @@ final class DemoAudioLibrary {
         let file = rows[index].file
         if failedThisRun.contains(file.key) { rows[index].status = "同步失败，断点已保留"; changed?(); downloadNext(index + 1); return }
         if file.size == 0 { rows[index].status = "空文件，无法播放"; changed?(); downloadNext(index + 1); return }
-        rows[index].status = "正在同步"; rows[index].received = 0; rows[index].localPath = nil
+        rows[index].status = "正在同步"; rows[index].received = 0; rows[index].localPath = nil; rows[index].duration = nil
         message = "正在同步第 \(index + 1) 个文件"; changed?()
         let ticket = next()
         let rate = DemoTransferRate()
@@ -158,7 +163,7 @@ final class DemoAudioLibrary {
             guard let self, self.busy, self.generation == ticket.0, self.request == ticket.1 else { return }
             self.rows[index].kilobytesPerSecond = rate.sample(bytes: bytes)
             self.rows[index].received = max(0, min(file.size, bytes)); self.changed?()
-        }, { [weak self] path, error in
+        }, { [weak self] path, duration, error in
             guard let self, self.accept(ticket) else { return }
             self.cancelDownload = nil
             self.rows[index].kilobytesPerSecond = nil
@@ -175,7 +180,7 @@ final class DemoAudioLibrary {
                 self.end(self.stopRequested ? "同步已暂停，未完成文件不会用于播放" : error); return
             }
             guard let path else { self.rows[index].status = "缺少本地文件"; self.end("下载未交付完整文件"); return }
-            self.rows[index].localPath = path; self.rows[index].received = file.size; self.rows[index].status = "同步完成"
+            self.rows[index].localPath = path; self.rows[index].duration = duration; self.rows[index].received = file.size; self.rows[index].status = "同步完成"
             self.completedRow?(self.rows[index])
             self.changed?(); self.downloadNext(index + 1)
         })
@@ -243,4 +248,3 @@ final class DemoTransferRate {
         return rate
     }
 }
- 

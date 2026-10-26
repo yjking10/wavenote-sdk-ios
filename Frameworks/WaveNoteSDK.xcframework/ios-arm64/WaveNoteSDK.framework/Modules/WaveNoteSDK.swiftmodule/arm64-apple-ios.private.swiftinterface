@@ -199,6 +199,7 @@ import _SwiftConcurrencyShims
   @objc final public let fileName: Swift::String
   @objc final public let rawBytes: Swift::Int64
   @objc final public let oggBytes: Swift::Int64
+  @objc final public let duration: Foundation::TimeInterval
   @objc final public let url: Foundation::URL
   @objc final public let completedAt: Foundation::Date
   @objc deinit

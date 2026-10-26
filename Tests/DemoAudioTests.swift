@@ -43,7 +43,7 @@ final class DemoAudioTests: XCTestCase {
         return lib
     }
     func testStoppedListsBothModesThenDownloadsWithProgressAndCompletion() {
-        let lib = configured(); var calls: [String] = []; var complete: ((String?, String?) -> Void)?; var progress: ((Int64) -> Void)?
+        let lib = configured(); var calls: [String] = []; var complete: ((String?, TimeInterval?, String?) -> Void)?; var progress: ((Int64) -> Void)?
         lib.count = { mode, done in calls.append("count\(mode)"); done(1, nil) }
         lib.page = { mode, _, done in calls.append("page\(mode)"); done([DemoAudioFile(name: "one.opus", size: 7, mode: mode)], nil) }
         lib.download = { file, update, done in calls.append("download\(file.mode)"); progress = update; complete = done; return {} }
@@ -55,9 +55,11 @@ final class DemoAudioTests: XCTestCase {
         lib.converting(bytes: 3, total: 7)
         XCTAssertEqual(lib.rows[0].status, "正在生成音频文件 42%")
         XCTAssertEqual(lib.completedCount, 0); XCTAssertNil(lib.rows[0].localPath)
-        let first = complete; first?("/one.ogg", nil); first?("/wrong.ogg", nil)
+        let first = complete; first?("/one.ogg", 61, nil); first?("/wrong.ogg", 1, nil)
         XCTAssertEqual(calls.last, "download2"); XCTAssertEqual(lib.rows[0].localPath, "/one.ogg"); XCTAssertEqual(lib.completedCount, 1)
-        complete?("/two.ogg", nil); XCTAssertFalse(lib.busy); XCTAssertEqual(lib.rows[1].localPath, "/two.ogg")
+        XCTAssertEqual(lib.rows[0].durationText, " · 时长 00:01:01")
+        complete?("/two.ogg", 3_661, nil); XCTAssertFalse(lib.busy); XCTAssertEqual(lib.rows[1].localPath, "/two.ogg")
+        XCTAssertEqual(lib.rows[1].durationText, " · 时长 01:01:01")
         XCTAssertEqual(lib.syncCountText, "已完成同步 2/2 个文件")
         XCTAssertEqual(logs.count, 2)
         let json = try! JSONSerialization.jsonObject(with: Data(logs[0].logJSON.utf8)) as! [String: Any]
@@ -106,10 +108,10 @@ final class DemoAudioTests: XCTestCase {
         XCTAssertFalse(lib.busy); XCTAssertEqual(lib.message, "同步已停止，可点击重新同步")
     }
     func testManualStopShowsSavedCheckpointInsteadOfCancellationError() {
-        let lib = configured(); var complete: ((String?, String?) -> Void)?
+        let lib = configured(); var complete: ((String?, TimeInterval?, String?) -> Void)?
         lib.download = { _, _, done in complete = done; return {} }
         XCTAssertTrue(lib.start())
-        lib.stop(); complete?(nil, "同步已取消")
+        lib.stop(); complete?(nil, nil, "同步已取消")
         XCTAssertFalse(lib.busy)
         XCTAssertEqual(lib.rows[0].status, "同步已停止，断点已保留")
         XCTAssertEqual(lib.message, "同步已停止，可点击重新同步")
@@ -122,7 +124,7 @@ final class DemoAudioTests: XCTestCase {
         lib.download = { file, _, done in
             downloads.append(file.name)
             let firstFailure = file.name == "one.opus" && downloads.filter { $0 == "one.opus" }.count == 1
-            done(firstFailure ? nil : "/\(file.name).ogg", firstFailure ? "downloadPositionMismatch" : nil)
+            done(firstFailure ? nil : "/\(file.name).ogg", firstFailure ? nil : 20, firstFailure ? "downloadPositionMismatch" : nil)
             return {}
         }
         XCTAssertTrue(lib.start())
@@ -148,11 +150,11 @@ final class DemoAudioTests: XCTestCase {
         XCTAssertFalse(lib.busy); XCTAssertTrue(lib.rows.isEmpty)
     }
     func testRecordingCancelsDownloadAndLateProgressCannotCompleteNewRun() {
-        let lib = configured(); var cancelled = 0; var done: ((String?, String?) -> Void)?; var progress: ((Int64) -> Void)?
+        let lib = configured(); var cancelled = 0; var done: ((String?, TimeInterval?, String?) -> Void)?; var progress: ((Int64) -> Void)?
         lib.download = { _, p, d in progress = p; done = d; return { cancelled += 1 } }
         _ = lib.start(); lib.observe(active); XCTAssertEqual(cancelled, 1)
-        done?(nil, "cancelled"); XCTAssertNil(lib.rows[0].localPath)
-        lib.invalidate(); progress?(7); done?("/late.ogg", nil); XCTAssertTrue(lib.rows.isEmpty)
+        done?(nil, nil, "cancelled"); XCTAssertNil(lib.rows[0].localPath)
+        lib.invalidate(); progress?(7); done?("/late.ogg", 20, nil); XCTAssertTrue(lib.rows.isEmpty)
     }
     func testLateStoppedQueryCannotOverwriteRecordingNotification() {
         let lib = configured(); var done: ((DemoRecordingValue?, String?) -> Void)?

@@ -7195,6 +7195,57 @@
           },
           {
             "kind": "Var",
+            "name": "duration",
+            "printedName": "duration",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteLocalAudio(py)duration",
+            "mangledName": "$s11WaveNoteSDK0aB10LocalAudioC8durationSdvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteLocalAudio(im)duration",
+                "mangledName": "$s11WaveNoteSDK0aB10LocalAudioC8durationSdvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "url",
             "printedName": "url",
             "children": [
@@ -23242,77 +23293,77 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 26402,
+      "offset": 26645,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27340,
+      "offset": 27583,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27344,
+      "offset": 27587,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27399,
+      "offset": 27642,
       "length": 2,
       "value": "24"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27419,
+      "offset": 27662,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27423,
+      "offset": 27666,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27439,
+      "offset": 27682,
       "length": 10,
       "value": "0x80000000"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27453,
+      "offset": 27696,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27464,
+      "offset": 27707,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27476,
+      "offset": 27719,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/AudioStorage.swift",
       "kind": "IntegerLiteral",
-      "offset": 27481,
+      "offset": 27724,
       "length": 10,
       "value": "0x04c11db7"
     },
@@ -23979,7 +24030,7 @@
       "kind": "StringLiteral",
       "offset": 419,
       "length": 7,
-      "value": "\"0.2.5\""
+      "value": "\"0.2.6\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",

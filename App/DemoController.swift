@@ -409,28 +409,28 @@ private enum DemoRSA {
             }
         }
         library.download = { [weak self] file, progress, done in
-            guard let self, let sn = self.syncSerialNumber else { done(nil, "连接已失效"); return {} }
+            guard let self, let sn = self.syncSerialNumber else { done(nil, nil, "连接已失效"); return {} }
             let session = self.audioSession
             self.library.phase(file: file, text: "检查断点")
             var cancelled = false
             var operation: WaveNoteOperation?
             self.sdk.files.findLocalAudio(serialNumber: sn, mode: file.mode == 1 ? .note : .call, fileName: file.name) { [weak self] cached, error in
                 guard let self, self.audioSession == session else { return }
-                guard !cancelled else { done(nil, "同步已取消"); return }
+                guard !cancelled else { done(nil, nil, "同步已取消"); return }
                 // 查询接口必须如实报告损坏的索引/Ogg；同步入口则让
                 // SDK 删除该缓存并重新从设备获取，不能因此卡住整轮队列。
-                if let error, error.errorCode != .fileIOFailed { done(nil, Self.errorText(error)); return }
+                if let error, error.errorCode != .fileIOFailed { done(nil, nil, Self.errorText(error)); return }
                 if let error { print("[WaveNoteDemo][AudioCache] cache unavailable; redownload operation=\(error.operation) code=\(error.code)") }
-                if let cached, cached.rawBytes == file.size { done(cached.url.path, nil); return }
+                if let cached, cached.rawBytes == file.size { done(cached.url.path, cached.duration, nil); return }
                 operation = self.sdk.files.downloadToStorage(WaveNoteFile(name: file.name, size: file.size, mode: file.mode == 1 ? .note : .call), transport: self.syncTransport, resume: true, deleteSource: false) { [weak self] audio, error in
                     guard let self, self.audioSession == session else { return }
                     self.logOggDuration(result: error == nil && audio != nil ? "completed" : error?.code == WaveNoteErrorCode.operationCancelled.rawValue ? "cancelled" : "failed")
                     self.progressID = nil; self.progressCallback = nil; self.progressFile = nil
                     if let error {
-                        done(nil, error.operation == "downloadPositionMismatch" ? "downloadPositionMismatch" : error.errorCode == .operationCancelled ? "同步已取消" : Self.errorText(error))
+                        done(nil, nil, error.operation == "downloadPositionMismatch" ? "downloadPositionMismatch" : error.errorCode == .operationCancelled ? "同步已取消" : Self.errorText(error))
                     }
-                    else if let audio { done(audio.url.path, nil) }
-                    else { done(nil, "下载未交付文件") }
+                    else if let audio { done(audio.url.path, audio.duration, nil) }
+                    else { done(nil, nil, "下载未交付文件") }
                 }
                 self.progressID = operation?.identifier; self.progressCallback = progress; self.progressFile = file
             }
