@@ -5,6 +5,7 @@
 import CoreBluetooth
 import CoreFoundation
 import CryptoKit
+import Darwin
 import Foundation
 import Network
 import NetworkExtension

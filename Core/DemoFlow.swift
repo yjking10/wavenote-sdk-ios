@@ -81,7 +81,32 @@ enum DemoReadSequence {
     }
 }
 
+final class DemoWiFiFallback {
+    static let timeout: TimeInterval = 60
+    static let timeoutError = "蓝牙恢复超时，请重新扫描连接。"
+    private var generation = 0
+    private var completion: ((String?) -> Void)?
+    var pending: Bool { completion != nil }
+    func begin(_ completion: @escaping (String?) -> Void) -> Int {
+        precondition(self.completion == nil)
+        generation += 1
+        self.completion = completion
+        return generation
+    }
+    func take(_ token: Int? = nil) -> ((String?) -> Void)? {
+        if let token, token != generation { return nil }
+        guard let current = completion else { return nil }
+        completion = nil
+        generation += 1
+        return current
+    }
+    func cancel() { generation += 1; completion = nil }
+}
+
 enum DemoValues {
+    static func isOptionalWiFiFallback(code: Int, operation: String) -> Bool {
+        code == 1206 && ["hotspotDenied", "hotspotJoinTimeout"].contains(operation)
+    }
     static func usb(_ raw: Int?) -> String { raw == 1 ? "已开启" : raw == 0 ? "已关闭" : "未知" }
     static func canSetUSB(_ raw: Int?) -> Bool { raw == 0 || raw == 1 }
     static func error(_ code: Int) -> String {

@@ -18,7 +18,7 @@
 | 应用退到后台后继续作为蓝牙中心设备工作 | `UIBackgroundModes` 中加入 `bluetooth-central`。                   | 仅需要后台蓝牙时        |
 | 连接设备热点或进行局域网传输           | `NSLocalNetworkUsageDescription`，填写面向用户的本地网络用途说明。 | 仅使用热点/局域网传输时 |
 
-Wi-Fi 快传还需要在 Signing & Capabilities 中启用 **Hotspot Configuration**。当前实现不读取手机当前连接的 SSID/BSSID，因此不需要 **Access WiFi Information** capability。蓝牙授权由系统在首次使用时请求。当前 Demo 不请求麦克风、相册、文件或定位权限；Demo 的 [Info.plist](App/Info.plist) 可作为配置参考。
+Wi-Fi 快传还需要在 Signing & Capabilities 中启用 **Hotspot Configuration** 和 **Access WiFi Information**。SDK 会读取当前 SSID 以确认已加入目标热点；由于该网络由 App 通过 `NEHotspotConfiguration` 加入，Demo 无需额外请求定位权限。蓝牙授权由系统在首次使用时请求。当前 Demo 不请求麦克风、相册、文件或定位权限；Demo 的 [Info.plist](App/Info.plist) 可作为配置参考。
 
 ## Audio Engine：本地音频处理
 
@@ -269,7 +269,7 @@ Demo 还演示了 `setMicrophoneGain`、`setVibrationGain`、`setAutoPowerOff`�
 
 ## 文件同步与本地音频
 
-文件区的 Wi-Fi 快传入口允许在 BLE 同步过程中点击。Demo 会先停止当前下载并保留断点，再通过 `startFastTransfer` 建立热点/TCP，并以 Wi-Fi 从断点继续；结束后调用 `stopFastTransfer` 并等待蓝牙恢复。
+文件区的 Wi-Fi 快传入口允许在 BLE 同步过程中点击。Demo 会先停止当前下载并保留断点，再通过 `startFastTransfer` 建立热点/TCP，并以 Wi-Fi 从断点继续；结束后调用 `stopFastTransfer` 并等待蓝牙恢复。热点选择最多等待120秒；用户接受系统弹框但热点尚未就绪时，SDK 保留已批准配置并每1秒串行重试，不使用固定预热。用户未确认或主动拒绝时，Demo 不显示错误，等待设备自动关闭热点并恢复蓝牙后继续断点同步。BLE 恢复最多等待60秒，连接失败、蓝牙关闭或超时会结束本轮同步并提示重新扫描；完整建连期限、权限、前台限制或TCP连接等真实故障仍正常提示。
 
 设备空闲且连接已就绪后，可按录音模式查询文件。`count` 返回数量，`page` 按页返回文件；使用列表结果创建或直接使用 `WaveNoteFile` 下载。托管下载 `downloadToStorage` 由 SDK 管理当前用户的本地音频，Completion 成功时返回 `WaveNoteLocalAudio`。
 

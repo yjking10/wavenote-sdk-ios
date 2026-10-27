@@ -74,6 +74,35 @@ final class DemoFlowTests: XCTestCase {
         XCTAssertEqual(DemoFlow.minutes(nil), "未知"); XCTAssertEqual(DemoFlow.minutes(0), "永不")
         XCTAssertEqual(DemoFlow.minutes(17), "17 分钟")
     }
+    func testOnlyUnconfirmedHotspotSelectionFallsBackSilently() {
+        for operation in ["hotspotDenied", "hotspotJoinTimeout"] {
+            XCTAssertTrue(DemoValues.isOptionalWiFiFallback(code: 1206, operation: operation))
+        }
+        for operation in ["wifiConnectTimeout", "hotspotPermission", "hotspotForeground", "tcpConnectTimeout"] {
+            XCTAssertFalse(DemoValues.isOptionalWiFiFallback(code: 1206, operation: operation))
+        }
+        XCTAssertFalse(DemoValues.isOptionalWiFiFallback(code: 1105, operation: "hotspotJoinTimeout"))
+    }
+
+    func testWiFiFallbackContinuationCanOnlyBeTakenOnceAndRejectsStaleTimeout() {
+        let fallback = DemoWiFiFallback()
+        var result: String? = "not-called"
+        let first = fallback.begin { result = $0 }
+        fallback.cancel()
+        let second = fallback.begin { result = $0 }
+        XCTAssertNil(fallback.take(first))
+        let completion = fallback.take(second)
+        XCTAssertNotNil(completion)
+        completion?(nil)
+        XCTAssertNil(result)
+        XCTAssertNil(fallback.take(second))
+        XCTAssertFalse(fallback.pending)
+
+        let timeout = fallback.begin { result = $0 }
+        fallback.take(timeout)?(DemoWiFiFallback.timeoutError)
+        XCTAssertEqual(DemoWiFiFallback.timeout, 60)
+        XCTAssertEqual(result, DemoWiFiFallback.timeoutError)
+    }
 }
 
 final class DemoSettingsTests: XCTestCase {
