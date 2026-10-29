@@ -1177,7 +1177,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// \param logBlock 可选日志接收器，在主线程异步回调；为 nil 时通过 NSLog 输出到控制台。
 ///
 - (void)openLog:(BOOL)opened logBlock:(void (^ _Nullable)(NSString * _Nonnull))logBlock;
-/// 控制生产诊断落盘，默认开启；设置不跨进程保存，与 openLog 独立。
+/// 控制生产诊断落盘，默认关闭；设置不跨进程保存，与 openLog 独立。
 - (void)setProductionDiagnosticsEnabled:(BOOL)enabled;
 /// 应用当前进程的生产诊断策略。回调在主线程，成功时新策略和旧日志裁剪均已生效。
 - (void)configureProductionDiagnostics:(WaveNoteDiagnosticsConfiguration * _Nonnull)configuration completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;

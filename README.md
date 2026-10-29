@@ -24,7 +24,7 @@ Wi-Fi 快传还需要在 Signing & Capabilities 中启用 **Hotspot Configuratio
 
 首页右上角“导出日志”在未连接、连接失败或蓝牙关闭时均可使用。点击后后台生成 SDK 生产诊断快照，显示“正在导出…”，完成后打开系统分享面板，可选择系统或已安装 App 提供的保存、发送方式；iPad 使用按钮定位弹出面板。取消分享正常返回，不提示发送成功。
 
-日志为 JSONL，不包含音频或设备端日志。有效配置后默认记录关键状态、错误码、阶段和耗时，默认最多 2 MiB／7 天，可通过 `configureProductionDiagnostics` 调整；详细 `openLog` 控制台日志不进入附件。系统临时目录中的导出文件最多保留 24 小时，在启动或后续导出时清理；退出、换用户或清除诊断时提前删除。请在分享完成前保持文件存在。
+日志为 JSONL，不包含音频或设备端日志。Demo 显式开启后记录关键状态、错误码、阶段和耗时，默认最多 2 MiB／7 天，可通过 `configureProductionDiagnostics` 调整；详细 `openLog` 控制台日志不进入附件。系统临时目录中的导出文件最多保留 24 小时，在启动或后续导出时清理；退出、换用户或清除诊断时提前删除。请在分享完成前保持文件存在。
 
 宿主使用 `sdk.exportDiagnostics { url, error in ... }`，成功后将 URL 交给 `UIActivityViewController`，完整接入见 `App/AppDelegate.swift`。Demo 内已包含本次构建的 SDK XCFramework；旧版本二进制不包含这些接口。SDK 不自行上传诊断；上传和长期保存由宿主管理。
 

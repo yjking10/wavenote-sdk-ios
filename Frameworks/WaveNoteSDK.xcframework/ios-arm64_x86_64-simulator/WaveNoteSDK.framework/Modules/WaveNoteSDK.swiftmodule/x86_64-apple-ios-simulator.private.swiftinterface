@@ -498,7 +498,7 @@ import _SwiftConcurrencyShims
   @objc final public let enabled: Swift::Bool
   @objc final public let retentionDays: Swift::Int
   @objc final public let maxStorageBytes: Swift::Int
-  @objc(initWithEnabled:retentionDays:maxStorageBytes:) public init(enabled: Swift::Bool = true, retentionDays: Swift::Int = 7, maxStorageBytes: Swift::Int = 2 * 1024 * 1024)
+  @objc(initWithEnabled:retentionDays:maxStorageBytes:) public init(enabled: Swift::Bool = false, retentionDays: Swift::Int = 7, maxStorageBytes: Swift::Int = 2 * 1024 * 1024)
   @objc deinit
 }
 @objc @objcMembers final public class WaveNoteSDKConfiguration : ObjectiveC::NSObject {

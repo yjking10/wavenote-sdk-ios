@@ -171,6 +171,7 @@ private enum DemoRSA {
         print("[WaveNoteDemo] SDK version=\(WaveNoteSDK.sdkVersion)")
         // Demo 在 Debug / Release 均默认输出 SDK 脱敏日志到控制台。
         sdk.openLog(true)
+        sdk.setProductionDiagnosticsEnabled(true)
         sdk.configure(with: WaveNoteSDKConfiguration(userIdentifier: "demo-user", enableAutoReconnect: true, identityProvider: identity, enableLiveAudio: true))
     }
     func scan() {
