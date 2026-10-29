@@ -486,6 +486,13 @@ import _SwiftConcurrencyShims
   @objc public init(userPublicKeySPKIBase64: Swift::String, userPrivateKeyPKCS8Base64: Swift::String)
   @objc deinit
 }
+@objc @objcMembers final public class WaveNoteDiagnosticsConfiguration : ObjectiveC::NSObject {
+  @objc final public let enabled: Swift::Bool
+  @objc final public let retentionDays: Swift::Int
+  @objc final public let maxStorageBytes: Swift::Int
+  @objc(initWithEnabled:retentionDays:maxStorageBytes:) public init(enabled: Swift::Bool = true, retentionDays: Swift::Int = 7, maxStorageBytes: Swift::Int = 2 * 1024 * 1024)
+  @objc deinit
+}
 @objc @objcMembers final public class WaveNoteSDKConfiguration : ObjectiveC::NSObject {
   @objc final public let userIdentifier: Swift::String
   @objc final public let enableAutoReconnect: Swift::Bool
@@ -551,6 +558,10 @@ import _SwiftConcurrencyShims
   }
   @objc deinit
   @objc(openLog:logBlock:) @_Concurrency::MainActor final public func openLog(_ opened: Swift::Bool, logBlock: ((Swift::String) -> Swift::Void)? = nil)
+  @objc @_Concurrency::MainActor final public func setProductionDiagnosticsEnabled(_ enabled: Swift::Bool)
+  @objc @_Concurrency::MainActor final public func configureProductionDiagnostics(_ configuration: WaveNoteSDK::WaveNoteDiagnosticsConfiguration, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func exportDiagnostics(completion: @escaping (Foundation::URL?, WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc @_Concurrency::MainActor final public func clearDiagnostics(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc(configureWithConfiguration:) @_Concurrency::MainActor final public func configure(with configuration: WaveNoteSDK::WaveNoteSDKConfiguration)
   @objc @_Concurrency::MainActor final public func clearConfiguration()
   @discardableResult

@@ -18,13 +18,39 @@ import WaveNoteAudioEngine
 
 final class HomeController: UITableViewController {
     let model = DemoController()
+    private var exportingDiagnostics = false
     init() { super.init(style: .insetGrouped) }
     required init?(coder: NSCoder) { fatalError() }
     override func viewDidLoad() {
         super.viewDidLoad(); title = "WaveNote"
         navigationItem.backButtonTitle = "返回"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "导出日志", style: .plain, target: self, action: #selector(exportDiagnostics))
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "exportDiagnostics"
         model.changed = { [weak self] in self?.update() }
         update()
+    }
+    @objc private func exportDiagnostics() {
+        guard !exportingDiagnostics, presentedViewController == nil else { return }
+        exportingDiagnostics = true
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.rightBarButtonItem?.title = "正在导出…"
+        model.sdk.exportDiagnostics { [weak self] url, error in
+            guard let self else { return }
+            self.exportingDiagnostics = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+            self.navigationItem.rightBarButtonItem?.title = "导出日志"
+            guard self.viewIfLoaded?.window != nil, self.navigationController?.topViewController === self,
+                  self.presentedViewController == nil else { return }
+            if let url, error == nil {
+                let share = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                share.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+                self.present(share, animated: true)
+            } else {
+                let alert = UIAlertController(title: "导出日志失败", message: error?.errorCode == .invalidConfiguration ? "请先配置 SDK 并开启生产诊断。" : "暂时无法生成日志文件，请稍后重试。", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "确定", style: .default))
+                self.present(alert, animated: true)
+            }
+        }
     }
     private func update() {
         if model.flow.ready, let sn = model.sdk.connectedDevice?.serialNumber {

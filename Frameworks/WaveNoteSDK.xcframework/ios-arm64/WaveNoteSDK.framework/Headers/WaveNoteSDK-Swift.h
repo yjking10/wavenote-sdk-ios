@@ -551,6 +551,17 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteDeviceType, open) {
   WaveNoteDeviceTypeWaveNote = 0,
 };
 
+/// 生产诊断策略；仅在当前进程有效。容量只约束滚动日志，不包含导出快照。
+SWIFT_CLASS("_TtC11WaveNoteSDK32WaveNoteDiagnosticsConfiguration")
+@interface WaveNoteDiagnosticsConfiguration : NSObject
+@property (nonatomic, readonly) BOOL enabled;
+@property (nonatomic, readonly) NSInteger retentionDays;
+@property (nonatomic, readonly) NSInteger maxStorageBytes;
+- (nonnull instancetype)initWithEnabled:(BOOL)enabled retentionDays:(NSInteger)retentionDays maxStorageBytes:(NSInteger)maxStorageBytes OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 @class NSDate;
 /// 一次广播发现的不可变快照；连接时还会检查扫描批次与发现时间。
 SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteDiscoveredDevice")
@@ -618,7 +629,7 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteErrorCode, open) {
   WaveNoteErrorCodeIdentityProviderUnavailable = 1013,
 /// 平台返回设备未绑定；也用于显式重连时找不到当前用户的上次成功连接记录。
   WaveNoteErrorCodeDeviceNotBound = 1014,
-/// SDK 尚未有效配置、用户标识为空，或扫描超时参数不在允许范围内。
+/// SDK 尚未有效配置、用户标识为空，或扫描／诊断配置参数不在允许范围内。
   WaveNoteErrorCodeInvalidConfiguration = 1015,
 /// 扫描设备快照已过期或不属于当前扫描批次，需要重新扫描并使用新的设备对象。
   WaveNoteErrorCodeStaleDiscovery = 1016,
@@ -694,7 +705,7 @@ SWIFT_CLASS("_TtC11WaveNoteSDK13WaveNoteFiles")
 /// 下载到当前用户的 SDK 托管目录。此兼容重载默认保留设备原文件。
 - (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
 /// 下载到当前用户的 SDK 托管目录。索引持久化成功后才回调；同名同大小复用缓存。
-/// resume 仅表示允许显式恢复已有任务，不会在超时后自动重试。新任务无需断点。
+/// resume 允许恢复已有任务。若 SDK 托管 partial 在发出下载命令前被确定为内容损坏，SDK 仅清理该文件键的未完成数据，并在同一操作中最多一次从 0 重新下载；I/O、权限和路径异常不自动清理。
 /// \param deleteSource false 保留设备原文件；true 时仅在本地 Ogg 校验并提交索引后删除设备原文件。删除未获设备确认时回调错误，本地已完成音频保留。
 ///
 - (WaveNoteOperation * _Nonnull)downloadToStorage:(WaveNoteFile * _Nonnull)file transport:(enum WaveNoteTransferTransport)transport resume:(BOOL)resume deleteSource:(BOOL)deleteSource completion:(void (^ _Nonnull)(WaveNoteLocalAudio * _Nullable, WaveNoteError * _Nullable))completion;
@@ -1160,6 +1171,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 /// \param logBlock 可选日志接收器，在主线程异步回调；为 nil 时通过 NSLog 输出到控制台。
 ///
 - (void)openLog:(BOOL)opened logBlock:(void (^ _Nullable)(NSString * _Nonnull))logBlock;
+/// 控制生产诊断落盘，默认开启；设置不跨进程保存，与 openLog 独立。
+- (void)setProductionDiagnosticsEnabled:(BOOL)enabled;
+/// 应用当前进程的生产诊断策略。回调在主线程，成功时新策略和旧日志裁剪均已生效。
+- (void)configureProductionDiagnostics:(WaveNoteDiagnosticsConfiguration * _Nonnull)configuration completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
+/// 导出生产诊断快照。文件最多保留 24 小时；主线程回调，分享由宿主负责。
+- (void)exportDiagnosticsWithCompletion:(void (^ _Nonnull)(NSURL * _Nullable, WaveNoteError * _Nullable))completion;
+/// 清除诊断与临时导出文件并更新设备摘要密钥，主线程回调。
+- (void)clearDiagnosticsWithCompletion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
 /// 应用新配置，取消旧身份请求、停止扫描并断开旧连接，再按当前用户读取重连记录。
 /// note:
 /// 每次调用都会更换操作代际，旧引擎和旧身份回调不会影响新配置。
