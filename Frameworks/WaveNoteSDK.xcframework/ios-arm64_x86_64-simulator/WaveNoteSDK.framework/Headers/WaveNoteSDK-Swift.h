@@ -391,6 +391,12 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteAudioCodec, open) {
   WaveNoteAudioCodecOpus = 0,
 };
 
+/// 归属复查所对应的原平台写操作。
+typedef SWIFT_ENUM(NSInteger, WaveNoteBindingAction, open) {
+  WaveNoteBindingActionBind = 0,
+  WaveNoteBindingActionUnbind = 1,
+};
+
 /// 平台绑定流程状态，与 BLE 是否已连接相互独立。
 typedef SWIFT_ENUM(NSInteger, WaveNoteBindingState, open) {
   WaveNoteBindingStateIdle = 0,
@@ -1278,6 +1284,8 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK19WaveNoteSDKDelegate_")
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didChangeBindingState:(enum WaveNoteBindingState)state device:(WaveNoteDiscoveredDevice * _Nullable)device;
 /// 通知平台解绑进度；completed 表示平台成功且本地重连记录已清理。
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didChangeUnbindingState:(enum WaveNoteUnbindingState)state device:(WaveNoteDevice * _Nullable)device;
+/// 原写操作仍为失败；仅 error 为 nil 时 ownership 才是随后查询的归属快照。
+- (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didRecheckOwnershipFor:(enum WaveNoteBindingAction)action serialNumber:(NSString * _Nonnull)serialNumber ownership:(enum WaveNoteOwnership)ownership error:(WaveNoteError * _Nullable)error;
 /// 返回基础状态同步或设备主动通知产生的新快照。
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didUpdateDevice:(WaveNoteDevice * _Nonnull)device;
 /// 报告可按 errorCode 处理的错误；绑定失败还会通过对应 completion 返回。
@@ -1891,6 +1899,12 @@ typedef SWIFT_ENUM(NSInteger, WaveNoteAudioCodec, open) {
   WaveNoteAudioCodecOpus = 0,
 };
 
+/// 归属复查所对应的原平台写操作。
+typedef SWIFT_ENUM(NSInteger, WaveNoteBindingAction, open) {
+  WaveNoteBindingActionBind = 0,
+  WaveNoteBindingActionUnbind = 1,
+};
+
 /// 平台绑定流程状态，与 BLE 是否已连接相互独立。
 typedef SWIFT_ENUM(NSInteger, WaveNoteBindingState, open) {
   WaveNoteBindingStateIdle = 0,
@@ -2778,6 +2792,8 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK19WaveNoteSDKDelegate_")
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didChangeBindingState:(enum WaveNoteBindingState)state device:(WaveNoteDiscoveredDevice * _Nullable)device;
 /// 通知平台解绑进度；completed 表示平台成功且本地重连记录已清理。
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didChangeUnbindingState:(enum WaveNoteUnbindingState)state device:(WaveNoteDevice * _Nullable)device;
+/// 原写操作仍为失败；仅 error 为 nil 时 ownership 才是随后查询的归属快照。
+- (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didRecheckOwnershipFor:(enum WaveNoteBindingAction)action serialNumber:(NSString * _Nonnull)serialNumber ownership:(enum WaveNoteOwnership)ownership error:(WaveNoteError * _Nullable)error;
 /// 返回基础状态同步或设备主动通知产生的新快照。
 - (void)waveNoteSDK:(WaveNoteSDK * _Nonnull)sdk didUpdateDevice:(WaveNoteDevice * _Nonnull)device;
 /// 报告可按 errorCode 处理的错误；绑定失败还会通过对应 completion 返回。

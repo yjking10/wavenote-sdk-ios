@@ -341,6 +341,14 @@ import _SwiftConcurrencyShims
     get
   }
 }
+@objc public enum WaveNoteBindingAction : Swift::Int {
+  case bind, unbind
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
 @objc public enum WaveNoteUnbindingState : Swift::Int {
   case idle, unbindingCloud, completed, failed
   public init?(rawValue: Swift::Int)
@@ -516,6 +524,7 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateConnectionStage stage: WaveNoteSDK::WaveNoteConnectionStage)
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didChangeBindingState state: WaveNoteSDK::WaveNoteBindingState, device: WaveNoteSDK::WaveNoteDiscoveredDevice?)
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didChangeUnbindingState state: WaveNoteSDK::WaveNoteUnbindingState, device: WaveNoteSDK::WaveNoteDevice?)
+  @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didRecheckOwnershipFor action: WaveNoteSDK::WaveNoteBindingAction, serialNumber: Swift::String, ownership: WaveNoteSDK::WaveNoteOwnership, error: WaveNoteSDK::WaveNoteError?)
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didUpdateDevice device: WaveNoteSDK::WaveNoteDevice)
   @objc @_Concurrency::MainActor optional func waveNoteSDK(_ sdk: WaveNoteSDK::WaveNoteSDK, didReceive error: WaveNoteSDK::WaveNoteError)
 }
@@ -615,6 +624,9 @@ extension WaveNoteSDK::WaveNoteConnectionStage : Swift::RawRepresentable {}
 extension WaveNoteSDK::WaveNoteBindingState : Swift::Equatable {}
 extension WaveNoteSDK::WaveNoteBindingState : Swift::Hashable {}
 extension WaveNoteSDK::WaveNoteBindingState : Swift::RawRepresentable {}
+extension WaveNoteSDK::WaveNoteBindingAction : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteBindingAction : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteBindingAction : Swift::RawRepresentable {}
 extension WaveNoteSDK::WaveNoteUnbindingState : Swift::Equatable {}
 extension WaveNoteSDK::WaveNoteUnbindingState : Swift::Hashable {}
 extension WaveNoteSDK::WaveNoteUnbindingState : Swift::RawRepresentable {}
