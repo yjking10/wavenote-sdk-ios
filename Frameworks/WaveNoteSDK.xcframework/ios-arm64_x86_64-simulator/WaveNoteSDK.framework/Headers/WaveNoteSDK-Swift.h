@@ -826,76 +826,6 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK21WaveNoteFilesDelegate_")
 - (void)files:(WaveNoteFiles * _Nonnull)files didUpdate:(WaveNoteTransferProgress * _Nonnull)progress;
 @end
 
-SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteFirmwareStage)
-/// 不可变 OTA 进度；发送字节和设备执行阶段具有不同的确认含义。
-SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteFirmwareProgress")
-@interface WaveNoteFirmwareProgress : NSObject
-/// 本地升级操作标识，与启动令牌的 identifier 一致，不写入固件帧。
-@property (nonatomic, readonly, copy) NSUUID * _Nonnull operationID;
-/// 当前升级阶段，只有 completed 表示设备明确确认成功。
-@property (nonatomic, readonly) enum WaveNoteFirmwareStage stage;
-/// 已提交给传输层的字节数，不表示固件已执行或完成升级。
-@property (nonatomic, readonly) int64_t sentBytes;
-/// 本次本地固件文件的总字节数。
-@property (nonatomic, readonly) int64_t totalBytes;
-/// 失败或取消的原因；上传完成仍需等待设备最终结果。
-@property (nonatomic, readonly, strong) WaveNoteError * _Nullable error;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-/// 乐鑫 OTA 的阶段；上传进度与设备升级结果分别报告。
-typedef SWIFT_ENUM(NSInteger, WaveNoteFirmwareStage, open) {
-/// 固件文件已打开，正在准备升级并等待设备确认。
-  WaveNoteFirmwareStagePreparing = 0,
-/// 正在按设备请求发送固件区间。
-  WaveNoteFirmwareStageTransferring = 1,
-/// 设备报告正在执行升级，尚未确认成功。
-  WaveNoteFirmwareStageUpgrading = 2,
-/// 固件完整发送且设备明确报告升级成功。
-  WaveNoteFirmwareStageCompleted = 3,
-/// SDK 已停止本次升级操作，不证明设备已退出刷写或回滚。
-  WaveNoteFirmwareStageCancelled = 4,
-/// 升级操作失败，原因由进度对象的 error 提供。
-  WaveNoteFirmwareStageFailed = 5,
-};
-
-/// 乐鑫固件传输策略；宿主显式选择，不根据版本推测或在失败后自动切换。
-typedef SWIFT_ENUM(NSInteger, WaveNoteFirmwareTransferMode, open) {
-/// 默认策略，响应设备请求的区间并按传输背压发送。
-  WaveNoteFirmwareTransferModeDeviceRequested = 0,
-/// 同样响应设备请求，但额外采用旧版包间及区间节流等待。
-  WaveNoteFirmwareTransferModeLegacyPaced = 1,
-};
-
-@protocol WaveNoteFirmwareUpdateDelegate;
-/// 本地乐鑫固件升级入口，通过 WaveNoteSDK.firmwareUpdate 访问；不提供固件下载或型号鉴定。
-SWIFT_CLASS("_TtC11WaveNoteSDK22WaveNoteFirmwareUpdate")
-@interface WaveNoteFirmwareUpdate : WaveNoteFeature
-/// 弱引用升级代理，发送进度和设备升级阶段分别报告。
-@property (nonatomic, weak) id <WaveNoteFirmwareUpdateDelegate> _Nullable delegate;
-/// 在 BLE 已就绪且设备空闲时升级乐鑫固件；与录音、文件传输、实时流、Wi-Fi 和维护操作互斥。
-/// 升级暂停自动重连，不自动重试；结束后的设备重启由宿主显式发起重连。
-/// \param fileURL 宿主确认适用于当前 Note 的可读本地固件，大小须为 1…Int32.max 字节。
-/// 操作期间须维持文件访问权限及内容稳定；SDK 不识别固件型号或验证其来源。
-///
-/// \param mode 默认按设备请求区间发送；旧版节流模式需显式选择，不按版本猜测或在失败后切换。
-///
-/// \param completion 主线程回调一次；只有完整覆盖固件并收到设备明确升级成功通知才返回 nil。
-///
-///
-/// returns:
-/// 本次升级的取消令牌；取消只停止 SDK 操作，不证明设备退出刷写或已回滚。
-- (WaveNoteOperation * _Nonnull)startWithFileURL:(NSURL * _Nonnull)fileURL mode:(enum WaveNoteFirmwareTransferMode)mode completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-@end
-
-/// 乐鑫固件升级代理；主线程报告传输进度和设备升级阶段。
-SWIFT_PROTOCOL("_TtP11WaveNoteSDK30WaveNoteFirmwareUpdateDelegate_")
-@protocol WaveNoteFirmwareUpdateDelegate
-/// 用 progress.operationID 区分连续升级；字节发送完毕不等于设备升级成功。
-- (void)firmwareUpdate:(WaveNoteFirmwareUpdate * _Nonnull)updater didUpdate:(WaveNoteFirmwareProgress * _Nonnull)progress;
-@end
-
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteOwnership)
 @class WaveNoteUserKeyPair;
 /// 宿主实现的平台身份接口。每次请求必须且只能回调一次，可在任意队列回调。
@@ -1226,8 +1156,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 @property (nonatomic, readonly, strong) WaveNoteLiveAudio * _Nonnull liveAudio;
 /// 热点加入、TCP 快传及 BLE 恢复入口；TCP ready 后才可使用 Wi-Fi 下载。
 @property (nonatomic, readonly, strong) WaveNoteWiFi * _Nonnull wifi;
-/// 从宿主提供的本地乐鑫固件执行 OTA；上传完成不等于设备升级成功。
-@property (nonatomic, readonly, strong) WaveNoteFirmwareUpdate * _Nonnull firmwareUpdate;
 /// 当前设备的本地蓝牙固件升级，原生依赖由 SDK 内置。
 @property (nonatomic, readonly, strong) WaveNoteBluetoothFirmwareUpdate * _Nonnull bluetoothFirmwareUpdate;
 /// 恢复设置、清空、硬件激活及其他维护操作入口；不隐式执行平台解绑。
@@ -2401,76 +2329,6 @@ SWIFT_PROTOCOL("_TtP11WaveNoteSDK21WaveNoteFilesDelegate_")
 - (void)files:(WaveNoteFiles * _Nonnull)files didUpdate:(WaveNoteTransferProgress * _Nonnull)progress;
 @end
 
-SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteFirmwareStage)
-/// 不可变 OTA 进度；发送字节和设备执行阶段具有不同的确认含义。
-SWIFT_CLASS("_TtC11WaveNoteSDK24WaveNoteFirmwareProgress")
-@interface WaveNoteFirmwareProgress : NSObject
-/// 本地升级操作标识，与启动令牌的 identifier 一致，不写入固件帧。
-@property (nonatomic, readonly, copy) NSUUID * _Nonnull operationID;
-/// 当前升级阶段，只有 completed 表示设备明确确认成功。
-@property (nonatomic, readonly) enum WaveNoteFirmwareStage stage;
-/// 已提交给传输层的字节数，不表示固件已执行或完成升级。
-@property (nonatomic, readonly) int64_t sentBytes;
-/// 本次本地固件文件的总字节数。
-@property (nonatomic, readonly) int64_t totalBytes;
-/// 失败或取消的原因；上传完成仍需等待设备最终结果。
-@property (nonatomic, readonly, strong) WaveNoteError * _Nullable error;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-/// 乐鑫 OTA 的阶段；上传进度与设备升级结果分别报告。
-typedef SWIFT_ENUM(NSInteger, WaveNoteFirmwareStage, open) {
-/// 固件文件已打开，正在准备升级并等待设备确认。
-  WaveNoteFirmwareStagePreparing = 0,
-/// 正在按设备请求发送固件区间。
-  WaveNoteFirmwareStageTransferring = 1,
-/// 设备报告正在执行升级，尚未确认成功。
-  WaveNoteFirmwareStageUpgrading = 2,
-/// 固件完整发送且设备明确报告升级成功。
-  WaveNoteFirmwareStageCompleted = 3,
-/// SDK 已停止本次升级操作，不证明设备已退出刷写或回滚。
-  WaveNoteFirmwareStageCancelled = 4,
-/// 升级操作失败，原因由进度对象的 error 提供。
-  WaveNoteFirmwareStageFailed = 5,
-};
-
-/// 乐鑫固件传输策略；宿主显式选择，不根据版本推测或在失败后自动切换。
-typedef SWIFT_ENUM(NSInteger, WaveNoteFirmwareTransferMode, open) {
-/// 默认策略，响应设备请求的区间并按传输背压发送。
-  WaveNoteFirmwareTransferModeDeviceRequested = 0,
-/// 同样响应设备请求，但额外采用旧版包间及区间节流等待。
-  WaveNoteFirmwareTransferModeLegacyPaced = 1,
-};
-
-@protocol WaveNoteFirmwareUpdateDelegate;
-/// 本地乐鑫固件升级入口，通过 WaveNoteSDK.firmwareUpdate 访问；不提供固件下载或型号鉴定。
-SWIFT_CLASS("_TtC11WaveNoteSDK22WaveNoteFirmwareUpdate")
-@interface WaveNoteFirmwareUpdate : WaveNoteFeature
-/// 弱引用升级代理，发送进度和设备升级阶段分别报告。
-@property (nonatomic, weak) id <WaveNoteFirmwareUpdateDelegate> _Nullable delegate;
-/// 在 BLE 已就绪且设备空闲时升级乐鑫固件；与录音、文件传输、实时流、Wi-Fi 和维护操作互斥。
-/// 升级暂停自动重连，不自动重试；结束后的设备重启由宿主显式发起重连。
-/// \param fileURL 宿主确认适用于当前 Note 的可读本地固件，大小须为 1…Int32.max 字节。
-/// 操作期间须维持文件访问权限及内容稳定；SDK 不识别固件型号或验证其来源。
-///
-/// \param mode 默认按设备请求区间发送；旧版节流模式需显式选择，不按版本猜测或在失败后切换。
-///
-/// \param completion 主线程回调一次；只有完整覆盖固件并收到设备明确升级成功通知才返回 nil。
-///
-///
-/// returns:
-/// 本次升级的取消令牌；取消只停止 SDK 操作，不证明设备退出刷写或已回滚。
-- (WaveNoteOperation * _Nonnull)startWithFileURL:(NSURL * _Nonnull)fileURL mode:(enum WaveNoteFirmwareTransferMode)mode completion:(void (^ _Nonnull)(WaveNoteError * _Nullable))completion;
-@end
-
-/// 乐鑫固件升级代理；主线程报告传输进度和设备升级阶段。
-SWIFT_PROTOCOL("_TtP11WaveNoteSDK30WaveNoteFirmwareUpdateDelegate_")
-@protocol WaveNoteFirmwareUpdateDelegate
-/// 用 progress.operationID 区分连续升级；字节发送完毕不等于设备升级成功。
-- (void)firmwareUpdate:(WaveNoteFirmwareUpdate * _Nonnull)updater didUpdate:(WaveNoteFirmwareProgress * _Nonnull)progress;
-@end
-
 SWIFT_ENUM_FWD_DECL(NSInteger, WaveNoteOwnership)
 @class WaveNoteUserKeyPair;
 /// 宿主实现的平台身份接口。每次请求必须且只能回调一次，可在任意队列回调。
@@ -2801,8 +2659,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) WaveNoteSDK 
 @property (nonatomic, readonly, strong) WaveNoteLiveAudio * _Nonnull liveAudio;
 /// 热点加入、TCP 快传及 BLE 恢复入口；TCP ready 后才可使用 Wi-Fi 下载。
 @property (nonatomic, readonly, strong) WaveNoteWiFi * _Nonnull wifi;
-/// 从宿主提供的本地乐鑫固件执行 OTA；上传完成不等于设备升级成功。
-@property (nonatomic, readonly, strong) WaveNoteFirmwareUpdate * _Nonnull firmwareUpdate;
 /// 当前设备的本地蓝牙固件升级，原生依赖由 SDK 内置。
 @property (nonatomic, readonly, strong) WaveNoteBluetoothFirmwareUpdate * _Nonnull bluetoothFirmwareUpdate;
 /// 恢复设置、清空、硬件激活及其他维护操作入口；不隐式执行平台解绑。

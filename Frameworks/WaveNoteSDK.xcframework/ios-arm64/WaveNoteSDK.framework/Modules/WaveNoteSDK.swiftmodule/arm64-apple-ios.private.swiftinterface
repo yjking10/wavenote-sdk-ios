@@ -75,28 +75,6 @@ import _SwiftConcurrencyShims
     get
   }
 }
-@objc public enum WaveNoteFirmwareStage : Swift::Int {
-  case preparing
-  case transferring
-  case upgrading
-  case completed
-  case cancelled
-  case failed
-  public init?(rawValue: Swift::Int)
-  public typealias RawValue = Swift::Int
-  public var rawValue: Swift::Int {
-    get
-  }
-}
-@objc public enum WaveNoteFirmwareTransferMode : Swift::Int {
-  case deviceRequested
-  case legacyPaced
-  public init?(rawValue: Swift::Int)
-  public typealias RawValue = Swift::Int
-  public var rawValue: Swift::Int {
-    get
-  }
-}
 @objc public enum WaveNoteSetting : Swift::Int, Swift::CaseIterable {
   case recording
   case callMicrophone
@@ -181,14 +159,6 @@ import _SwiftConcurrencyShims
   @objc final public let error: WaveNoteSDK::WaveNoteError?
   @objc deinit
 }
-@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteFirmwareProgress : ObjectiveC::NSObject {
-  @objc final public let operationID: Foundation::UUID
-  @objc final public let stage: WaveNoteSDK::WaveNoteFirmwareStage
-  @objc final public let sentBytes: Swift::Int64
-  @objc final public let totalBytes: Swift::Int64
-  @objc final public let error: WaveNoteSDK::WaveNoteError?
-  @objc deinit
-}
 @objc @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteOperation : ObjectiveC::NSObject {
   @objc @_Concurrency::MainActor final public let identifier: Foundation::UUID
   @objc @_Concurrency::MainActor final public func cancel()
@@ -220,9 +190,6 @@ import _SwiftConcurrencyShims
 }
 @_Concurrency::MainActor @objc public protocol WaveNoteWiFiDelegate {
   @objc @_Concurrency::MainActor func wifi(_ wifi: WaveNoteSDK::WaveNoteWiFi, didUpdate snapshot: WaveNoteSDK::WaveNoteWiFiSnapshot)
-}
-@_Concurrency::MainActor @objc public protocol WaveNoteFirmwareUpdateDelegate {
-  @objc @_Concurrency::MainActor func firmwareUpdate(_ updater: WaveNoteSDK::WaveNoteFirmwareUpdate, didUpdate progress: WaveNoteSDK::WaveNoteFirmwareProgress)
 }
 @_Concurrency::MainActor @objc public protocol WaveNoteMaintenanceDelegate {
   @objc @_Concurrency::MainActor func maintenance(_ maintenance: WaveNoteSDK::WaveNoteMaintenance, didFinish operationID: Foundation::UUID, error: WaveNoteSDK::WaveNoteError?)
@@ -291,12 +258,6 @@ import _SwiftConcurrencyShims
   @objc @discardableResult
   @_Concurrency::MainActor final public func startFastTransfer(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc @_Concurrency::MainActor final public func stopFastTransfer(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
-  @objc deinit
-}
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteFirmwareUpdate : WaveNoteSDK::WaveNoteFeature {
-  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteFirmwareUpdateDelegate)?
-  @objc @discardableResult
-  @_Concurrency::MainActor final public func start(fileURL: Foundation::URL, mode: WaveNoteSDK::WaveNoteFirmwareTransferMode = .deviceRequested, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
   @objc deinit
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteMaintenance : WaveNoteSDK::WaveNoteFeature {
@@ -568,9 +529,6 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor final public var wifi: WaveNoteSDK::WaveNoteWiFi {
     @objc get
   }
-  @objc @_Concurrency::MainActor final public var firmwareUpdate: WaveNoteSDK::WaveNoteFirmwareUpdate {
-    @objc get
-  }
   @objc @_Concurrency::MainActor final public var bluetoothFirmwareUpdate: WaveNoteSDK::WaveNoteBluetoothFirmwareUpdate {
     @objc get
   }
@@ -643,12 +601,6 @@ extension WaveNoteSDK::WaveNoteOperationState : Swift::RawRepresentable {}
 extension WaveNoteSDK::WaveNoteWiFiState : Swift::Equatable {}
 extension WaveNoteSDK::WaveNoteWiFiState : Swift::Hashable {}
 extension WaveNoteSDK::WaveNoteWiFiState : Swift::RawRepresentable {}
-extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::Equatable {}
-extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::Hashable {}
-extension WaveNoteSDK::WaveNoteFirmwareStage : Swift::RawRepresentable {}
-extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::Equatable {}
-extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::Hashable {}
-extension WaveNoteSDK::WaveNoteFirmwareTransferMode : Swift::RawRepresentable {}
 extension WaveNoteSDK::WaveNoteSetting : Swift::Equatable {}
 extension WaveNoteSDK::WaveNoteSetting : Swift::Hashable {}
 extension WaveNoteSDK::WaveNoteSetting : Swift::RawRepresentable {}
