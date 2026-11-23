@@ -25,6 +25,7 @@
 		AB9C3FA66D56309F1D78FE93 /* DemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBFD0EB91403DE0191D674 /* DemoController.swift */; };
 		B5D9ED0266EDB4464050D815 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94584F2C7AFBA395629D6554 /* Foundation.framework */; };
 		C902EFE6915E9C97907E26F3 /* HTTPIdentityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2734274CBE13C61F234325 /* HTTPIdentityProvider.swift */; };
+		CA4140E54026196494435E55 /* BluetoothFirmwareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7EEA2B96AD918DB722BC3B /* BluetoothFirmwareController.swift */; };
 		D67612DDBB7238F4CECD3034 /* DemoFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793584D36346748C49273A6 /* DemoFlow.swift */; };
 		DFDB59D92ED9B01B69812E6C /* IdentityHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9D0A77F7EAE72E5BA79EEF /* IdentityHTTP.swift */; };
 		F05CB745EC5213BDD91E32DA /* IdentityHTTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F16226F4327C8F9B0870D1 /* IdentityHTTPTests.swift */; };
@@ -75,6 +76,7 @@
 		AABB00000000000000000003 /* DemoNativePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNativePlayer.swift; sourceTree = "<group>"; };
 		AABD00000000000000000003 /* WaveNoteAudioEngine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = WaveNoteAudioEngine.xcframework; sourceTree = "<group>"; };
 		B241E8F41B2EE541C981B00D /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BC7EEA2B96AD918DB722BC3B /* BluetoothFirmwareController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothFirmwareController.swift; path = App/BluetoothFirmwareController.swift; sourceTree = "<group>"; };
 		E1C03971DC218EA2359DDA3C /* WaveNoteDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveNoteDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4167806BC7B2492D3A1BD43 /* DemoAudioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAudioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -166,6 +168,7 @@
 				280ACF822F97E6C7A2AC4089 /* Core */,
 				B6962A49CA8D659111516049 /* Frameworks */,
 				4FD43040EB4F74B098264911 /* Tests */,
+				BC7EEA2B96AD918DB722BC3B /* BluetoothFirmwareController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -293,6 +296,7 @@
 				2DC31DCA7D393AE0DFC1161C /* SwiftIntegration.swift in Sources */,
 				05305DF5C8B1B8843EFCB6DE /* ObjCIntegration.m in Sources */,
 				DFDB59D92ED9B01B69812E6C /* IdentityHTTP.swift in Sources */,
+				CA4140E54026196494435E55 /* BluetoothFirmwareController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

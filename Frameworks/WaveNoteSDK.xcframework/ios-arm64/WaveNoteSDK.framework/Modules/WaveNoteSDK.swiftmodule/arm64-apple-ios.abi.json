@@ -16812,6 +16812,384 @@
             "fixedbinaryorder": 28
           },
           {
+            "kind": "Var",
+            "name": "otaRecordingActive",
+            "printedName": "otaRecordingActive",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaRecordingActive",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO18otaRecordingActiveyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 29
+          },
+          {
+            "kind": "Var",
+            "name": "otaFileTransferActive",
+            "printedName": "otaFileTransferActive",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaFileTransferActive",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO21otaFileTransferActiveyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 30
+          },
+          {
+            "kind": "Var",
+            "name": "otaLiveAudioActive",
+            "printedName": "otaLiveAudioActive",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaLiveAudioActive",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO18otaLiveAudioActiveyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 31
+          },
+          {
+            "kind": "Var",
+            "name": "otaWiFiActive",
+            "printedName": "otaWiFiActive",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaWiFiActive",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO13otaWiFiActiveyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 32
+          },
+          {
+            "kind": "Var",
+            "name": "otaAlreadyInProgress",
+            "printedName": "otaAlreadyInProgress",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaAlreadyInProgress",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO20otaAlreadyInProgressyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 33
+          },
+          {
+            "kind": "Var",
+            "name": "otaUSBActive",
+            "printedName": "otaUSBActive",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaUSBActive",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO12otaUSBActiveyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 34
+          },
+          {
+            "kind": "Var",
+            "name": "otaDeviceBusy",
+            "printedName": "otaDeviceBusy",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaDeviceBusy",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO13otaDeviceBusyyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 35
+          },
+          {
+            "kind": "Var",
+            "name": "otaDeviceStateUnavailable",
+            "printedName": "otaDeviceStateUnavailable",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaDeviceStateUnavailable",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO25otaDeviceStateUnavailableyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 36
+          },
+          {
+            "kind": "Var",
+            "name": "otaPowerInsufficient",
+            "printedName": "otaPowerInsufficient",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteErrorCode.Type) -> WaveNoteSDK.WaveNoteErrorCode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteErrorCode",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteErrorCode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteErrorCode",
+                        "printedName": "WaveNoteSDK.WaveNoteErrorCode",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteErrorCode@WaveNoteErrorCodeOtaPowerInsufficient",
+            "mangledName": "$s11WaveNoteSDK0aB9ErrorCodeO20otaPowerInsufficientyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "RawDocComment",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 37
+          },
+          {
             "kind": "Constructor",
             "name": "init",
             "printedName": "init(rawValue:)",
@@ -21913,6 +22291,57 @@
           },
           {
             "kind": "Var",
+            "name": "bluetoothFirmwareUpdate",
+            "printedName": "bluetoothFirmwareUpdate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteBluetoothFirmwareUpdate",
+                "printedName": "WaveNoteSDK.WaveNoteBluetoothFirmwareUpdate",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(py)bluetoothFirmwareUpdate",
+            "mangledName": "$s11WaveNoteSDKAAC23bluetoothFirmwareUpdateAA0ab9BluetootheF0Cvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "Lazy",
+              "SetterAccess",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteBluetoothFirmwareUpdate",
+                    "printedName": "WaveNoteSDK.WaveNoteBluetoothFirmwareUpdate",
+                    "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteSDK(im)bluetoothFirmwareUpdate",
+                "mangledName": "$s11WaveNoteSDKAAC23bluetoothFirmwareUpdateAA0ab9BluetootheF0Cvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "maintenance",
             "printedName": "maintenance",
             "children": [
@@ -22806,6 +23235,1375 @@
             "mangledName": "$ss8SendableP"
           }
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "WaveNoteSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "WaveNoteOTAState",
+        "printedName": "WaveNoteOTAState",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "preparing",
+            "printedName": "preparing",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStatePreparing",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO9preparingyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 0
+          },
+          {
+            "kind": "Var",
+            "name": "upgrading",
+            "printedName": "upgrading",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateUpgrading",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO9upgradingyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 1
+          },
+          {
+            "kind": "Var",
+            "name": "reconnecting",
+            "printedName": "reconnecting",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateReconnecting",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO12reconnectingyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 2
+          },
+          {
+            "kind": "Var",
+            "name": "rebooting",
+            "printedName": "rebooting",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateRebooting",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO9rebootingyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 3
+          },
+          {
+            "kind": "Var",
+            "name": "completed",
+            "printedName": "completed",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateCompleted",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO9completedyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 4
+          },
+          {
+            "kind": "Var",
+            "name": "cancelled",
+            "printedName": "cancelled",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateCancelled",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO9cancelledyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 5
+          },
+          {
+            "kind": "Var",
+            "name": "failed",
+            "printedName": "failed",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteOTAState.Type) -> WaveNoteSDK.WaveNoteOTAState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAState",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState@WaveNoteOTAStateFailed",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO6failedyA2CmF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "fixedbinaryorder": 6
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rawValue:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "WaveNoteSDK.WaveNoteOTAState?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:11WaveNoteSDK0aB8OTAStateO8rawValueACSgSi_tcfc",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO8rawValueACSgSi_tcfc",
+            "moduleName": "WaveNoteSDK",
+            "implicit": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "rawValue",
+            "printedName": "rawValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11WaveNoteSDK0aB8OTAStateO8rawValueSivp",
+            "mangledName": "$s11WaveNoteSDK0aB8OTAStateO8rawValueSivp",
+            "moduleName": "WaveNoteSDK",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11WaveNoteSDK0aB8OTAStateO8rawValueSivg",
+                "mangledName": "$s11WaveNoteSDK0aB8OTAStateO8rawValueSivg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState",
+        "mangledName": "$s11WaveNoteSDK0aB8OTAStateO",
+        "moduleName": "WaveNoteSDK",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "RawDocComment"
+        ],
+        "enumRawTypeName": "Int",
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "RawRepresentable",
+            "printedName": "RawRepresentable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "RawValue",
+                "printedName": "RawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:SY",
+            "mangledName": "$sSY"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "WaveNoteOTAProgress",
+        "printedName": "WaveNoteOTAProgress",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "operationID",
+            "printedName": "operationID",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UUID",
+                "printedName": "Foundation.UUID",
+                "usr": "s:10Foundation4UUIDV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)operationID",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC11operationID10Foundation4UUIDVvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UUID",
+                    "printedName": "Foundation.UUID",
+                    "usr": "s:10Foundation4UUIDV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)operationID",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC11operationID10Foundation4UUIDVvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "state",
+            "printedName": "state",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteOTAState",
+                "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)state",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC5stateAA0aB8OTAStateOvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAState",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAState",
+                    "usr": "c:@M@WaveNoteSDK@E@WaveNoteOTAState"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)state",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC5stateAA0aB8OTAStateOvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "progress",
+            "printedName": "progress",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)progress",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC8progressSivp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)progress",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC8progressSivg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "canCancel",
+            "printedName": "canCancel",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)canCancel",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC9canCancelSbvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)canCancel",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC9canCancelSbvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "error",
+            "printedName": "error",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "WaveNoteSDK.WaveNoteError?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteError",
+                    "printedName": "WaveNoteSDK.WaveNoteError",
+                    "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)error",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC5errorAA0aB5ErrorCSgvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "WaveNoteSDK.WaveNoteError?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteError",
+                        "printedName": "WaveNoteSDK.WaveNoteError",
+                        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)error",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC5errorAA0aB5ErrorCSgvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "nativeErrorCode",
+            "printedName": "nativeErrorCode",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.NSNumber?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSNumber",
+                    "printedName": "Foundation.NSNumber",
+                    "usr": "c:objc(cs)NSNumber"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(py)nativeErrorCode",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC15nativeErrorCodeSo8NSNumberCSgvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Foundation.NSNumber?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSNumber",
+                        "printedName": "Foundation.NSNumber",
+                        "usr": "c:objc(cs)NSNumber"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)nativeErrorCode",
+                "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC15nativeErrorCodeSo8NSNumberCSgvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteOTAProgress",
+                "printedName": "WaveNoteSDK.WaveNoteOTAProgress",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress(im)init",
+            "mangledName": "$s11WaveNoteSDK0aB11OTAProgressCACycfc",
+            "moduleName": "WaveNoteSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress",
+        "mangledName": "$s11WaveNoteSDK0aB11OTAProgressC",
+        "moduleName": "WaveNoteSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "RawDocComment",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "hasMissingDesignatedInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "WaveNoteBluetoothFirmwareUpdateDelegate",
+        "printedName": "WaveNoteBluetoothFirmwareUpdateDelegate",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "bluetoothFirmwareUpdate",
+            "printedName": "bluetoothFirmwareUpdate(_:didUpdate:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteBluetoothFirmwareUpdate",
+                "printedName": "WaveNoteSDK.WaveNoteBluetoothFirmwareUpdate",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteOTAProgress",
+                "printedName": "WaveNoteSDK.WaveNoteOTAProgress",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteBluetoothFirmwareUpdateDelegate(im)bluetoothFirmwareUpdate:didUpdate:",
+            "mangledName": "$s11WaveNoteSDK0aB31BluetoothFirmwareUpdateDelegateP09bluetootheF0_03didF0yAA0abdeF0C_AA0aB11OTAProgressCtF",
+            "moduleName": "WaveNoteSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate>",
+            "sugared_genericSig": "<Self where Self : WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Custom",
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteBluetoothFirmwareUpdateDelegate",
+        "mangledName": "$s11WaveNoteSDK0aB31BluetoothFirmwareUpdateDelegateP",
+        "moduleName": "WaveNoteSDK",
+        "genericSig": "<τ_0_0 : AnyObject>",
+        "sugared_genericSig": "<Self : AnyObject>",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "Custom"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "WaveNoteBluetoothFirmwareUpdate",
+        "printedName": "WaveNoteBluetoothFirmwareUpdate",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "delegate",
+            "printedName": "delegate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WeakStorage",
+                "printedName": "(any WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate)?"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(py)delegate",
+            "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8delegateAA0abdeF8Delegate_pSgvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "Custom",
+              "HasStorage",
+              "ReferenceOwnership",
+              "AccessControl",
+              "ObjC"
+            ],
+            "ownership": 1,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteBluetoothFirmwareUpdateDelegate",
+                        "printedName": "any WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate",
+                        "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteBluetoothFirmwareUpdateDelegate"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(im)delegate",
+                "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8delegateAA0abdeF8Delegate_pSgvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteBluetoothFirmwareUpdateDelegate",
+                        "printedName": "any WaveNoteSDK.WaveNoteBluetoothFirmwareUpdateDelegate",
+                        "usr": "c:@M@WaveNoteSDK@objc(pl)WaveNoteBluetoothFirmwareUpdateDelegate"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(im)setDelegate:",
+                "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8delegateAA0abdeF8Delegate_pSgvs",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8delegateAA0abdeF8Delegate_pSgvM",
+                "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8delegateAA0abdeF8Delegate_pSgvM",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "snapshot",
+            "printedName": "snapshot",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "WaveNoteSDK.WaveNoteOTAProgress?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "WaveNoteOTAProgress",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAProgress",
+                    "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(py)snapshot",
+            "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8snapshotAA0aB11OTAProgressCSgvp",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "Custom",
+              "HasStorage",
+              "SetterAccess",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "WaveNoteSDK.WaveNoteOTAProgress?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteOTAProgress",
+                        "printedName": "WaveNoteSDK.WaveNoteOTAProgress",
+                        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOTAProgress"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(im)snapshot",
+                "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC8snapshotAA0aB11OTAProgressCSgvg",
+                "moduleName": "WaveNoteSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "start",
+            "printedName": "start(fileURL:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WaveNoteOperation",
+                "printedName": "WaveNoteSDK.WaveNoteOperation",
+                "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteOperation"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteError?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "WaveNoteSDK.WaveNoteError?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteError",
+                        "printedName": "WaveNoteSDK.WaveNoteError",
+                        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(im)startWithFileURL:completion:",
+            "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC5start7fileURL10completionAA0aB9OperationC10Foundation0I0V_yAA0aB5ErrorCSgctF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "DiscardableResult",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "cancel",
+            "printedName": "cancel(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(WaveNoteSDK.WaveNoteError?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "WaveNoteSDK.WaveNoteError?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "WaveNoteError",
+                        "printedName": "WaveNoteSDK.WaveNoteError",
+                        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteError"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate(im)cancelWithCompletion:",
+            "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC6cancel10completionyyAA0aB5ErrorCSgc_tF",
+            "moduleName": "WaveNoteSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteBluetoothFirmwareUpdate",
+        "mangledName": "$s11WaveNoteSDK0aB23BluetoothFirmwareUpdateC",
+        "moduleName": "WaveNoteSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "Custom",
+          "RawDocComment",
+          "ObjC"
+        ],
+        "superclassUsr": "c:@M@WaveNoteSDK@objc(cs)WaveNoteFeature",
+        "hasMissingDesignatedInitializers": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "WaveNoteSDK.WaveNoteFeature",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "WaveNoteSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "WaveNoteOTABridge",
+        "printedName": "WaveNoteOTABridge",
+        "declKind": "Import",
+        "moduleName": "WaveNoteSDK",
+        "declAttributes": [
+          "ImplementationOnly"
+        ]
       }
     ],
     "json_format_version": 8
@@ -23136,98 +24934,105 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 13498,
+      "offset": 13665,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 14450,
+      "offset": 14617,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 20545,
+      "offset": 20712,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Features.swift",
       "kind": "BooleanLiteral",
-      "offset": 20953,
+      "offset": 21120,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 1983,
+      "offset": 2059,
       "length": 3,
       "value": "201"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "Array",
-      "offset": 3218,
+      "offset": 3294,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "BooleanLiteral",
-      "offset": 3280,
+      "offset": 3356,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 3326,
+      "offset": 3402,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 3372,
+      "offset": 3448,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 3417,
+      "offset": 3493,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 3466,
+      "offset": 3542,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "IntegerLiteral",
-      "offset": 5443,
+      "offset": 5519,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "Dictionary",
-      "offset": 7075,
+      "offset": 7160,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
       "kind": "BooleanLiteral",
-      "offset": 7179,
+      "offset": 7264,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BLETransport.swift",
+      "kind": "BooleanLiteral",
+      "offset": 7425,
       "length": 5,
       "value": "false"
     },
@@ -23290,140 +25095,140 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "Dictionary",
-      "offset": 1049,
+      "offset": 1274,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 1066,
+      "offset": 1291,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 4693,
+      "offset": 5255,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5153,
+      "offset": 5715,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5179,
+      "offset": 5741,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5214,
+      "offset": 5776,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5249,
+      "offset": 5811,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5284,
+      "offset": 5846,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5386,
+      "offset": 5948,
       "length": 2,
       "value": "-1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5565,
+      "offset": 6127,
       "length": 3,
       "value": "120"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5631,
+      "offset": 6193,
       "length": 3,
       "value": "600"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 5691,
+      "offset": 6253,
       "length": 2,
       "value": "15"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5808,
+      "offset": 6370,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 5904,
+      "offset": 6466,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "StringLiteral",
-      "offset": 6380,
+      "offset": 6942,
       "length": 22,
       "value": "\"com.wavenote.sdk.ble\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 6545,
+      "offset": 7107,
       "length": 1,
       "value": "5"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "IntegerLiteral",
-      "offset": 6582,
+      "offset": 7144,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 13835,
+      "offset": 14397,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "Dictionary",
-      "offset": 23468,
+      "offset": 27229,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/ConnectionEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 30975,
+      "offset": 34736,
       "length": 5,
       "value": "false"
     },
@@ -23458,49 +25263,49 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12317,
+      "offset": 12806,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12342,
+      "offset": 12831,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 12366,
+      "offset": 12855,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "StringLiteral",
-      "offset": 14508,
+      "offset": 18275,
       "length": 19,
       "value": "\"operationDeadline\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "Dictionary",
-      "offset": 14930,
+      "offset": 18697,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 14957,
+      "offset": 18724,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/FeatureEngine.swift",
       "kind": "BooleanLiteral",
-      "offset": 14976,
+      "offset": 18743,
       "length": 5,
       "value": "false"
     },
@@ -25139,421 +26944,421 @@
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "Dictionary",
       "offset": 6975,
-      "length": 2016,
-      "value": "[(1001, (\"bluetooth_unavailable\", \"蓝牙不可用\")), (1002, (\"scan_timed_out\", \"扫描超时\")), (1003, (\"connection_failed\", \"连接或传输写入失败\")), (1004, (\"device_bound_to_another_user\", \"设备属于其他用户\")), (1005, (\"connection_busy\", \"当前连接或操作繁忙\")), (1007, (\"binding_rejected\", \"绑定请求被拒绝\")), (1008, (\"unbinding_requires_ready_connection\", \"解绑需要已就绪连接\")), (1009, (\"cloud_unbind_failed\", \"云端解绑失败\")), (1011, (\"unbinding_operation_conflict\", \"解绑与当前操作冲突\")), (1012, (\"authentication_credential_invalid_or_expired\", \"登录凭据无效或已过期\")), (1013, (\"identity_provider_unavailable\", \"身份适配器不可用\")), (1014, (\"device_not_bound\", \"设备未绑定或没有重连记录\")), (1015, (\"invalid_configuration\", \"SDK 配置无效\")), (1016, (\"stale_discovery\", \"扫描设备快照已过期\")), (1017, (\"operation_cancelled\", \"SDK 操作已取消，不代表设备已停止或回滚\")), (1018, (\"identity_timed_out\", \"身份操作超时\")), (1101, (\"not_connected\", \"设备尚未就绪\")), (1102, (\"command_timed_out\", \"命令超时，执行结果未确认\")), (1103, (\"invalid_device_response\", \"设备响应无效\")), (1104, (\"unsupported_feature\", \"功能不受支持\")), (1106, (\"operation_blocked\", \"操作无法提交\")), (1201, (\"invalid_parameter\", \"操作参数无效\")), (1202, (\"device_rejected\", \"设备拒绝命令或回读校验失败\")), (1203, (\"operation_outcome_unknown\", \"操作结果未确认\")), (1204, (\"file_io_failed\", \"本地文件读写失败\")), (1205, (\"incomplete_transfer\", \"数据传输不完整\")), (1206, (\"network_unavailable\", \"Wi-Fi 或网络连接不可用\")), (1207, (\"buffer_overflow\", \"内部缓冲区超过上限\")), (1208, (\"firmware_upgrade_failed\", \"设备报告固件升级失败\"))]"
+      "length": 2688,
+      "value": "[(1001, (\"bluetooth_unavailable\", \"蓝牙不可用\")), (1002, (\"scan_timed_out\", \"扫描超时\")), (1003, (\"connection_failed\", \"连接或传输写入失败\")), (1004, (\"device_bound_to_another_user\", \"设备属于其他用户\")), (1005, (\"connection_busy\", \"当前连接或操作繁忙\")), (1007, (\"binding_rejected\", \"绑定请求被拒绝\")), (1008, (\"unbinding_requires_ready_connection\", \"解绑需要已就绪连接\")), (1009, (\"cloud_unbind_failed\", \"云端解绑失败\")), (1011, (\"unbinding_operation_conflict\", \"解绑与当前操作冲突\")), (1012, (\"authentication_credential_invalid_or_expired\", \"登录凭据无效或已过期\")), (1013, (\"identity_provider_unavailable\", \"身份适配器不可用\")), (1014, (\"device_not_bound\", \"设备未绑定或没有重连记录\")), (1015, (\"invalid_configuration\", \"SDK 配置无效\")), (1016, (\"stale_discovery\", \"扫描设备快照已过期\")), (1017, (\"operation_cancelled\", \"SDK 操作已取消，不代表设备已停止或回滚\")), (1018, (\"identity_timed_out\", \"身份操作超时\")), (1101, (\"not_connected\", \"设备尚未就绪\")), (1102, (\"command_timed_out\", \"命令超时，执行结果未确认\")), (1103, (\"invalid_device_response\", \"设备响应无效\")), (1104, (\"unsupported_feature\", \"功能不受支持\")), (1106, (\"operation_blocked\", \"操作无法提交\")), (1201, (\"invalid_parameter\", \"操作参数无效\")), (1202, (\"device_rejected\", \"设备拒绝命令或回读校验失败\")), (1203, (\"operation_outcome_unknown\", \"操作结果未确认\")), (1204, (\"file_io_failed\", \"本地文件读写失败\")), (1205, (\"incomplete_transfer\", \"数据传输不完整\")), (1206, (\"network_unavailable\", \"Wi-Fi 或网络连接不可用\")), (1207, (\"buffer_overflow\", \"内部缓冲区超过上限\")), (1208, (\"firmware_upgrade_failed\", \"设备报告固件升级失败\")), (1301, (\"ota_recording_active\", \"请先结束录音\")), (1302, (\"ota_file_transfer_active\", \"请等待文件传输完成\")), (1303, (\"ota_live_audio_active\", \"请先结束实时音频\")), (1304, (\"ota_wifi_active\", \"请等待设备恢复蓝牙连接\")), (1305, (\"ota_already_in_progress\", \"请等待当前升级结束\")), (1306, (\"ota_usb_active\", \"请先断开 USB\")), (1307, (\"ota_device_busy\", \"设备忙，请等待当前操作完成\")), (1308, (\"ota_device_state_unavailable\", \"无法确认设备状态，请重新连接后重试\")), (1309, (\"ota_power_insufficient\", \"设备电量不足，请充电后重试\"))]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9055,
+      "offset": 9727,
       "length": 18,
       "value": "\"1003:connectGATT\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9106,
+      "offset": 9778,
       "length": 23,
       "value": "\"1003:discoverServices\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9164,
+      "offset": 9836,
       "length": 30,
       "value": "\"1003:discoverCharacteristics\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9236,
+      "offset": 9908,
       "length": 31,
       "value": "\"1003:characteristicProperties\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9309,
+      "offset": 9981,
       "length": 16,
       "value": "\"1003:subscribe\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9368,
+      "offset": 10040,
       "length": 29,
       "value": "\"1003:subscribeNotifications\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9440,
+      "offset": 10112,
       "length": 15,
       "value": "\"1103:auth1003\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9496,
+      "offset": 10168,
       "length": 17,
       "value": "\"1103:authCommit\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9554,
+      "offset": 10226,
       "length": 15,
       "value": "\"1202:auth1001\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9604,
+      "offset": 10276,
       "length": 15,
       "value": "\"1202:auth1002\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9654,
+      "offset": 10326,
       "length": 21,
       "value": "\"1001:scanPermission\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9713,
+      "offset": 10385,
       "length": 24,
       "value": "\"1001:connectPermission\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9775,
+      "offset": 10447,
       "length": 22,
       "value": "\"1001:writePermission\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9835,
+      "offset": 10507,
       "length": 20,
       "value": "\"1206:tcpConnection\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9887,
+      "offset": 10559,
       "length": 24,
       "value": "\"1206:tcpConnectTimeout\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9944,
+      "offset": 10616,
       "length": 20,
       "value": "\"1106:encodeCommand\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 9998,
+      "offset": 10670,
       "length": 25,
       "value": "\"1106:maximumWriteLength\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10055,
+      "offset": 10727,
       "length": 12,
       "value": "\"1003:write\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10094,
+      "offset": 10766,
       "length": 31,
       "value": "\"1205:downloadPositionMismatch\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10162,
+      "offset": 10834,
       "length": 22,
       "value": "\"1205:livePositionGap\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10212,
+      "offset": 10884,
       "length": 20,
       "value": "\"1202:deviceCommand\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10266,
+      "offset": 10938,
       "length": 16,
       "value": "\"1202:liveStart\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10316,
+      "offset": 10988,
       "length": 22,
       "value": "\"1202:settingReadback\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10374,
+      "offset": 11046,
       "length": 22,
       "value": "\"1103:integerResponse\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10429,
+      "offset": 11101,
       "length": 15,
       "value": "\"1103:hardware\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10480,
+      "offset": 11152,
       "length": 14,
       "value": "\"1103:opusTOC\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10525,
+      "offset": 11197,
       "length": 16,
       "value": "\"1103:opusCount\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10572,
+      "offset": 11244,
       "length": 19,
       "value": "\"1103:opusDuration\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10622,
+      "offset": 11294,
       "length": 17,
       "value": "\"1103:opusLength\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10670,
+      "offset": 11342,
       "length": 19,
       "value": "\"1103:opusChannels\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10722,
+      "offset": 11394,
       "length": 19,
       "value": "\"1103:resumeOffset\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10777,
+      "offset": 11449,
       "length": 17,
       "value": "\"1103:wifiHeader\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10829,
+      "offset": 11501,
       "length": 19,
       "value": "\"1103:wifiChecksum\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10885,
+      "offset": 11557,
       "length": 21,
       "value": "\"1103:wifiFileLength\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 10940,
+      "offset": 11612,
       "length": 24,
       "value": "\"1103:downloadStartFile\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11002,
+      "offset": 11674,
       "length": 25,
       "value": "\"1003:connectionDeadline\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11066,
+      "offset": 11738,
       "length": 15,
       "value": "\"1018:identity\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11118,
+      "offset": 11790,
       "length": 23,
       "value": "\"1013:identityProvider\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11177,
+      "offset": 11849,
       "length": 22,
       "value": "\"1013:deviceSignature\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11238,
+      "offset": 11910,
       "length": 18,
       "value": "\"1013:userKeyPair\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11291,
+      "offset": 11963,
       "length": 21,
       "value": "\"1012:checkOwnership\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11351,
+      "offset": 12023,
       "length": 23,
       "value": "\"1012:connectOwnership\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11413,
+      "offset": 12085,
       "length": 21,
       "value": "\"1004:checkOwnership\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11467,
+      "offset": 12139,
       "length": 23,
       "value": "\"1004:connectOwnership\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11523,
+      "offset": 12195,
       "length": 30,
       "value": "\"1203:downloadStopUnconfirmed\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11589,
+      "offset": 12261,
       "length": 25,
       "value": "\"1207:downloadWriterSlow\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11648,
+      "offset": 12320,
       "length": 24,
       "value": "\"1207:audioConsumerSlow\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11702,
+      "offset": 12374,
       "length": 22,
       "value": "\"1205:liveIdleTimeout\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11752,
+      "offset": 12424,
       "length": 18,
       "value": "\"1205:firmwareEOF\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11805,
+      "offset": 12477,
       "length": 18,
       "value": "\"1205:otaCoverage\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11862,
+      "offset": 12534,
       "length": 26,
       "value": "\"1205:otaPrematureSuccess\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11927,
+      "offset": 12599,
       "length": 22,
       "value": "\"1208:deviceOTAStatus\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 11983,
+      "offset": 12655,
       "length": 25,
       "value": "\"1206:hotspotJoinTimeout\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 12039,
+      "offset": 12711,
       "length": 25,
       "value": "\"1206:wifiConnectTimeout\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 12098,
+      "offset": 12770,
       "length": 17,
       "value": "\"1206:tcpConnect\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 12147,
+      "offset": 12819,
       "length": 24,
       "value": "\"1204:diagnosticStorage\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 12196,
+      "offset": 12868,
       "length": 16,
       "value": "\"1204:featureIO\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "StringLiteral",
-      "offset": 12237,
+      "offset": 12909,
       "length": 14,
       "value": "\"1204:feature\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/DiagnosticSemantics.swift",
       "kind": "Dictionary",
-      "offset": 17185,
-      "length": 737,
-      "value": "[(1, (\"query_setting\", \"查询设备设置\")), (2, (\"set_setting\", \"修改设备设置\")), (3, (\"control_recording\", \"查询或控制录音\")), (4, (\"query_file_count\", \"查询文件数量\")), (5, (\"query_file_page\", \"查询文件分页\")), (6, (\"list_files\", \"读取完整文件列表\")), (7, (\"delete_file\", \"删除设备文件\")), (8, (\"download_file\", \"下载文件\")), (9, (\"start_live_audio\", \"开始实时音频\")), (10, (\"stop_live_audio\", \"停止实时音频\")), (11, (\"open_wifi\", \"开启 Wi-Fi 快传\")), (12, (\"close_wifi\", \"关闭 Wi-Fi 快传\")), (13, (\"update_firmware\", \"更新固件\")), (14, (\"maintain_device\", \"设备维护\"))]"
+      "offset": 17857,
+      "length": 802,
+      "value": "[(1, (\"query_setting\", \"查询设备设置\")), (2, (\"set_setting\", \"修改设备设置\")), (3, (\"control_recording\", \"查询或控制录音\")), (4, (\"query_file_count\", \"查询文件数量\")), (5, (\"query_file_page\", \"查询文件分页\")), (6, (\"list_files\", \"读取完整文件列表\")), (7, (\"delete_file\", \"删除设备文件\")), (8, (\"download_file\", \"下载文件\")), (9, (\"start_live_audio\", \"开始实时音频\")), (10, (\"stop_live_audio\", \"停止实时音频\")), (11, (\"open_wifi\", \"开启 Wi-Fi 快传\")), (12, (\"close_wifi\", \"关闭 Wi-Fi 快传\")), (13, (\"update_firmware\", \"更新固件\")), (15, (\"update_bluetooth_firmware\", \"更新蓝牙固件\")), (14, (\"maintain_device\", \"设备维护\"))]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/WireProtocol.swift",
@@ -26075,99 +27880,162 @@
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7078,
+      "length": 4,
+      "value": "1301"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7183,
+      "length": 4,
+      "value": "1302"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7282,
+      "length": 4,
+      "value": "1303"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7389,
+      "length": 4,
+      "value": "1304"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7504,
+      "length": 4,
+      "value": "1305"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7593,
+      "length": 4,
+      "value": "1306"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7693,
+      "length": 4,
+      "value": "1307"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7868,
+      "length": 4,
+      "value": "1308"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8007,
+      "length": 4,
+      "value": "1309"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 7280,
+      "offset": 8321,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "StringLiteral",
-      "offset": 10216,
+      "offset": 11257,
       "length": 10,
       "value": "\"WaveNote\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 10751,
+      "offset": 11792,
       "length": 2,
       "value": "-1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 11257,
+      "offset": 12298,
       "length": 11,
       "value": "1"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 11270,
+      "offset": 12311,
       "length": 11,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 14782,
+      "offset": 15823,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 14810,
+      "offset": 15851,
       "length": 1,
       "value": "7"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 14836,
+      "offset": 15877,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 14840,
+      "offset": 15881,
       "length": 4,
       "value": "1024"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "IntegerLiteral",
-      "offset": 14847,
+      "offset": 15888,
       "length": 4,
       "value": "1024"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 16113,
+      "offset": 17154,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 16893,
+      "offset": 17934,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 17075,
+      "offset": 18116,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Models.swift",
       "kind": "BooleanLiteral",
-      "offset": 17675,
+      "offset": 18716,
       "length": 4,
       "value": "true"
     },
@@ -26188,142 +28056,282 @@
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Dictionary",
-      "offset": 2328,
+      "offset": 2505,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Dictionary",
-      "offset": 2606,
+      "offset": 2783,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Dictionary",
-      "offset": 2658,
+      "offset": 2835,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 2751,
+      "offset": 2928,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 10898,
+      "offset": 14053,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "StringLiteral",
-      "offset": 11818,
+      "offset": 14973,
       "length": 21,
       "value": "\"cn.wavenote.storage\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 14864,
+      "offset": 18019,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 14920,
+      "offset": 18075,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 14955,
+      "offset": 18110,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 15046,
+      "offset": 18201,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 15087,
+      "offset": 18242,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 15155,
+      "offset": 18310,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "Array",
-      "offset": 15217,
+      "offset": 18372,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 15749,
+      "offset": 18904,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 24191,
+      "offset": 27346,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 59948,
+      "offset": 63103,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 59984,
+      "offset": 63139,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 60020,
+      "offset": 63175,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 60714,
+      "offset": 63869,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 60745,
+      "offset": 63900,
       "length": 5,
       "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 176,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 179,
+      "length": 9,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 190,
+      "length": 12,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 204,
+      "length": 9,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 215,
+      "length": 9,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 226,
+      "length": 9,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 237,
+      "length": 6,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "IntegerLiteral",
+      "offset": 759,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/BluetoothFirmwareUpdate.swift",
+      "kind": "BooleanLiteral",
+      "offset": 780,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3540,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3570,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3603,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3634,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3671,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3709,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3789,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4152,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4183,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "Array",
+      "offset": 4223,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/Internal\/BluetoothOTA.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4257,
+      "length": 1,
+      "value": "0"
     }
   ]
 }

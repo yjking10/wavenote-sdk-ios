@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-compiler-version: Apple Swift version 6.4.2 effective-5.10 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
 // swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name WaveNoteSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4.2
 import CoreBluetooth
 import CoreFoundation
 import CryptoKit
@@ -427,6 +427,15 @@ import _SwiftConcurrencyShims
   case networkUnavailable = 1206
   case bufferOverflow = 1207
   case firmwareUpgradeFailed = 1208
+  case otaRecordingActive = 1301
+  case otaFileTransferActive = 1302
+  case otaLiveAudioActive = 1303
+  case otaWiFiActive = 1304
+  case otaAlreadyInProgress = 1305
+  case otaUSBActive = 1306
+  case otaDeviceBusy = 1307
+  case otaDeviceStateUnavailable = 1308
+  case otaPowerInsufficient = 1309
   public init?(rawValue: Swift::Int)
   public typealias RawValue = Swift::Int
   public var rawValue: Swift::Int {
@@ -562,6 +571,9 @@ import _SwiftConcurrencyShims
   @objc @_Concurrency::MainActor final public var firmwareUpdate: WaveNoteSDK::WaveNoteFirmwareUpdate {
     @objc get
   }
+  @objc @_Concurrency::MainActor final public var bluetoothFirmwareUpdate: WaveNoteSDK::WaveNoteBluetoothFirmwareUpdate {
+    @objc get
+  }
   @objc @_Concurrency::MainActor final public var maintenance: WaveNoteSDK::WaveNoteMaintenance {
     @objc get
   }
@@ -585,6 +597,36 @@ import _SwiftConcurrencyShims
   @objc(unbindCurrentDeviceWithCompletion:) @_Concurrency::MainActor final public func unbindCurrentDevice(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
   @objc @_Concurrency::MainActor final public func reconnectLastDevice()
   @objc @_Concurrency::MainActor final public func refreshDeviceInformation()
+}
+@objc public enum WaveNoteOTAState : Swift::Int {
+  case preparing = 0, upgrading, reconnecting, rebooting, completed, cancelled, failed
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers final public class WaveNoteOTAProgress : ObjectiveC::NSObject {
+  @objc final public let operationID: Foundation::UUID
+  @objc final public let state: WaveNoteSDK::WaveNoteOTAState
+  @objc final public let progress: Swift::Int
+  @objc final public let canCancel: Swift::Bool
+  @objc final public let error: WaveNoteSDK::WaveNoteError?
+  @objc final public let nativeErrorCode: Foundation::NSNumber?
+  @objc deinit
+}
+@_Concurrency::MainActor @objc public protocol WaveNoteBluetoothFirmwareUpdateDelegate {
+  @objc @_Concurrency::MainActor func bluetoothFirmwareUpdate(_ updater: WaveNoteSDK::WaveNoteBluetoothFirmwareUpdate, didUpdate progress: WaveNoteSDK::WaveNoteOTAProgress)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency::MainActor @objcMembers final public class WaveNoteBluetoothFirmwareUpdate : WaveNoteSDK::WaveNoteFeature {
+  @objc @_Concurrency::MainActor weak final public var delegate: (any WaveNoteSDK::WaveNoteBluetoothFirmwareUpdateDelegate)?
+  @objc @_Concurrency::MainActor final public var snapshot: WaveNoteSDK::WaveNoteOTAProgress? {
+    get
+  }
+  @objc @discardableResult
+  @_Concurrency::MainActor final public func start(fileURL: Foundation::URL, completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void) -> WaveNoteSDK::WaveNoteOperation
+  @objc @_Concurrency::MainActor final public func cancel(completion: @escaping (WaveNoteSDK::WaveNoteError?) -> Swift::Void)
+  @objc deinit
 }
 extension WaveNoteSDK::WaveNoteRecordingState : Swift::Equatable {}
 extension WaveNoteSDK::WaveNoteRecordingState : Swift::Hashable {}
@@ -653,3 +695,6 @@ extension WaveNoteSDK::WaveNoteOwnership : Swift::Hashable {}
 extension WaveNoteSDK::WaveNoteOwnership : Swift::RawRepresentable {}
 extension WaveNoteSDK::WaveNoteScanToken : Swift::Sendable {}
 extension WaveNoteSDK::WaveNoteSDK : Swift::Sendable {}
+extension WaveNoteSDK::WaveNoteOTAState : Swift::Equatable {}
+extension WaveNoteSDK::WaveNoteOTAState : Swift::Hashable {}
+extension WaveNoteSDK::WaveNoteOTAState : Swift::RawRepresentable {}

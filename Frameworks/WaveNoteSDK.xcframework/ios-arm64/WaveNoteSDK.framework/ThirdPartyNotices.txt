@@ -1,0 +1,4 @@
+JieLi native OTA libraries, copyright their respective owners.
+Versions: JL_OTALib 2.3.1, JL_HashPair 1.0.2, JL_AdvParse 1.1.1, JLLogHelper 1.0; Android jl_bt_ota 1.10.0_10932.
+Source: supplied flutter_jl_ota 1.0.4 native distribution.
+Native binaries are proprietary vendor components; the Flutter wrapper MIT license does not relicense them.

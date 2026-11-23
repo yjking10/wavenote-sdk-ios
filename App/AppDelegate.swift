@@ -61,13 +61,14 @@ final class HomeController: UITableViewController {
             navigationItem.titleView = button
         } else {
             navigationItem.titleView = nil
-            if navigationController?.topViewController !== self {
+            if navigationController?.topViewController !== self && !(navigationController?.topViewController is BluetoothFirmwareController) {
                 navigationController?.dismiss(animated: false)
                 navigationController?.popToRootViewController(animated: false)
             }
         }
         tableView.reloadData()
         for page in navigationController?.viewControllers ?? [] {
+            (page as? BluetoothFirmwareController)?.updateStatus()
             (page as? SettingsController)?.tableView.reloadData()
             (page as? PowerController)?.tableView.reloadData()
             (page as? GainController)?.updateStatus()
@@ -537,6 +538,7 @@ final class SettingsController: UITableViewController {
                       Row(title: "电量", value: s?.batteryLevel.map { "\($0)%" } ?? "未知", action: { self.info("电量", "电量：\(self.value(s?.batteryLevel))\n充电状态：\(s?.charging == 1 ? "充电中" : s?.charging == 0 ? "未充电" : "未知")\n\n电量较低时请及时充电。") }),
                       Row(title: "存储", value: disk, action: { self.info("设备存储", "已用 / 总量：\(disk)\n\n容量保留设备原始单位。此页面仅查看使用情况，不清空设备内容。") }),
                       Row(title: "固件版本", value: s?.firmwareVersion ?? "未知"),
+                      Row(title: "蓝牙固件升级", value: "本地固件", action: { self.navigationController?.pushViewController(BluetoothFirmwareController(model: self.model), animated: true) }),
                       Row(title: "自动关机", value: DemoFlow.minutes(s?.autoPowerOffMinutes?.intValue), action: { self.autoPower() })]),
             ("隐私与安全", [Row(title: "USB 访问", value: DemoValues.usb(s?.usbEnabled?.intValue), action: { self.usb() }),
                        Row(title: "设备文件 Log", value: s?.deviceLog == 1 ? "打开" : s?.deviceLog == 0 ? "关闭" : "未知")]),

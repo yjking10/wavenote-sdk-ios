@@ -30,3 +30,10 @@ void DeleteWaveNoteLocalAudio(NSString *sn, WaveNoteRecordMode mode, NSString *n
 WaveNoteOperation *DownloadWaveNoteAudio(WaveNoteFile *file, BOOL resume, BOOL deleteSource, void (^completion)(WaveNoteLocalAudio *, WaveNoteError *)) {
     return [WaveNoteSDK.sharedSDK.files downloadToStorage:file transport:WaveNoteTransferTransportBluetooth resume:resume deleteSource:deleteSource completion:completion];
 }
+
+/// OTA 依赖由 WaveNote SDK 内置；调用方只使用 WaveNote 类型。
+WaveNoteOperation *StartWaveNoteBluetoothFirmware(NSURL *fileURL, id<WaveNoteBluetoothFirmwareUpdateDelegate> observer, void (^completion)(WaveNoteError *)) {
+    WaveNoteBluetoothFirmwareUpdate *updater = WaveNoteSDK.sharedSDK.bluetoothFirmwareUpdate;
+    updater.delegate = observer;
+    return [updater startWithFileURL:fileURL completion:completion];
+}
