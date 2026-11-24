@@ -464,6 +464,26 @@ final class BluetoothOTAClient: NSObject, WaveNoteBluetoothFirmwareUpdateDelegat
 
 宿主持有客户端后调用 `client.start(fileURL: localFirmwareURL)`；页面重绘可读取 `client.snapshot`，用户点击取消时调用 `client.cancel()`。返回令牌的 `identifier` 与进度的 `operationID` 对应；释放令牌不会取消升级。需要处理取消结果时使用管理器的 `cancel(completion:)`，令牌 `cancel()` 也只发起请求，不保证设备退出刷写。
 
+### OTA 状态与耗时日志
+
+Demo 已开启 SDK 调试日志；其他宿主在主线程调用 `sdk.openLog(true)` 后，可在控制台搜索 `OTA state` 查看状态变化，搜索 `OTA timing` 查看整体耗时。若通过 `logBlock` 接管日志，SDK 只交给该回调，需由宿主自行输出或保存。
+
+格式示例（数值仅为演示）：
+
+```text
+OTA timing start operation=<UUID>
+OTA state operation=<同一UUID> state=WaveNoteOTAState.PREPARING value=0 progress=0 canCancel=false code=0
+OTA state operation=<同一UUID> state=WaveNoteOTAState.UPGRADING value=1 progress=12 canCancel=true code=0
+OTA state operation=<同一UUID> state=WaveNoteOTAState.COMPLETED value=4 progress=100 canCancel=false code=0
+OTA timing end operation=<同一UUID> result=completed elapsedMs=43210 code=0
+```
+
+按 `operation` 关联同次请求；`elapsedMs` 为整数毫秒，上例表示 43.210 秒。`result` 为 `completed`、`failed` 或 `cancelled`，`code` 为 0 或 SDK 错误码。每次请求仅记录一次结束日志，前置拒绝也记录 `failed`，不表示已开始刷写。
+
+`OTA state` 使用两端一致的大写状态名称，`value` 对应下表的原始枚举值；Swift API 的枚举写法仍是 `.preparing`、`.upgrading` 等。仅状态变化时输出，重复进度不重复打印；回连后重新进入 `PREPARING` 会再次记录。`progress`、`canCancel` 为进入该状态时的值，同状态内的更新继续通过 Delegate 接收。准入前直接拒绝时可直接记录 `FAILED`，本地取消记录 `CANCELLED`；已结束任务的迟到事件不再输出状态日志。
+
+计时使用单调时钟，从调用 `start` 到 SDK 交付最终结果，包含前置检查、认证、传输、升级回连和终态清理；不包含文件选择/导入、宿主 completion 内处理或后续业务连接恢复。调整系统时间不影响 `elapsedMs`，应直接读取此字段。
+
 ### 进度字段与状态枚举
 
 | `WaveNoteOTAProgress` 字段 | 含义 |
