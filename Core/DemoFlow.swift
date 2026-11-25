@@ -1,5 +1,68 @@
 import Foundation
 
+/// Demo-only OTA presentation state. The SDK remains the authority for upgrade results.
+final class DemoOTAFlow {
+    enum Outcome { case success, cancelled, failed }
+    private(set) var generation = 0
+    private(set) var active = false
+    private(set) var cancelPending = false
+    private(set) var cancelAcknowledged = false
+    private(set) var stage: Int?
+    private(set) var percent = 0
+    private(set) var outcome: Outcome?
+    private(set) var businessReady = false
+    var protectsExit: Bool { active }
+    static func validFileSize(_ size: Int64) -> Bool { (1...Int64(Int32.max)).contains(size) }
+    @discardableResult func selectFirmware() -> Bool {
+        guard !active else { return false }
+        generation += 1; stage = nil; percent = 0; outcome = nil; businessReady = false
+        cancelPending = false; cancelAcknowledged = false
+        return true
+    }
+    func begin() -> Int? {
+        guard !active else { return nil }
+        generation += 1; active = true; stage = 0; percent = 0; outcome = nil; businessReady = false
+        cancelPending = false; cancelAcknowledged = false
+        return generation
+    }
+    func update(_ token: Int, stage: Int, percent: Int) {
+        guard token == generation, active, (0...6).contains(stage) else { return }
+        self.stage = stage; self.percent = min(100, max(0, percent))
+    }
+    @discardableResult func finish(_ token: Int, outcome: Outcome) -> Bool {
+        guard token == generation, active else { return false }
+        active = false; self.outcome = outcome; cancelPending = false; cancelAcknowledged = false
+        stage = outcome == .success ? 4 : outcome == .cancelled ? 5 : 6
+        if outcome == .success { percent = 100 }
+        businessReady = false
+        return true
+    }
+    func beginCancel() -> Int? {
+        guard active, !cancelPending, (stage ?? 0) < 4 else { return nil }
+        cancelPending = true; cancelAcknowledged = false; return generation
+    }
+    @discardableResult func cancelResult(_ token: Int, accepted: Bool) -> Bool {
+        guard token == generation, active, cancelPending else { return false }
+        cancelPending = accepted; cancelAcknowledged = accepted; return true
+    }
+    func connectionReady(_ ready: Bool) { if !active { businessReady = ready } }
+    var title: String {
+        if active {
+            if stage == 4 { return "固件升级完成，正在结束升级流程" }
+            if stage == 5 { return "取消已确认，正在结束升级流程" }
+            if stage == 6 { return "升级失败，正在结束升级流程" }
+            if cancelPending { return cancelAcknowledged ? "等待设备取消结果…" : "正在请求取消…" }
+            return ["准备中", "升级中", "重新连接", "设备重启中"][min(3, max(0, stage ?? 0))]
+        }
+        switch outcome {
+        case .success: return businessReady ? "升级成功，业务连接已恢复" : "升级完成，正在恢复业务连接…"
+        case .cancelled: return businessReady ? "已取消，业务连接已恢复" : "已取消，等待业务连接恢复…"
+        case .failed: return "升级失败"
+        case nil: return "未开始升级"
+        }
+    }
+}
+
 /// 只管理 Demo 的交互任务；SDK 仍负责身份和设备应答校验。
 final class DemoFlow {
     enum Route { case bind, connect }

@@ -79,13 +79,19 @@ final class HomeController: UITableViewController {
         guard model.flow.ready else { return }
         navigationController?.pushViewController(SettingsController(model: model), animated: true)
     }
+    func showFirmware() {
+        if let page = navigationController?.viewControllers.first(where: { $0 is BluetoothFirmwareController }) {
+            navigationController?.popToViewController(page, animated: true)
+        } else { navigationController?.pushViewController(BluetoothFirmwareController(model: model), animated: true) }
+    }
+    private var connectionRows: Int { model.flow.ready ? (model.bleInvestigationAvailable ? 7 : 6) : 3 }
     override func numberOfSections(in tableView: UITableView) -> Int { model.flow.ready || model.flow.showsNearby ? 2 : 1 }
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { section == 0 ? "连接设备" : !model.flow.ready ? "附近设备" : model.library.isRecording ? "当前录音" : "录音文件" }
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 1 && model.flow.ready { return model.player.message.isEmpty ? "音频仅保存在本机。左滑已完成文件可删除本地音频。" : model.player.message }
         return section == 0 ? "演示身份：本地模拟。绑定记录仅在本机保存，两端不共享。" : "选择设备后绑定并连接；已绑定设备直接连接。"
     }
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? (model.flow.ready ? (model.bleInvestigationAvailable ? 7 : 6) : 3) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { section == 0 ? connectionRows + (model.firmware.hasSession ? 1 : 0) : !model.flow.ready ? max(1, model.devices.count) : model.library.isRecording ? 1 : 1 + model.library.rows.count }
     override func tableView(_ tableView: UITableView, cellForRowAt path: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.numberOfLines = 0; cell.detailTextLabel?.numberOfLines = 0
@@ -120,6 +126,11 @@ final class HomeController: UITableViewController {
                 }
             }
         } else if path.section == 0 {
+            if path.row == connectionRows, model.firmware.hasSession {
+                cell.textLabel?.text = "蓝牙固件升级"; cell.detailTextLabel?.text = model.firmware.flow.title
+                cell.accessoryType = .disclosureIndicator; cell.accessibilityIdentifier = "otaStatus"
+                return cell
+            }
             if path.row == 6 {
                 cell.textLabel?.text = "排查 BLE 长文件下载"
                 cell.detailTextLabel?.text = model.bleInvestigationStatus.isEmpty ? "对设备上的 7 MB 文件重复下载六轮" : model.bleInvestigationStatus
@@ -173,6 +184,7 @@ final class HomeController: UITableViewController {
             if model.library.isRecording { navigationController?.pushViewController(RecordingDetailController(model: model), animated: true) }
             else if path.row == 0 { if model.library.busy { model.library.stop() } else { model.syncFiles() } }
         } else if path.section == 0 {
+            if path.row == connectionRows, model.firmware.hasSession { showFirmware(); return }
             if path.row == 0 { model.scan() }
             if path.row == 1 && model.sdk.bluetoothState == .unauthorized, let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
             if path.row == 3 { model.toggleWiFiTransfer() }
@@ -538,7 +550,7 @@ final class SettingsController: UITableViewController {
                       Row(title: "电量", value: s?.batteryLevel.map { "\($0)%" } ?? "未知", action: { self.info("电量", "电量：\(self.value(s?.batteryLevel))\n充电状态：\(s?.charging == 1 ? "充电中" : s?.charging == 0 ? "未充电" : "未知")\n\n电量较低时请及时充电。") }),
                       Row(title: "存储", value: disk, action: { self.info("设备存储", "已用 / 总量：\(disk)\n\n容量保留设备原始单位。此页面仅查看使用情况，不清空设备内容。") }),
                       Row(title: "固件版本", value: s?.firmwareVersion ?? "未知"),
-                      Row(title: "蓝牙固件升级", value: "本地固件", action: { self.navigationController?.pushViewController(BluetoothFirmwareController(model: self.model), animated: true) }),
+                      Row(title: "蓝牙固件升级", value: "本地固件", action: { (self.navigationController?.viewControllers.first as? HomeController)?.showFirmware() }),
                       Row(title: "自动关机", value: DemoFlow.minutes(s?.autoPowerOffMinutes?.intValue), action: { self.autoPower() })]),
             ("隐私与安全", [Row(title: "USB 访问", value: DemoValues.usb(s?.usbEnabled?.intValue), action: { self.usb() }),
                        Row(title: "设备文件 Log", value: s?.deviceLog == 1 ? "打开" : s?.deviceLog == 0 ? "关闭" : "未知")]),

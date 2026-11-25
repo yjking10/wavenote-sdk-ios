@@ -102,6 +102,7 @@ private enum DemoRSA {
 
 @MainActor final class DemoController: NSObject, WaveNoteSDKDelegate, WaveNoteDeviceSettingsDelegate, WaveNoteRecordingDelegate, WaveNoteFilesDelegate, WaveNoteWiFiDelegate {
     let sdk = WaveNoteSDK.shared
+    lazy var firmware = DemoBluetoothFirmware(sdk: sdk, changed: { [weak self] in self?.changed?() })
     let identity = DemoIdentityProvider()
     let flow = DemoFlow()
     let library = DemoAudioLibrary()
@@ -287,8 +288,12 @@ private enum DemoRSA {
         }
         startSync(transport: .wifi)
     }
-    func disconnect() { guard !flow.busy else { return }; sdk.disconnectDevice() }
+    func disconnect() {
+        guard !firmware.flow.protectsExit else { status = "正在升级固件，请等待升级结束后再断开连接。"; changed?(); return }
+        guard !flow.busy else { return }; sdk.disconnectDevice()
+    }
     func unbind(eraseDeviceFiles: Bool = false) {
+        guard !firmware.flow.protectsExit else { status = "正在升级固件，请等待升级结束后再解绑。"; changed?(); return }
         guard flow.beginSetting() != nil else { return }
         erasedDeviceFiles = eraseDeviceFiles && sdk.connectedDevice?.serialNumber.hasPrefix("R202") == true
         unbinding = true; status = erasedDeviceFiles ? "正在解绑并清空内容…" : "正在解绑…"; changed?()
@@ -313,6 +318,7 @@ private enum DemoRSA {
         select(device)
     }
     func waveNoteSDK(_ sdk: WaveNoteSDK, didChangeConnectionState state: WaveNoteConnectionState, device: WaveNoteDevice?) {
+        firmware.connectionChanged()
         if state == .disconnected && flow.selecting { return }
         if wifiWorkflow, state != .ready {
             if wifiFallback.pending, state == .failed { failWiFiFallback(); return }
