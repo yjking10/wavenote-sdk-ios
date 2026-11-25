@@ -26643,7 +26643,7 @@
       "kind": "StringLiteral",
       "offset": 419,
       "length": 7,
-      "value": "\"0.2.7\""
+      "value": "\"0.2.8\""
     },
     {
       "filePath": "\/Users\/yj\/Desktop\/wavenote-sdk\/ios\/Sources\/WaveNoteSDK\/WaveNoteSDK.swift",

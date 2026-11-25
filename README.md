@@ -2,6 +2,8 @@
 
 本项目展示如何在 iOS 应用中集成 WaveNote SDK，完成设备扫描、绑定、连接、录音控制、设备设置和音频文件同步。本文面向应用开发者；服务端鉴权与账户归属由接入方实现。
 
+当前内置 `WaveNoteSDK 0.2.8`，可通过 `WaveNoteSDK.sdkVersion` 查看 SDK 版本。
+
 可运行参考代码：[Swift](App/SwiftIntegration.swift) · [Objective-C](App/ObjCIntegration.m) · [Identity Provider](App/HTTPIdentityProvider.swift)。
 
 ## 集成前提
